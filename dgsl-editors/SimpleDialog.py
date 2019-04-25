@@ -1,9 +1,23 @@
 import tkinter as tk
 
-class SimpleDialog(Toplevel):
+class SimpleDialog(tk.Toplevel):
+    """
+    A base class for a dialog.
+    
+    Default has an OK and Cancel button that will be below whatever
+    widgets are made with the overriden make_widgets() method.
+    
+    Allows for a result to be passed out from calling show()
+    This result must be set in some function or it will return None
+    
+    Must override make_widgets() and apply()
+    TODO: make it so validate is used in apply.
+    
+    """
     def __init__(self, parent, title =""):
-        Toplevel.__init__(self, parent)
+        tk.Toplevel.__init__(self, parent)
         self.transient(parent)
+        self.title=title
         
         self.result = None
         
@@ -14,19 +28,25 @@ class SimpleDialog(Toplevel):
         self.make_buttons()
         
         self.initial_focus = self
-
-    def show(self):
-        self.grab_set()
         
+        self.grab_set()
         self.protocol("WM_DELETE_WINDOW", self.cancel)
         
         self.initial_focus.focus_set()
         self.wait_window(self)
+
+    # Can be called on the Window object to store result
+    # dialog = SimpleDialog(root, "Title")
+    # result = dialoge.get_result()
+    def get_result(self):
         return self.result
     
+    # Override to make widgets you want to appear above the buttons
     def make_widgets(self, master):
         pass
     
+    # Makes default OK and Cancel buttons
+    # Override if you want custom buttons
     def make_buttons(self):
         box = tk.Frame(self)
         k = tk.Button(box, text="OK", width=10, command=self.ok,
@@ -41,6 +61,9 @@ class SimpleDialog(Toplevel):
         
         box.pack()
     
+    # Runs apply and closes the dialog
+    # TODO: validate is not used yet
+    # Default callback to OK button
     def ok(self, event=None):
         if not self.validate():
             pass # do something
@@ -51,14 +74,40 @@ class SimpleDialog(Toplevel):
         self.apply()
         self.cancel()
     
+    # Sets focus back to parent and closes window
+    # Default callback for Cancel
     def cancel(self, event=None):
         self.parent.focus_set()
         self.destroy()
     
-    # override if input needs validation
+    # Override if input needs validation
+    # NOTE: is not currently doing anything
     def validate(self):
         return True
     
-    # override
+    # Override to determine what happens
+    # Should return self.result. If it does not then the
+    # result passed out of the show() method will be None.
     def apply(self):
         pass
+    
+
+# Main for Testing ################################################
+
+class TestDialog(SimpleDialog):
+    def apply(self):
+        self.result = "Return the result"
+
+if __name__=="__main__":
+
+    root = tk.Tk()
+    
+    dialog = TestDialog(root, "Test")
+    result = dialog.get_result()
+    
+    root.mainloop()
+
+    # Run a simple test to make sure that apply and get_result
+    # are working. The test will fail if you press Cancel button.
+    # Test won't run until root window is closed.
+    assert result == "Return the result", "Failed: get_result.\nExpected: {}\nActual: {}".format("Return the result", result)

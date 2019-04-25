@@ -10,7 +10,6 @@ class EditEntityFrame(tk.Frame):
     
     Allows all data to be retrieved in a dictionairy.
     """
-    
     def __init__(self, master):
         tk.Frame.__init__(self, master)
         self.pack()
@@ -18,10 +17,10 @@ class EditEntityFrame(tk.Frame):
         self.make_info()
         self.make_state()
     
+    # Extend to children to add fields
+    # default is row 0-4. 0-3 if make_obtainable is
+    # overriden to make self.obtainable=None
     def make_info(self):
-        # Extend to children to add fields
-        # default is row 0-4. 0-3 if make_obtainable is
-        # overriden to make self.obtainable=None
         tk.Label(self, text="Name:").grid(row=0)
         tk.Label(self, text="Description:").grid(row=1)
         
@@ -31,8 +30,8 @@ class EditEntityFrame(tk.Frame):
         self.name.grid(row=0, column=1)
         self.desc.grid(row=1, column=1)
     
+    # Extend to add other states
     def make_state(self):
-        # Extend to add other states
         tk.Label(self, text="Active:").grid(row=2)
         tk.Label(self, text="Hidden:").grid(row=3)
         
@@ -47,21 +46,21 @@ class EditEntityFrame(tk.Frame):
         
         self.make_obtainable()
     
+    # Overide if you want to change obtainable
+    # ie. for classes that it is fixed
+    # If you don't want obtainable then set
+    # self.obtainalbe = None and start your other
+    # widgets in row=4
     def make_obtainable(self):
-        # Overide if you want to change obtainable
-        # ie. for classes that it is fixed
-        # If you don't want obtainable then set
-        # self.obtainalbe = None and start your other
-        # widgets in row=4
         tk.Label(self, text="Obtainable:").grid(row=4)
         self.obt = tk.IntVar()
         self.obtainable = tk.Checkbutton(self, variable=self.obt)
         self.obtainable.grid(row=4, column=1)
     
+    # Extend in children to pass on all fields
+    # Returns data from all fields in a dictionary
+    # Can be used as a callback
     def get_data(self, event=None):
-        # Extend in children to pass on all fields
-        # Returns data from all fields in a dictionary
-        # Can be used as a callback
         data = {
             "name": self.name.get(),
             "desc": self.desc.get(),
@@ -78,9 +77,12 @@ class EditEntityFrame(tk.Frame):
 if __name__=='__main__':
     root=tk.Tk()
     
-    frame = EditEntity(root)
+    frame = EditEntityFrame(root)
     
-    get = tk.Button(frame, text="Print entries", command=lambda : print(frame.get_data()))
+    # button to test the get_data() method
+    # should print a dictionary with any data that you enter
+    get = tk.Button(frame, text="Print entries",
+        command=lambda : print(frame.get_data()))
     get.grid()
     
     root.mainloop()
