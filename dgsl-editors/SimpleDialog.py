@@ -13,6 +13,9 @@ class SimpleDialog(tk.Toplevel):
     Must override make_widgets() and apply()
     TODO: make it so validate is used in apply.
     
+    Code mostly obtained from
+        http://effbot.org/tkinterbook/tkinter-dialog-windows.htm
+    
     """
     def __init__(self, parent, title =""):
         tk.Toplevel.__init__(self, parent)
