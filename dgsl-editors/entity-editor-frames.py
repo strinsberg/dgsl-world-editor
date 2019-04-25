@@ -34,6 +34,30 @@ class EditNpcFrame(ef.EditEntityFrame):
     def make_obtainable(self):
         self.obtainable = None
 
+# Door ############################################################
+
+class EditDoorFrame(EditNpcFrame):
+    
+    # Adds destination field
+    # not sure exactly how to do this with ID's and such
+    # I think probably give the room name and then use
+    # validate to make sure that it exists before it let's
+    # you move on. Or give a list box with rooms before or
+    # after to select the room it will lead to.
+    def make_info(self):
+        ef.EditEntityFrame.make_info(self)
+        tk.Label(self, text="Destination:").grid(row=5)
+        
+        self.dest = tk.Entry(self)
+        self.dest.grid(row=5, column=1)
+    
+    #
+    def get_data(self):
+        ef.EditEntityFrame.get_data(self)
+        self.data["destination"] = self.dest.get()
+        return self.data
+
+
 # Testing #########################################################
 
 if __name__=='__main__':
@@ -41,8 +65,8 @@ if __name__=='__main__':
     
     #frame = EditAtmosphereFrame(root)
     #frame = EditRoomFrame(root)
-    frame = EditNpcFrame(root)
-
+    #frame = EditNpcFrame(root)
+    frame = EditDoorFrame(root)
     
     # button to test the get_data() method
     # should print a dictionary with any data that you enter
