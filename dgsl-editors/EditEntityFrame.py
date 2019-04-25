@@ -37,6 +37,7 @@ class EditEntityFrame(tk.Frame):
         
         self.act = tk.IntVar()
         self.hid = tk.IntVar()
+        self.act.set(1)
         
         self.active = tk.Checkbutton(self, variable=self.act)
         self.hidden = tk.Checkbutton(self, variable=self.hid)
@@ -53,7 +54,10 @@ class EditEntityFrame(tk.Frame):
     # widgets in row=4
     def make_obtainable(self):
         tk.Label(self, text="Obtainable:").grid(row=4)
+        
         self.obt = tk.IntVar()
+        self.obt.set(1)
+        
         self.obtainable = tk.Checkbutton(self, variable=self.obt)
         self.obtainable.grid(row=4, column=1)
     

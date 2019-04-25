@@ -22,20 +22,26 @@ class EditAtmosphereFrame(ef.EditEntityFrame):
         return self.data
 
 
-# Room ##############################################################
+# Room ############################################################
 
 class EditRoomFrame(EditAtmosphereFrame):
     def make_obtainable(self):
         self.obtainable = None
 
+# Npc #############################################################
 
-# Testing ##########################################################
+class EditNpcFrame(ef.EditEntityFrame):
+    def make_obtainable(self):
+        self.obtainable = None
+
+# Testing #########################################################
 
 if __name__=='__main__':
     root = tk.Tk()
     
     #frame = EditAtmosphereFrame(root)
     #frame = EditRoomFrame(root)
+    frame = EditNpcFrame(root)
 
     
     # button to test the get_data() method
