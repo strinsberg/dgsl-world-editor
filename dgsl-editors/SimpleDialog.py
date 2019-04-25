@@ -49,9 +49,11 @@ class SimpleDialog(tk.Toplevel):
     # Override if you want custom buttons
     def make_buttons(self):
         box = tk.Frame(self)
+        
         k = tk.Button(box, text="OK", width=10, command=self.ok,
                    default=tk.ACTIVE)
         k.pack(side=tk.LEFT, padx=5, pady=5)
+        
         c = tk.Button(box, text="Cancel", width=10,
                    command=self.cancel, default=tk.ACTIVE)
         c.pack(side=tk.LEFT, padx=5, pady=5)

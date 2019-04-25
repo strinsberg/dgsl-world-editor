@@ -61,15 +61,15 @@ class EditEntityFrame(tk.Frame):
     # Returns data from all fields in a dictionary
     # Can be used as a callback
     def get_data(self, event=None):
-        data = {
+        self.data = {
             "name": self.name.get(),
             "desc": self.desc.get(),
             "active": self.act.get(),
             "hidden": self.hid.get()
         }
         if self.obtainable:
-            data["obtainable"] = self.obt.get()
-        return data
+            self.data["obtainable"] = self.obt.get()
+        return self.data
 
 
 # Main for testing ################################################
