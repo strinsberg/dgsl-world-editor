@@ -18,8 +18,7 @@ class EditEntityFrame(tk.Frame):
         self.make_state()
     
     # Extend to children to add fields
-    # default is row 0-4. 0-3 if make_obtainable is
-    # overriden to make self.obtainable=None
+    # Default fields go in row 0 and row 1
     def make_info(self):
         tk.Label(self, text="Name:").grid(row=0)
         tk.Label(self, text="Description:").grid(row=1)
@@ -31,9 +30,11 @@ class EditEntityFrame(tk.Frame):
         self.desc.grid(row=1, column=1)
     
     # Extend to add other states
+    # Default to row 60+ to allow easily putting other
+    # rows under the default info entry boxes
     def make_state(self):
-        tk.Label(self, text="Active:").grid(row=2)
-        tk.Label(self, text="Hidden:").grid(row=3)
+        tk.Label(self, text="Active:").grid(row=60)
+        tk.Label(self, text="Hidden:").grid(row=61)
         
         self.act = tk.IntVar()
         self.hid = tk.IntVar()
@@ -42,24 +43,23 @@ class EditEntityFrame(tk.Frame):
         self.active = tk.Checkbutton(self, variable=self.act)
         self.hidden = tk.Checkbutton(self, variable=self.hid)
         
-        self.active.grid(row=2, column=1)
-        self.hidden.grid(row=3, column=1)
+        self.active.grid(row=60, column=1)
+        self.hidden.grid(row=61, column=1)
         
         self.make_obtainable()
     
     # Overide if you want to change obtainable
     # ie. for classes that it is fixed
     # If you don't want obtainable then set
-    # self.obtainalbe = None and start your other
-    # widgets in row=4
+    # self.obtainalbe = None
     def make_obtainable(self):
-        tk.Label(self, text="Obtainable:").grid(row=4)
+        tk.Label(self, text="Obtainable:").grid(row=62)
         
         self.obt = tk.IntVar()
         self.obt.set(1)
         
         self.obtainable = tk.Checkbutton(self, variable=self.obt)
-        self.obtainable.grid(row=4, column=1)
+        self.obtainable.grid(row=62, column=1)
     
     # Extend in children to pass on all fields
     # Returns data from all fields in a dictionary

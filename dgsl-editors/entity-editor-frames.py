@@ -10,10 +10,10 @@ class EditAtmosphereFrame(ef.EditEntityFrame):
     # a string. Only 3 types right now.
     def make_info(self):
         ef.EditEntityFrame.make_info(self)
-        tk.Label(self, text="Atmosphere:").grid(row=5)
+        tk.Label(self, text="Atmosphere:").grid(row=10)
         
         self.atmos = tk.Entry(self)
-        self.atmos.grid(row=5, column=1)
+        self.atmos.grid(row=10, column=1)
     
     #
     def get_data(self):
@@ -46,10 +46,10 @@ class EditDoorFrame(EditNpcFrame):
     # after to select the room it will lead to.
     def make_info(self):
         ef.EditEntityFrame.make_info(self)
-        tk.Label(self, text="Destination:").grid(row=5)
+        tk.Label(self, text="Destination:").grid(row=10)
         
         self.dest = tk.Entry(self)
-        self.dest.grid(row=5, column=1)
+        self.dest.grid(row=10, column=1)
     
     #
     def get_data(self):
@@ -63,10 +63,10 @@ class EditDoorFrame(EditNpcFrame):
 if __name__=='__main__':
     root = tk.Tk()
     
-    #frame = EditAtmosphereFrame(root)
+    frame = EditAtmosphereFrame(root)
     #frame = EditRoomFrame(root)
     #frame = EditNpcFrame(root)
-    frame = EditDoorFrame(root)
+    #frame = EditDoorFrame(root)
     
     # button to test the get_data() method
     # should print a dictionary with any data that you enter

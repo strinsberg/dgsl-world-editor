@@ -5,15 +5,30 @@ class EditEventFrame(tk.Frame):
         tk.Frame.__init__(self, master)
         self.pack()
         
+        self.events = list()
+        
         self.make_widgets()
         self.defaults()
     
+    # Needed for every event
+    # Set up to go below subclass defined widgets
     def defaults(self):
         tk.Label(self, text="Once:").grid(row=50)
         
         self.one_time = tk.IntVar()
         self.once = tk.Checkbutton(self, variable=self.one_time)
         self.once.grid(row=50, column=1)
+        
+        tk.Label(self, text="Subscriptions:").grid(row=80)
+        
+        self.event_list = tk.Listbox(self, selectmode=tk.MULTIPLE)
+        self.event_list.grid(row=80, column=1)
+    
+    # Set the list of events to subscribe to
+    def set_events(self, events):
+        self.events = events
+        for e in self.events:
+            self.event_list.insert(tk.END, e["name"])
     
     # Override
     def make_widgets(self):
@@ -21,8 +36,13 @@ class EditEventFrame(tk.Frame):
     
     # Override
     def get_data(self):
+        subjects = list()
+        for i in self.event_list.curselection():
+            subjects.append(self.events[i]["id"])
+        
         self.data = {
-            "once": self.one_time.get()
+            "once": self.one_time.get(),
+            "subjects": subjects
         }
         return self.data
         
@@ -61,13 +81,22 @@ class EditKillFrame(EditInformFrame):
         return self.data
 
 
+
 # Testing #########################################################
 
 if __name__=='__main__':
     root = tk.Tk()
     
+    events = [
+        {"name":"some event", "id":"38ujd8238"},
+        {"name":"some other event", "id":"90u4r0j"}
+    ]
+    
+    frame = EditEventFrame(root)
     #frame = EditInformFrame(root)
-    frame = EditKillFrame(root)
+    #frame = EditKillFrame(root)
+    
+    frame.set_events(events)
     
     # button to test the get_data() method
     # should print a dictionary with any data that you enter
