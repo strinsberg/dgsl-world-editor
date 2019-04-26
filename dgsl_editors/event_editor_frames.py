@@ -1,5 +1,6 @@
 import tkinter as tk
 from selector_dialogs import ListSelector
+import data
 
 class EditEventFrame(tk.Frame):
     def __init__(self, master, entity_owned = True):
@@ -180,7 +181,70 @@ class EditToggleActiveFrame(EditEventFrame):
         self.data["target"] = self.target["id"]
         return self.data
 
-# Testing #########################################################
+# Transfer ######################################################
+
+class EditTransferItemFrame(EditEventFrame):
+    """
+    TODO: need to make sure other and item are things that will work
+    to be chosen for those selections
+    and validate to make sure something is chosen
+    """
+    def make_widgets(self):
+        tk.Label(self, text="Item:").grid(row=19, sticky=tk.W)
+        self.item = {"id":None, "name":None}
+        self.itemText = tk.StringVar()
+        self.itemText.set("Please Choose")
+        self.label = tk.Label(self, textvariable=self.itemText)
+        self.label.grid(row=19, column=1)
+
+        self.edit = tk.Button(self, text="Choose",
+                              command=self.choose_item)
+        self.edit.grid(row=19, column=2)
+        
+        tk.Label(self, text="Other:").grid(row=20, sticky=tk.W)
+        self.other = {"id":None, "name":None}
+        self.entityText = tk.StringVar()
+        self.entityText.set("Please Choose")
+        self.label = tk.Label(self, textvariable=self.entityText)
+        self.label.grid(row=20, column=1)
+
+        self.edit = tk.Button(self, text="Choose",
+                              command=self.choose_other)
+        self.edit.grid(row=20, column=2)
+    
+    # Set the list of entities
+    def set_entities(self, entities):
+        self.entities = entities
+        
+    # create a dialog to choose a room from a list of rooms
+    def choose_other(self, event=None):
+        self.others = []
+        for ent in self.entities:
+            #check for only containers somehow
+            self.others.append(ent)
+        dialog = ListSelector(self, "Choose an other",
+                              self.others)
+        self.other = dialog.get_result()[0]
+        self.entityText.set(self.other["name"])
+        
+    # create a dialog to choose a room from a list of rooms
+    def choose_item(self, event=None):
+        self.items = []
+        for ent in self.entities:
+            #make sure obtainable or at least no rooms
+            self.items.append(ent)
+        dialog = ListSelector(self, "Choose an item to transfer",
+                              self.items)
+        self.item = dialog.get_result()[0]
+        self.itemText.set(self.item["name"])
+        
+    def get_data(self):
+        EditEventFrame.get_data(self)
+        self.data["other"] = self.other["id"]
+        self.data["itemId"] = self.item["id"]
+        return self.data
+
+# Testing #######################################################
 
 if __name__=='__main__':
     root = tk.Tk()
@@ -200,7 +264,9 @@ if __name__=='__main__':
     #frame = EditKillFrame(root)
     #frame = EditMovePlayerFrame(root)
     #frame.set_rooms(rooms)
-    frame = EditToggleActiveFrame(root)
+    
+    #frame = EditToggleActiveFrame(root)
+    frame = EditTransferItemFrame(root)
     frame.set_entities(rooms)
     
     frame.set_events(events)
