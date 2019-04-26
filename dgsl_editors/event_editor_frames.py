@@ -143,7 +143,42 @@ class EditMovePlayerFrame(EditEventFrame):
         EditEventFrame.get_data(self)
         self.data["destination"] = self.target["id"]
         return self.data
+
+# Toggle ##########################################################
+"""
+TODO: probably wouldn't be too much work to make MovePlayer work
+with a target instead of a destination and be able to use the same
+editor frame. Or to make a base class with just some
+fields to override to change what it says.
+"""
+class EditToggleActiveFrame(EditEventFrame):
+    def make_widgets(self):
+        tk.Label(self, text="Target:").grid(row=20, sticky=tk.W)
+        self.target = {"id":None, "name":None}
+        self.entity = tk.StringVar()
+        self.entity.set("Please Choose")
+        self.label = tk.Label(self, textvariable=self.entity)
+        self.label.grid(row=20, column=1)
+
+        self.edit = tk.Button(self, text="Choose",
+                              command=self.choose_entity)
+        self.edit.grid(row=20, column=2)
+    
+    # Set the list of events to subscribe to
+    def set_entities(self, entities):
+        self.rooms = entities
         
+    # create a dialog to choose a room from a list of rooms
+    def choose_entity(self, event=None):
+        dialog = ListSelector(self, "Choose a target",
+                              self.rooms)
+        self.target = dialog.get_result()[0]
+        self.entity.set(self.target["name"])
+        
+    def get_data(self):
+        EditEventFrame.get_data(self)
+        self.data["target"] = self.target["id"]
+        return self.data
 
 # Testing #########################################################
 
@@ -163,8 +198,10 @@ if __name__=='__main__':
     #frame = EditEventFrame(root)
     #frame = EditInformFrame(root, False)
     #frame = EditKillFrame(root)
-    frame = EditMovePlayerFrame(root)
-    frame.set_rooms(rooms)
+    #frame = EditMovePlayerFrame(root)
+    #frame.set_rooms(rooms)
+    frame = EditToggleActiveFrame(root)
+    frame.set_entities(rooms)
     
     frame.set_events(events)
     
