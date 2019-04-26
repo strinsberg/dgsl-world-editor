@@ -29,6 +29,7 @@ class EditEventFrame(tk.Frame):
         tk.Label(self, text="Subscriptions:").grid(row=80, sticky=tk.W+tk.N)
         
         self.events = []
+        self.sub_idxs = []
         
         self.subs = tk.StringVar()
         self.subs.set("None")
@@ -44,13 +45,19 @@ class EditEventFrame(tk.Frame):
 
     # Set the list of events to subscribe to
     def choose_subjects(self):
-        dialog = ListSelector(self, "Choose events to subscribe to", self.events, tk.MULTIPLE)
+        dialog = ListSelector(self, "Choose events to subscribe to", self.events, tk.MULTIPLE, self.sub_idxs)
         self.subscribed = dialog.get_result()
         if self.subscribed:
             subjects = []
+            self.sub_idxs = []
             for sub in self.subscribed:
                 subjects.append(sub["name"])
+                self.sub_idxs.append(sub["index"])
             self.subs.set(str.join("\n", subjects))
+        elif self.subscribed is not None:
+            self.sub_idxs = []
+            self.subs.set("No subjects")
+            
     
     # Override
     def make_widgets(self):
@@ -59,6 +66,8 @@ class EditEventFrame(tk.Frame):
     # Override
     def get_data(self):
         subjects = list()
+        for sub in self.subscribed:
+            subjects.append(sub["id"])
         
         self.data = {
             "once": self.one_time.get(),

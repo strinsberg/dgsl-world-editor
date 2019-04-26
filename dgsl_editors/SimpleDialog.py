@@ -77,7 +77,10 @@ class SimpleDialog(tk.Toplevel):
         self.update_idletasks()
         
         self.apply()
-        self.cancel()
+        
+        #seperate from cancel so overriding it does not affect OK
+        self.parent.focus_set()
+        self.destroy()
     
     # Sets focus back to parent and closes window
     # Default callback for Cancel

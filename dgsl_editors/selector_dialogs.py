@@ -43,10 +43,12 @@ class EventTypeSelector(SimpleDialog):
 # List selector ###################################################
 
 class ListSelector(SimpleDialog):
-    def __init__(self, master, message, items=[], mode=tk.BROWSE):
+    def __init__(self, master, message, items=[], mode=tk.BROWSE,
+                 active=[]):
         self.message = message
         self.items = items
         self.mode = mode
+        self.active = active
         
         SimpleDialog.__init__(self, master)
     
@@ -62,11 +64,20 @@ class ListSelector(SimpleDialog):
         if len(self.items) > 0 and (self.mode is tk.BROWSE
                                     or self.mode is tk.SINGLE):
             self.item_list.selection_set(0)
+        
+        for idx in self.active:
+            self.item_list.selection_set(idx)
     
     def apply(self):
         self.result = []
         for i in self.item_list.curselection():
-            self.result.append(self.items[i])
+            item = self.items[i]
+            item["index"] = i
+            self.result.append(item)
+        
+    def cancel(self, event=None):
+        self.result = None
+        SimpleDialog.cancel(self, event)
         
         
 
