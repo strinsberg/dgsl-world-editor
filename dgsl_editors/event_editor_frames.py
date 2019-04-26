@@ -18,7 +18,7 @@ class EditEventFrame(tk.Frame):
         if self.entity_owned:
             tk.Label(self, text="Verb").grid(row=1, sticky=tk.W)
             self.verb = tk.Entry(self)
-            self.verb.grid(row=1, column=0, sticky=tk.E)
+            self.verb.grid(row=1, column=1, sticky=tk.E)
         
         tk.Label(self, text="Once:").grid(row=5, sticky=tk.W)
         
@@ -26,16 +26,31 @@ class EditEventFrame(tk.Frame):
         self.once = tk.Checkbutton(self, variable=self.one_time)
         self.once.grid(row=5, column=1)
         
-        tk.Label(self, text="Subscriptions:").grid(row=80, sticky=tk.W)
+        tk.Label(self, text="Subscriptions:").grid(row=80, sticky=tk.W+tk.N)
         
-        self.event_list = tk.Listbox(self, selectmode=tk.MULTIPLE)
-        self.event_list.grid(row=80, column=1)
+        self.events = []
+        
+        self.subs = tk.StringVar()
+        self.subs.set("None")
+        self.subjects = tk.Label(self, textvariable=self.subs)
+        self.subjects.grid(row=80, column=1)
+        
+        self.change_subs = tk.Button(self, text="Choose", command=self.choose_subjects)
+        self.change_subs.grid(row=80, column=2)
     
-    # Set the list of events to subscribe to
+    # Set the list of events
     def set_events(self, events):
         self.events = events
-        for e in self.events:
-            self.event_list.insert(tk.END, e["name"])
+
+    # Set the list of events to subscribe to
+    def choose_subjects(self):
+        dialog = ListSelector(self, "Choose events to subscribe to", self.events, tk.MULTIPLE)
+        self.subscribed = dialog.get_result()
+        if self.subscribed:
+            subjects = []
+            for sub in self.subscribed:
+                subjects.append(sub["name"])
+            self.subs.set(str.join("\n", subjects))
     
     # Override
     def make_widgets(self):
@@ -44,8 +59,6 @@ class EditEventFrame(tk.Frame):
     # Override
     def get_data(self):
         subjects = list()
-        for i in self.event_list.curselection():
-            subjects.append(self.events[i]["id"])
         
         self.data = {
             "once": self.one_time.get(),
@@ -93,10 +106,10 @@ class EditKillFrame(EditInformFrame):
 
 # Move Player ####################################################
 
-class EditMovePlayer(EditEventFrame):
+class EditMovePlayerFrame(EditEventFrame):
     def make_widgets(self):
         tk.Label(self, text="Destination:").grid(row=20, sticky=tk.W)
-        
+        self.target = {"id":None, "name":None}
         self.room = tk.StringVar()
         self.room.set("Please Choose")
         self.label = tk.Label(self, textvariable=self.room)
@@ -141,7 +154,7 @@ if __name__=='__main__':
     #frame = EditEventFrame(root)
     #frame = EditInformFrame(root, False)
     #frame = EditKillFrame(root)
-    frame = EditMovePlayer(root)
+    frame = EditMovePlayerFrame(root)
     frame.set_rooms(rooms)
     
     frame.set_events(events)
