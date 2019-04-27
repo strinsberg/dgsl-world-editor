@@ -146,6 +146,7 @@ class EditMovePlayerFrame(EditEventFrame):
         self.data["destination"] = self.target["id"]
         return self.data
 
+
 # Toggle ##########################################################
 """
 TODO: probably wouldn't be too much work to make MovePlayer work
@@ -182,6 +183,7 @@ class EditToggleActiveFrame(EditEventFrame):
         self.data["target"] = self.target["id"]
         return self.data
 
+
 # Transfer ######################################################
 
 class EditTransferItemFrame(EditEventFrame):
@@ -191,6 +193,7 @@ class EditTransferItemFrame(EditEventFrame):
     and validate to make sure something is chosen
     """
     def make_widgets(self):
+        self.entities = list()
         tk.Label(self, text="Item:").grid(row=19, sticky=tk.W)
         self.item = {"id":None, "name":None}
         self.itemText = tk.StringVar()
@@ -245,6 +248,7 @@ class EditTransferItemFrame(EditEventFrame):
         self.data["itemId"] = self.item["id"]
         return self.data
 
+
 # Structured ###################################################
 
 class EditStructuredFrame(EditEventFrame):
@@ -260,6 +264,7 @@ class EditStructuredFrame(EditEventFrame):
         self.data["repeats"] = self.repeats.get()
         return self.data
 
+
 # Interaction ##################################################
 
 class EditInteractionFrame(EditEventFrame):
@@ -274,6 +279,7 @@ class EditInteractionFrame(EditEventFrame):
         EditEventFrame.get_data(self)
         self.data["breakout"] = self.breakout.get()
         return self.data
+
 
 # Testing ######################################################
 
