@@ -83,7 +83,7 @@ class EditHasItemFrame(EditConditionFrame):
         for ent in self.entities:
             #check for only obtainable items
             self.items.append(ent)
-        dialog = ListSelector(self, "Choose an other",
+        dialog = ListSelector(self, "Choose an item",
                               self.items)
         self.item = dialog.get_result()[0]
         self.itemText.set(self.item["name"])
@@ -104,7 +104,25 @@ class EditHasItemFrame(EditConditionFrame):
         self.data["other"] = self.other["id"]
         self.data["itemId"] = self.item["id"]
         return self.data
+ 
         
+# Protected ########################################################
+
+class EditProtectedFrame(EditConditionFrame):
+    def make_widgets(self):
+        tk.Label(self, text="Atmosphere:").grid(row=10, sticky=tk.W)
+        
+        self.atmos = tk.StringVar()
+        self.atmos.set("oxygen")
+        
+        self.option = tk.OptionMenu(self, self.atmos, "oxygen",
+                        "space", "radiation")
+        self.option.grid(row=10, column=1)
+    
+    def get_data(self):
+        EditConditionFrame.get_data(self)
+        self.data["atmosphere"] = self.atmos.get()
+        return self.data
 
 # Testing ##########################################################
 
@@ -117,8 +135,9 @@ if __name__=='__main__':
     ]
     
     #frame = EditQuestionFrame(root)
-    frame = EditHasItemFrame(root)
-    frame.set_entities(entities)
+    #frame = EditHasItemFrame(root)
+    #frame.set_entities(entities)
+    frame = EditProtectedFrame(root)
     
     frame.pack()
     

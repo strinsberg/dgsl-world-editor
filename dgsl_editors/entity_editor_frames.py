@@ -4,7 +4,11 @@ import tkinter as tk
 # Atmosphere #######################################################
 
 class EditAtmosphereFrame(ef.EditEntityFrame):
-    
+    """
+    Possibly can be merged with the Protected frame somehow as
+    they both contain the same code to get an atmosphere. Though
+    the other one uses a drop down list
+    """
     # Adds an atmosphere feild
     # not sure if this should be a forced choice or leave it as
     # a string. Only 3 types right now.
