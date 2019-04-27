@@ -9,6 +9,7 @@ class EditEventFrame(tk.Frame):
         
         self.entity_owned = entity_owned
         self.events = list()
+        self.subscribed = list()
         
         self.make_widgets()
         self.defaults()
@@ -17,7 +18,7 @@ class EditEventFrame(tk.Frame):
     # Set up to go below subclass defined widgets
     def defaults(self):
         if self.entity_owned:
-            tk.Label(self, text="Verb").grid(row=1, sticky=tk.W)
+            tk.Label(self, text="Verb:").grid(row=1, sticky=tk.W)
             self.verb = tk.Entry(self)
             self.verb.grid(row=1, column=1, sticky=tk.E)
         
@@ -27,7 +28,7 @@ class EditEventFrame(tk.Frame):
         self.once = tk.Checkbutton(self, variable=self.one_time)
         self.once.grid(row=5, column=1)
         
-        tk.Label(self, text="Subscriptions:").grid(row=80, sticky=tk.W+tk.N)
+        tk.Label(self, text="Subscriptions:").grid(row=80, sticky=tk.W)
         
         self.events = []
         self.sub_idxs = []
@@ -244,7 +245,37 @@ class EditTransferItemFrame(EditEventFrame):
         self.data["itemId"] = self.item["id"]
         return self.data
 
-# Testing #######################################################
+# Structured ###################################################
+
+class EditStructuredFrame(EditEventFrame):
+    def make_widgets(self):
+        tk.Label(self, text="Repeats:").grid(row=25, sticky=tk.W)
+        
+        self.repeats = tk.IntVar()
+        self.check = tk.Checkbutton(self, variable=self.repeats)
+        self.check.grid(row=25, column=1)
+    
+    def get_data(self):
+        EditEventFrame.get_data(self)
+        self.data["repeats"] = self.repeats.get()
+        return self.data
+
+# Interaction ##################################################
+
+class EditInteractionFrame(EditEventFrame):
+    def make_widgets(self):
+        tk.Label(self, text="Breakout:").grid(row=25, sticky=tk.W)
+        
+        self.breakout = tk.IntVar()
+        self.check = tk.Checkbutton(self, variable=self.breakout)
+        self.check.grid(row=25, column=1)
+    
+    def get_data(self):
+        EditEventFrame.get_data(self)
+        self.data["breakout"] = self.breakout.get()
+        return self.data
+
+# Testing ######################################################
 
 if __name__=='__main__':
     root = tk.Tk()
@@ -266,8 +297,11 @@ if __name__=='__main__':
     #frame.set_rooms(rooms)
     
     #frame = EditToggleActiveFrame(root)
-    frame = EditTransferItemFrame(root)
-    frame.set_entities(rooms)
+    #frame = EditTransferItemFrame(root)
+    #frame.set_entities(rooms)
+    
+    #frame = EditStructuredFrame(root)
+    frame = EditInteractionFrame(root)
     
     frame.set_events(events)
     
