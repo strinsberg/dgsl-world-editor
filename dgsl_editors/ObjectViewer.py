@@ -7,8 +7,23 @@ class ObjectViewer(tk.Frame):
         tk.Frame.__init__(self, viewer)
         self.obj = obj
         self.make_widgets()
-        # object info/editor
-        # ObjectLists for things that it can contain or subscribe to
         
     def make_widgets(self):
-        tk.Label(self, text=self.obj["name"]).pack()
+        self.info = self.make_info()
+        self.info.grid(row=0, columnspan=2)
+        
+        self.left_list = self.make_left()
+        self.left_list.grid(row=5, column=0)
+        
+        self.right_list = self.make_right()
+        self.right_list.grid(row=5, column=1)
+    
+    def make_info(self):
+        pass
+    
+    def make_left(self):
+        pass
+    
+    def make_right(self):
+        pass
+
