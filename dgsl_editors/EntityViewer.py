@@ -67,6 +67,7 @@ class EntityViewer(tk.Frame):
         EntityEditor(self, self.obj)
         self.update()
 
+
 # Testing ##########################################################
 
 if __name__=='__main__':
