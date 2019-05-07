@@ -1,4 +1,5 @@
 import tkinter as tk
+from EntityEditor import EntityEditor
 
 class Viewer(tk.Frame):
     def __init__(self, master):
@@ -100,6 +101,7 @@ class EntityViewer(tk.Frame):
         self.name_lab = tk.Label(self, textvariable=self.name)
         self.name_lab.grid(row=15, column=1, columnspan=2, sticky=tk.W)
         
+        # can we make this wrap after a certain length?
         tk.Label(self, text="Description:").grid(row=20,sticky=tk.W)
         self.desc = tk.StringVar()
         self.desc.set(self.obj["description"])
@@ -113,26 +115,31 @@ class EntityViewer(tk.Frame):
             self.loc_lab = tk.Label(self, textvariable=self.loc)
             self.loc_lab.grid(row=25, column=1, sticky=tk.W)
         
-        tk.Label(self, text="Active:").grid(row=30,sticky=tk.W)
-        self.act = tk.StringVar()
-        self.act.set(self.obj["active"])
-        self.act_lab = tk.Label(self, textvariable=self.act)
-        self.act_lab.grid(row=30, column=1, sticky=tk.W)
+        if "active" in self.obj:
+            tk.Label(self, text="Active:").grid(row=30,sticky=tk.W)
+            self.act = tk.StringVar()
+            self.act.set(self.obj["active"])
+            self.act_lab = tk.Label(self, textvariable=self.act)
+            self.act_lab.grid(row=30, column=1, sticky=tk.W)
         
-        tk.Label(self, text="Obtainable:").grid(row=35,sticky=tk.W)
-        self.obt = tk.StringVar()
-        self.obt.set(self.obj["obtainable"])
-        self.obt_lab = tk.Label(self, textvariable=self.obt)
-        self.obt_lab.grid(row=35, column=1, sticky=tk.W)
+        if "obtainable" in self.obj:
+            tk.Label(self, text="Obtainable:").grid(row=35,sticky=tk.W)
+            self.obt = tk.StringVar()
+            self.obt.set(self.obj["obtainable"])
+            self.obt_lab = tk.Label(self, textvariable=self.obt)
+            self.obt_lab.grid(row=35, column=1, sticky=tk.W)
         
-        tk.Label(self, text="Hidden:").grid(row=40,sticky=tk.W)
-        self.hid = tk.StringVar()
-        self.hid.set(self.obj["hidden"])
-        self.hid_lab = tk.Label(self, textvariable=self.hid)
-        self.hid_lab.grid(row=40, column=1, sticky=tk.W)
+        if "hidden" in self.obj:
+            tk.Label(self, text="Hidden:").grid(row=40,sticky=tk.W)
+            self.hid = tk.StringVar()
+            self.hid.set(self.obj["hidden"])
+            self.hid_lab = tk.Label(self, textvariable=self.hid)
+            self.hid_lab.grid(row=40, column=1, sticky=tk.W)
     
     def edit(self, event=None):
-        print("edit")
+        print(self.obj)
+        EntityEditor(self, self.obj)
+        print(self.obj)
 
 # Testing ##########################################################
 
@@ -143,7 +150,7 @@ if __name__=='__main__':
         "type": "room",
         "id": "243o4j2oj42",
         "name": "Object",
-        "description": "An object in the game",
+        "description": "An object in the game that blah blah blah",
         "here": "Some room",
         "obtainable": True, "active": True, "hidden": False
     }
