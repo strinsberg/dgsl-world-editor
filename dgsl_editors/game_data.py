@@ -7,7 +7,7 @@ def make_entity(kind="entity"):
         "type": "entity",
         "name": "",
         "description": "",
-        "events": {},
+        "events": [],
         "items": [],
     }
 

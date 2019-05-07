@@ -82,7 +82,7 @@ if __name__=='__main__':
         "obtainable": True, "active": True, "hidden": False
     }
     
-    frame = EntityViewer(root, obj)
+    frame = EntityInfo(root, obj)
     frame.pack()
     
     root.mainloop()

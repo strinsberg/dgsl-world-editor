@@ -27,5 +27,44 @@ class ObjectViewer(tk.Frame):
     def make_right(self):
         pass
 
-class EntityList:
+
+class EntityViewer(ObjectViewer):
     pass
+    def make_info(self):
+        return EntityInfo(self, self.obj)
+    def make_left(self):
+        return ObjectList(self, self.obj['items'], 'Items')
+    def make_right(self):
+        return ObjectList(self, self.obj['events'], 'Events')
+
+
+class EventViewer(ObjectViewer):
+    pass
+    def make_info(self):
+        pass # eventInfo
+    def make_left(self):
+        pass # subjects
+    def make_right(self):
+        pass # if contains entities
+
+
+# Testing ##########################################################
+
+if __name__=='__main__':
+    root = tk.Tk()
+    
+    obj = {
+        "type": "room",
+        "id": "243o4j2oj42",
+        "name": "Object",
+        "description": "An object in the game that blah blah blah",
+        "here": "Some room",
+        "obtainable": True, "active": True, "hidden": False,
+        "items": [],
+        "events": [],
+    }
+    
+    frame = EntityViewer(root, obj)
+    frame.pack()
+    
+    root.mainloop()
