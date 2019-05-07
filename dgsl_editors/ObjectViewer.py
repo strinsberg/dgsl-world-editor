@@ -1,5 +1,5 @@
 import tkinter as tk
-from EntityViewer import EntityViewer
+from EntityInfo import EntityInfo
 from ObjectList import ObjectList
 
 class ObjectViewer(tk.Frame):
@@ -27,3 +27,5 @@ class ObjectViewer(tk.Frame):
     def make_right(self):
         pass
 
+class EntityList:
+    pass

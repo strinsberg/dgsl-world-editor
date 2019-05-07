@@ -1,7 +1,7 @@
 import tkinter as tk
 from EntityEditor import EntityEditor
 
-class EntityViewer(tk.Frame):
+class EntityInfo(tk.Frame):
     def __init__(self, viewer, obj):
         tk.Frame.__init__(self, viewer)
         self.obj = obj
