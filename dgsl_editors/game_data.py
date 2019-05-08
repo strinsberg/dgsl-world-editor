@@ -10,18 +10,14 @@ def make_entity(kind="entity"):
         "description": "",
         "events": [],
         "items": [],
+        "owner": None
     }
 
 def is_container(entity):
     return entity.kind in ["container", "room", "npc", "player"]
 
-def entity_string(entity):
-    string = []
-    for k, v in entity:
-        if k not in ["items", "events"]:
-            string.append(k + "=" + v + ";;")
-    return str.join("\n", string)
-
+def export_entity(entity):
+    pass
 
 # Event ########################################################
 
@@ -32,6 +28,7 @@ def make_event(kind, verb=None):
         "name": "",
         "subjects": [],
         "once": False,
+        "owner": None,
     }
     if verb:
         event["verb"] = verb
@@ -64,6 +61,8 @@ def make_move_player(verb=None):
     event["destination"] = None
     return event
 
+def export_event(event):
+    pass
 
 # Group event ##################################################
 
@@ -86,6 +85,8 @@ def make_cond_event(verb=None):
     event["failure"] = None
     return event
 
+def export_group_event(event):
+    pass
 
 # Condition ####################################################
 
@@ -110,3 +111,6 @@ def make_question():
     cond["question"] = ""
     cond["answer"] = ""
     return cond
+
+def export_cond(cond):
+    pass
