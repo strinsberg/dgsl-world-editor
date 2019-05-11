@@ -30,11 +30,6 @@ class EventInfo(tk.Frame):
                 textvariable=self.fields["name"])
         self.name_lab.grid(row=15, column=1, columnspan=2, sticky=tk.W)
 
-        tk.Label(self, text="Description:").grid(row=20,sticky=tk.W)
-        self.desc_lab = tk.Label(self,
-                textvariable=self.fields["description"])
-        self.desc_lab.grid(row=20, column=1, columnspan=2, sticky=tk.W)
-        
         tk.Label(self, text="One Time:").grid(row=25, sticky=tk.W)
         self.once_lab = tk.Label(self,
                 textvariable=self.fields["once"])

@@ -1,5 +1,6 @@
 import tkinter as tk
 from EntityInfo import EntityInfo
+from EventInfo import EventInfo
 from ObjectList import ObjectList
 
 class ObjectViewer(tk.Frame):
@@ -41,11 +42,11 @@ class EntityViewer(ObjectViewer):
 class EventViewer(ObjectViewer):
     pass
     def make_info(self):
-        pass # eventInfo
+        return EventInfo(self, self.obj)
     def make_left(self):
-        pass # subjects
+        return ObjectList(self, self.obj['subjects'], 'Subjects')
     def make_right(self):
-        pass # if contains entities
+        return ObjectList(self, self.obj['events'], 'Events')
 
 
 # Testing ##########################################################
@@ -53,7 +54,7 @@ class EventViewer(ObjectViewer):
 if __name__=='__main__':
     root = tk.Tk()
     
-    obj = {
+    entity = {
         "type": "room",
         "id": "243o4j2oj42",
         "name": "Object",
@@ -64,7 +65,18 @@ if __name__=='__main__':
         "events": [],
     }
     
-    frame = EntityViewer(root, obj)
+    event = {
+        "type": "group",
+        "id": "243o4j2oj42",
+        "name": "open cage",
+        "once": True,
+        "subjects": [],
+        "events": [],
+    }
+    
+    #frame = EntityViewer(root, entity)
+    frame = EventViewer(root, event)
+    
     frame.pack()
     
     root.mainloop()

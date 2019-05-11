@@ -13,15 +13,9 @@ class EventEditor(SimpleDialog):
     # Extend to children to add fields
     def make_info(self, master):
         tk.Label(master, text="Name:").grid(row=5)
-        tk.Label(master, text="Description:").grid(row=10)
-
         self.name = tk.Entry(master)
         self.name.insert(0, self.event['name'])
-        self.desc = tk.Entry(master)
-        self.desc.insert(0, self.event['description'])
-
         self.name.grid(row=5, column=1)
-        self.desc.grid(row=10, column=1)
         
         if "verb" in self.event:
             tk.Label(master, text="Verb:").grid(row=15)
@@ -43,8 +37,9 @@ class EventEditor(SimpleDialog):
     
     def apply(self):
         self.event["name"] = self.name.get()
-        self.event["description"] = self.desc.get()
         self.event["once"] = int_to_bool(self.once.get())
+        if "verb" in self.event:
+            self.event["verb"] = self.verb.get()
 
 
 def int_to_bool(n):
@@ -63,7 +58,6 @@ if __name__=='__main__':
         "type": "event",
         "id": "23rj23r20r032",
         "name": "some event",
-        "description": "turns you into a newt",
         "once": True,
         "verb": "use"
     }
