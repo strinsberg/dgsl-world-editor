@@ -14,7 +14,7 @@ def make_entity(kind="entity"):
     }
 
 def is_container(entity):
-    return entity.kind in ["container", "room", "npc", "player"]
+    return entity["type"] in ["container", "room", "npc", "player"]
 
 def export_entity(entity):
     pass
@@ -93,6 +93,10 @@ def make_cond_event(verb=None):
 
 def export_group_event(event):
     pass
+
+def is_group(event):
+    return event["type"] in ["group", "ordered", "interaction",
+            "conditional"]
 
 # Condition ####################################################
 
