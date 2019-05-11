@@ -102,7 +102,7 @@ def is_group(event):
 
 def make_condition(subtype):
     return {
-        "subtype": subtype,
+        "type": subtype,
     }
 
 def make_has_item():
