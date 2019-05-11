@@ -64,6 +64,12 @@ def make_move_player(verb=None):
 def export_event(event):
     pass
 
+def is_event(obj):
+    return obj["type"] in [
+            "event", "inform", "kill", "transfer",
+            "toggle", "move", "group", "interaction",
+            "conditional"]
+
 # Group event ##################################################
 
 def make_group(kind="group", verb=None):
