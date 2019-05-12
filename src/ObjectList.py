@@ -9,16 +9,14 @@ class ObjectList(tk.Frame):
         self.makeWidgets()
         
     def makeWidgets(self):
-        # title
         self.title_text = tk.StringVar()
         self.title_text.set(self.title)
         tk.Label(self, textvariable=self.title_text).grid(row=10)
         
-        # list
         self.listbox = tk.Listbox(self)
         self.listbox.grid(row=15)
+        self.update()
         
-        # buttons
         self.makeButtons()
         
     
@@ -37,14 +35,22 @@ class ObjectList(tk.Frame):
         self.buttons.grid(row=20, sticky=tk.W)
     
     def update(self):
-        pass
+        self.listbox.delete(0, tk.END)
+        for obj in self.objects:
+            self.listbox.insert(tk.END, obj["name"])
     
     def edit(self, event=None):
-        print("edit")
+        if len(self.listbox.curselection()) > 0:
+            idx = self.listbox.curselection()[0]
+            # Some code to change object viewer to the
+            # selected obj at self.objects[idx]
+            print("edit")
     
     def add(self, event=None):
         dialog = TypeSelector(kind)
         self.objects.append(dialog.getResult())
     
     def remove(self, event=None):
-        print("remove")
+        if len(self.listbox.curselection()) > 0:
+            idx = self.listbox.curselection()[0]
+            list.del(idx)
