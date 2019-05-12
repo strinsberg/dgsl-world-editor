@@ -5,7 +5,7 @@ class InfoFrame(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.obj = obj
         self.fields = {}
-        self.nextRow = 0
+        self.next_row = 0
         self.makeFields()
         self.makeWidgets()
     
@@ -23,12 +23,12 @@ class InfoFrame(tk.Frame):
         self.addLabel("Name", 'name')
     
     def addLabel(self, label, kind):
-        tk.Label(self, text=label + ":").grid(row=self.nextRow,
+        tk.Label(self, text=label + ":").grid(row=self.next_row,
                 sticky=tk.W)
         self.id_lab = tk.Label(self, textvariable=self.fields[kind])
-        self.id_lab.grid(row=self.nextRow, column=1, columnspan=2,
+        self.id_lab.grid(row=self.next_row, column=1, columnspan=2,
                 sticky=tk.W)
-        self.nextRow += 5
+        self.next_row += 5
     
     def update(self):
         for k in self.obj:
@@ -36,7 +36,7 @@ class InfoFrame(tk.Frame):
                 self.fields[k].set(self.obj[k])
     
     def edit(self):
-        editor = InfoEditorFactory()
-        editor.make(self.obj)  # Create/run editor dialog
+        editor = InfoEditorFactory().make(self.obj)
+        # if result is needed use it here editor.getResult()
         self.update()
         
