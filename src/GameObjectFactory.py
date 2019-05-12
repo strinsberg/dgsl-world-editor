@@ -111,7 +111,7 @@ class GameDataFactory:
     
     def makeHas_item(self):
         cond = makeCondition("hasItem")
-        cond["itemId"] = ""
+        cond["item"] = None
         cond["other"] = None
         return cond
         

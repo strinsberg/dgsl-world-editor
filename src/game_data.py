@@ -24,3 +24,7 @@ def is_group(obj):
 
 def is_condition(obj):
     return obj["type"] in ["hasItem", "protected", "question"]
+
+# Othere #######################################################
+verbs = ["get", "drop", "look", "use", "talk"]
+atmospheres = ["oxygen", "radiation", "space"]

@@ -25,8 +25,8 @@ class InfoFrame(tk.Frame):
     def addLabel(self, label, kind):
         tk.Label(self, text=label + ":").grid(row=self.next_row,
                 sticky=tk.W)
-        self.id_lab = tk.Label(self, textvariable=self.fields[kind])
-        self.id_lab.grid(row=self.next_row, column=1, columnspan=2,
+        lab = tk.Label(self, textvariable=self.fields[kind])
+        lab.grid(row=self.next_row, column=1, columnspan=2,
                 sticky=tk.W)
         self.next_row += 5
     

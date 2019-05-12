@@ -13,21 +13,44 @@ class InfoEditor(SimpleDialog):
         addEntry("Name", "name")
         for info in self.widget_info:
             if info["type"] is "entry":
-                addEntry(info["label"], info["kind"])
+                self.addEntry(body, info["label"], info["field"])
             elif info["type"] is "check":
-                addCheck(info["label"], info["state"])
-            else:
-                addOption(info["label"], info["options"],
-                        info["first"])
+                self.addCheck(body, info["label"], info["field"])
+            elif info["type"] is "option:
+                self.addOption(body, info["label"], info["field"],
+                        info["options"])
     
-    def addEntry(self, label, kind):
-        pass
+    def addEntry(self, body, label, field):
+        tk.Label(body, text=label).grid(row=self.next_row,
+                sticky=tk.W)
+        var = tk.StringVar()
+        var.set(self.obj[field])
+        self.variables[field] = var
+        tk.Entry(body, textvariable=var).grid(row=self.next_row,
+                column=1, columnspan=2, sticky=tk.W)
+        self.next_row += 5
     
-    def addCheck(self, label, state):
-        pass
+    def addCheck(self, body, label, field):
+        tk.Label(body, text=label).grid(row=self.next_row,
+                sticky=tk.W)
+        var = tk.IntVar()
+        var.set(self.obj[field])
+        self.variables[field] = var
+        tk.CheckButton(body, variable=var).grid(row=self.next_row,
+                column=1, columnspan=2, sticky=tk.W)
+        self.next_row += 5
     
-    def addOption(self, label, options, first):
-        pass
-    
+    def addOption(self, body, label, field, options):
+        tk.Label(body, text=label).grid(row=self.next_row,
+                sticky=tk.W)
+        var = tk.StringVar()
+        var.set(self.obj[field])
+        self.variables[field] = var
+        menu = apply(tk.option_menu, (body, var) + tuple(options))
+        menu.grid(row=self.next_row, column=1, columnspan=2,
+                sticky=tk.W)
+        self.next_row += 5
+
     def apply():
-        pass
+        for field in self.variables:
+            self.obj[field] = self.variable[field].get()
