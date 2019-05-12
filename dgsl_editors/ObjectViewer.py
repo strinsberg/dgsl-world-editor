@@ -20,14 +20,18 @@ class ObjectViewer(tk.Frame):
         self.right_list = self.make_right()
         self.right_list.grid(row=5, column=1, sticky=tk.W)
     
-    def make_info(self):
-        pass
-    
-    def make_left(self):
-        pass
-    
-    def make_right(self):
-        pass
+    ''' Once you get some new design implemented
+    def make_widgets(self):
+        self.info = InfoFrameFactory.make(self.obj)
+        self.info.grid(row=0, columnspan=2, sticky=tk.W)
+        
+        self.left_list = ObjectListFactory.make(self.obj)
+        self.left_list.grid(row=5, column=0, sticky=tk.W)
+        
+        if gd.is_container(self.obj) or gd.is_group(self.obj):
+            self.right_list = ObjectListFactory.make(self.obj)
+            self.right_list.grid(row=5, column=1, sticky=tk.W)
+    '''
 
 
 class EntityViewer(ObjectViewer):
