@@ -41,7 +41,10 @@ class GameObjectFactory:
             "description": "",
             "events": [],
             "items": [],
-            "owner": None
+            "owner": None,
+            "active": 1,
+            "obtainable": 1,
+            "hidden": 0
         }
     
     # Events ###################################################

@@ -6,17 +6,18 @@ class InfoEditor(SimpleDialog):
     def __init__(self, parent, obj, widget_info):
         self.obj = obj
         self.widget_info = widget_info
-        self.next_row = 0
+        self.variables = {}
+        self.next_row = 5
         SimpleDialog.__init__(self, parent)
     
     def makeWidgets(self, body):
-        addEntry("Name", "name")
+        self.addEntry(body, "Name", "name")
         for info in self.widget_info:
             if info["type"] is "entry":
                 self.addEntry(body, info["label"], info["field"])
             elif info["type"] is "check":
                 self.addCheck(body, info["label"], info["field"])
-            elif info["type"] is "option:
+            elif info["type"] is "option":
                 self.addOption(body, info["label"], info["field"],
                         info["options"])
     
@@ -36,7 +37,7 @@ class InfoEditor(SimpleDialog):
         var = tk.IntVar()
         var.set(self.obj[field])
         self.variables[field] = var
-        tk.CheckButton(body, variable=var).grid(row=self.next_row,
+        tk.Checkbutton(body, variable=var).grid(row=self.next_row,
                 column=1, columnspan=2, sticky=tk.W)
         self.next_row += 5
     
@@ -51,6 +52,6 @@ class InfoEditor(SimpleDialog):
                 sticky=tk.W)
         self.next_row += 5
 
-    def apply():
+    def apply(self):
         for field in self.variables:
-            self.obj[field] = self.variable[field].get()
+            self.obj[field] = self.variables[field].get()

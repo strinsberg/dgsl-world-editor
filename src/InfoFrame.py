@@ -1,13 +1,12 @@
 import tkinter as tk
-from GameObjectFactory import GameObjectFactory
-from InfoFrameFactory import InfoFrameFactory
+from InfoEditorFactory import InfoEditorFactory
 
 class InfoFrame(tk.Frame):
     def __init__(self, parent, obj):
         tk.Frame.__init__(self, parent)
         self.obj = obj
         self.fields = {}
-        self.next_row = 0
+        self.next_row = 5
         self.makeFields()
         self.makeWidgets()
     
@@ -38,22 +37,6 @@ class InfoFrame(tk.Frame):
                 self.fields[k].set(self.obj[k])
     
     def edit(self):
-        editor = InfoEditorFactory().make(self.obj)
+        editor = InfoEditorFactory().make(self, self.obj)
         # if result is needed use it here editor.getResult()
         self.update()
-
-
-# Testing ######################################################
-
-if __name__=='__main__':
-    root = tk.Tk()
-    
-    fact = GameObjectFactory()
-    obj = fact.make("entity")
-    obj["name"] = "Test Entity"
-    obj["description"] = "An entity that I am using for testing"
-    
-    frame = InfoFrameFactory().make(root, obj)
-    frame.pack()
-    
-    root.mainloop()

@@ -48,7 +48,7 @@ class InfoEditorFactory:
         w.append({"type": "check", "label": "Obtainable",
                 "field": "obtainable"})
         w.append({"type": "check", "label": "Hidden",
-                "field": "Hidden"})
+                "field": "hidden"})
         self.widget_info.extend(w)
     
     
