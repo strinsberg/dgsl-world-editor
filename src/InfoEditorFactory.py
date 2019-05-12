@@ -6,16 +6,36 @@ class InfoEditorFactory:
         self.obj = obj
         self.widget_info = []
         
+        kind = self.obj["type"]
         if gd.is_entity(self.obj):
             self.makeEntity()
-        elif :
-            pass
-        # here goes the if/elif/else to decide what
-        # kind of editor to make
-        # the other methods will add what they need to to
-        # dict and add those info objects to self.widget_info
+        elif kind is "inform":
+            self.makeInform()
+        elif kind is "kill":
+            self.makeKill()
+        elif kind is "toggle":
+            self.makeToggle()
+        elif kind is "transfer":
+            self.makeTransfer()
+        elif kind is "move":
+            self.makeMove()
+        elif kind in ["group", "ordered"]:
+            self.makeGroup()
+        elif kind is "interaction":
+            self.makeInteraction()
+        elif kind is "conditional":
+            self.makeConditional()
+        elif kind is "hasItem":
+            self.makeHasItem()
+        elif kind is "protected":
+            self.makeProtected()
+        elif kind is "question":
+            self.makeQuestion()
+        else:
+            return None
         
         return InfoEditor(parent, self.obj, self.widget_info)
+    
     
     # Entities #################################################
     
@@ -30,6 +50,7 @@ class InfoEditorFactory:
         w.append({"type": "check", "label": "Hidden",
                 "field": "Hidden"})
         self.widget_info.extend(w)
+    
     
     # Events ###################################################
     
@@ -63,10 +84,11 @@ class InfoEditorFactory:
     def makeMove(self):
         self.makeEvent()
     
+    
     # Group Events #############################################
     
     def makeGroup(self):
-        if "ordered" in self.obj:
+        if self.obj["type"] is "ordered":
             self.widget_info.append({"type": "check",
                 "label": "Repeats", "field": "repeats"})
         self.makeEvent()
@@ -78,6 +100,7 @@ class InfoEditorFactory:
     
     def makeConditional(self):
         self.makeEvent()
+    
     
     # Conditions ###############################################
     
@@ -94,6 +117,7 @@ class InfoEditorFactory:
                 "label": "Question", "field": "question"})
         self.widget_info.append({"type": "entry",
                 "label": "Answer", "field": "answer"})
+    
     
     # Game #####################################################
     
