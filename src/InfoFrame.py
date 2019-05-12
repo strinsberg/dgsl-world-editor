@@ -1,4 +1,6 @@
 import tkinter as tk
+from GameObjectFactory import GameObjectFactory
+from InfoFrameFactory import InfoFrameFactory
 
 class InfoFrame(tk.Frame):
     def __init__(self, parent, obj):
@@ -39,4 +41,19 @@ class InfoFrame(tk.Frame):
         editor = InfoEditorFactory().make(self.obj)
         # if result is needed use it here editor.getResult()
         self.update()
-        
+
+
+# Testing ######################################################
+
+if __name__=='__main__':
+    root = tk.Tk()
+    
+    fact = GameObjectFactory()
+    obj = fact.make("entity")
+    obj["name"] = "Test Entity"
+    obj["description"] = "An entity that I am using for testing"
+    
+    frame = InfoFrameFactory().make(root, obj)
+    frame.pack()
+    
+    root.mainloop()

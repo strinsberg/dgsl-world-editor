@@ -1,14 +1,14 @@
-class GameDataFactory:
-    def __init__(self):
-        self.entity_types = ["entity", "room", "container", "room",
-                "npc", "player", "suit"]
+import game_data as gd
+import uuid
+
+class GameObjectFactory:
 
     # Given an entity type return that type of game data object
     def make(self, kind, verb=None):
-        if kind in self.entity_types:
-            return self.make_entity(kind)
+        if kind in gd.entities:
+            return self.makeEntity(kind)
         elif kind is "inform":
-            return self.make_inform(kind, verb)
+            return self.makeInform(kind, verb)
         elif kind is "kill":
             return self.makeKill(verb)
         elif kind is "transfer":
