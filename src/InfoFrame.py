@@ -16,7 +16,7 @@ class InfoFrame(tk.Frame):
             self.fields[k].set(self.obj[k])
     
     def makeWidgets(self):
-        tk.Label(self, text="Attributes").grid(row=1)
+        tk.Label(self, text="Attributes").grid(row=1, sticky=tk.W)
         self.edit = tk.Button(self, text="Edit", command=self.edit)
         self.edit.grid(row=1, column=2, sticky=tk.E)
         
@@ -30,6 +30,12 @@ class InfoFrame(tk.Frame):
         lab.grid(row=self.next_row, column=1, columnspan=2,
                 sticky=tk.W)
         self.next_row += 5
+    
+    def addPicker(self, label, kind, select_type):
+        tk.Button(self, text="Edit",
+                command=lambda:print(select_type)).grid(
+                row=self.next_row, column=2, sticky=tk.E)
+        self.addLabel(label, kind)
     
     def update(self):
         for k in self.obj:

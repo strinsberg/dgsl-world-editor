@@ -43,12 +43,14 @@ class InfoEditorFactory:
         w = []
         w.append({"type": "entry", "label": "Description",
                 "field": "description"})
-        w.append({"type": "check", "label": "Active",
-                "field": "active"})
-        w.append({"type": "check", "label": "Obtainable",
-                "field": "obtainable"})
-        w.append({"type": "check", "label": "Hidden",
-                "field": "hidden"})
+        
+        if self.obj["type"] is not "room":
+            w.append({"type": "check", "label": "Active",
+                    "field": "active"})
+            w.append({"type": "check", "label": "Obtainable",
+                    "field": "obtainable"})
+            w.append({"type": "check", "label": "Hidden",
+                    "field": "hidden"})
         self.widget_info.extend(w)
     
     

@@ -54,7 +54,7 @@ class GameObjectFactory:
             "type": kind,
             "name": "",
             "subjects": [],
-            "once": False,
+            "once": 0,
             "owner": None,
         }
         if verb:
@@ -62,47 +62,47 @@ class GameObjectFactory:
         return event
 
     def makeInform(self, kind, verb=None):
-        event = make_event(kind, verb)
+        event = self.makeEvent(kind, verb)
         event["message"] = ""
         return event
     
     def makeKill(self, verb=None):
-        event = make_inform("kill", verb)
-        event["ending"] = False
+        event = self.makeInform("kill", verb)
+        event["ending"] = 0
         return event
     
     def makeTransfer(self, verb=None):
-        event = make_event("transfer", verb)
+        event = self.makeEvent("transfer", verb)
         event["other"] = None
-        event["toTarget"] = False
+        event["toTarget"] = 0
         event["item"] = None
         return event
     
     def makeToggle(self, verb=None):
-        event = make_event("toggle", verb)
+        event = self.makeEvent("toggle", verb)
         event["target"] = None
         return event
     
-    def makeMove_player(self, verb=None):
-        event = make_event("move", verb)
+    def makeMove(self, verb=None):
+        event = self.makeEvent("move", verb)
         event["destination"] = None
         return event
     
     # Group Events #############################################
-    def makeGroup(kind, verb=None):
-        event = make_event(kind, verb)
+    def makeGroup(self, kind, verb=None):
+        event = self.makeEvent(kind, verb)
         event["events"] = [],
-        event["repeats"] = False,
+        event["repeats"] = 0,
         return event
 
-    def makeInteraction(verb=None):
-        event = make_event("interaction", verb)
+    def makeInteraction(self, verb=None):
+        event = self.makeEvent("interaction", verb)
         event["options"] = {}
-        event["breakout"] = False
+        event["breakout"] = 0
         return event
     
-    def makeConditional(verb=None):
-        event = make_event("conditional", verb)
+    def makeConditional(self, verb=None):
+        event = self.makeEvent("conditional", verb)
         event["condition"] = None
         event["success"] = None
         event["failure"] = None
@@ -113,18 +113,18 @@ class GameObjectFactory:
         return {"type": kind}
     
     def makeHas_item(self):
-        cond = makeCondition("hasItem")
+        cond = self.makeCondition("hasItem")
         cond["item"] = None
         cond["other"] = None
         return cond
         
     def makeProtected(self):
-        cond = makeCondition("protected")
+        cond = self.makeCondition("protected")
         cond["atmosphere"] = ""
         return cond
     
     def makeQuestion(self):
-        cond = makeCondition("question")
+        cond = self.makeCondition("question")
         cond["question"] = ""
         cond["answer"] = ""
         return cond
