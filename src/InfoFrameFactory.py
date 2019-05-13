@@ -120,9 +120,9 @@ if __name__=='__main__':
     root = tk.Tk()
     
     fact = GameObjectFactory()
-    obj = fact.make("hasItem")
+    obj = fact.make("inform")
     obj["name"] = "Test Entity"
-    obj["description"] = "An entity that I am using for testing"
+    obj["verb"] = "use"
     
     frame = InfoFrameFactory().make(root, obj)
     frame.pack()

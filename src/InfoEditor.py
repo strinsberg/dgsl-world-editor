@@ -47,7 +47,7 @@ class InfoEditor(SimpleDialog):
         var = tk.StringVar()
         var.set(self.obj[field])
         self.variables[field] = var
-        menu = apply(tk.option_menu, (body, var) + tuple(options))
+        menu = tk.OptionMenu( *([body, var] + options) )
         menu.grid(row=self.next_row, column=1, columnspan=2,
                 sticky=tk.W)
         self.next_row += 5
