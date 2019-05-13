@@ -100,13 +100,14 @@ class InfoFrameFactory:
     # Condition Info ###########################################
     
     def makeHasItem(self):
-        pass
+        self.frame.addPicker("Item", "item", "entity")
     
     def makeProtected(self):
-        pass
+        self.frame.addLabel("Atmosphere", "atmosphere")
     
     def makeQuestion(self):
-        pass
+        self.frame.addLabel("Question", "question")
+        self.frame.addLabel("Answer", "answer")
     
     # Game Info ################################################
     
@@ -119,7 +120,7 @@ if __name__=='__main__':
     root = tk.Tk()
     
     fact = GameObjectFactory()
-    obj = fact.make("ordered")
+    obj = fact.make("hasItem")
     obj["name"] = "Test Entity"
     obj["description"] = "An entity that I am using for testing"
     

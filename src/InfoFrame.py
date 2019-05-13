@@ -1,3 +1,4 @@
+import game_data as gd
 import tkinter as tk
 from InfoEditorFactory import InfoEditorFactory
 
@@ -16,11 +17,13 @@ class InfoFrame(tk.Frame):
             self.fields[k].set(self.obj[k])
     
     def makeWidgets(self):
-        tk.Label(self, text="Attributes").grid(row=1, sticky=tk.W)
+        tk.Label(self, text="Attributes").grid(row=1, columnspan=2,
+                sticky=tk.W)
         self.edit = tk.Button(self, text="Edit", command=self.edit)
         self.edit.grid(row=1, column=2, sticky=tk.E)
         
-        self.addLabel("ID", 'id')
+        if not gd.is_condition(self.obj):
+            self.addLabel("ID", 'id')
         self.addLabel("Name", 'name')
     
     def addLabel(self, label, kind):
