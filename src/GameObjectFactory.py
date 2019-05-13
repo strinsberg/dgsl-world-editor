@@ -7,27 +7,27 @@ class GameObjectFactory:
     def make(self, kind, verb=None):
         if kind in gd.entities:
             return self.makeEntity(kind)
-        elif kind is "inform":
+        elif kind == "inform":
             return self.makeInform(kind, verb)
-        elif kind is "kill":
+        elif kind == "kill":
             return self.makeKill(verb)
-        elif kind is "transfer":
+        elif kind == "transfer":
             return self.makeTransfer(verb)
-        elif kind is "toggle":
+        elif kind == "toggle":
             return self.makeToggle(verb)
-        elif kind is "move":
+        elif kind == "move":
             return self.makeMove(verb)
         elif kind in ["group", "ordered"]:
             return self.makeGroup(kind, verb)
-        elif kind is "interaction":
+        elif kind == "interaction":
             return self.makeInteraction(verb)
-        elif kind is "conditional":
+        elif kind == "conditional":
             return self.makeConditional(verb)
-        elif kind is "hasItem":
+        elif kind == "hasItem":
             return self.makeHasItem()
-        elif kind is "protected":
+        elif kind == "protected":
             return self.makeProtected()
-        elif kind is "question":
+        elif kind == "question":
             return self.makeQuestion()
         else:
             return None

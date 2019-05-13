@@ -17,9 +17,9 @@ class InfoFrame(tk.Frame):
             self.fields[k].set(self.obj[k])
     
     def makeWidgets(self):
-        tk.Label(self, text="Attributes").grid(row=1, columnspan=2,
-                sticky=tk.W)
-        self.edit = tk.Button(self, text="Edit", command=self.edit)
+        tk.Label(self, text="Type: "+self.obj["type"].upper()).grid(     row=1, columnspan=2, sticky=tk.W)
+        self.edit = tk.Button(self, text="Edit Info",
+                command=self.edit)
         self.edit.grid(row=1, column=2, sticky=tk.E)
         
         if not gd.is_condition(self.obj):

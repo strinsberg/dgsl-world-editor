@@ -1,7 +1,7 @@
 import tkinter as tk
-from EntityInfo import EntityInfo
-from EventInfo import EventInfo
 from ObjectList import ObjectList
+from GameObjectFactory import GameObjectFactory
+from InfoFrameFactory import InfoFrameFactory
 import game_data as gd
 
 class ObjectViewer(tk.Frame):
@@ -12,35 +12,40 @@ class ObjectViewer(tk.Frame):
         
 
     def make_widgets(self):
-        self.info = InfoFrameFactory.make(self.obj)
+        self.info = InfoFrameFactory().make(self, self.obj)
         self.info.grid(row=0, columnspan=2, sticky=tk.W)
         
-        if "events" is self.obj:
+        if "events" in self.obj:
             objs = self.obj["events"]
+            kind = "event"
             title = "Events"
         elif "subjects" in self.obj:
             objs = self.obj["subjects"]
+            kind = "event"
             title = "Subjects"
         else:
             # Object is the game object
             objs = self.obj["rooms"]
+            kind = "room"
             title = "Rooms"
         
-        self.left_list = ObjectList(objs, title)
+        self.left_list = ObjectList(self, objs, kind, title)
         self.left_list.grid(row=5, column=0, sticky=tk.W)
         
         if gd.is_container(self.obj):
             objs = self.obj["items"]
+            kind = "entity"
             title = "Items"
         elif gd.is_group(self.obj):
             objs = self.obj["events"]
+            kind = "event"
             title = "Events"
         else:
             # exit before making the right list
             # there isn't one with other object types
             return
         
-        self.right_list = ObjectList(objs, title)
+        self.right_list = ObjectList(self, objs, kind, title)
         self.right_list.grid(row=5, column=1, sticky=tk.W)
 
 
@@ -49,29 +54,10 @@ class ObjectViewer(tk.Frame):
 if __name__=='__main__':
     root = tk.Tk()
     
-    entity = {
-        "type": "container",
-        "id": "243o4j2oj42",
-        "name": "Object",
-        "description": "An object in the game that blah blah blah",
-        "here": "Some room",
-        "obtainable": True, "active": True, "hidden": False,
-        "items": [],
-        "events": [],
-    }
+    obj = GameObjectFactory().make("container")
+    obj["name"] = "Test Entity"
     
-    event = {
-        "type": "ordered",
-        "id": "243o4j2oj42",
-        "name": "open cage",
-        "once": True,
-        "subjects": [],
-        "events": [],
-    }
-    
-    #frame = EntityViewer(root, entity)
-    #frame = EventViewer(root, event)
-    
-    #frame.pack()
+    frame = ObjectViewer(root, obj)
+    frame.pack()
     
     root.mainloop()

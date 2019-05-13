@@ -6,7 +6,7 @@ entities = ["entity", "door", "suit", "container", "room",
         "npc", "player"]
 containers = ["container", "room", "npc", "player"]
 
-events = ["event", "inform", "kill", "transfer", "toggle",
+events = ["inform", "kill", "transfer", "toggle",
         "move", "group", "interaction", "conditional"]
 group_events = ["group", "ordered", "interaction", "conditional"]
 

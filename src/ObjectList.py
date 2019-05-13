@@ -1,10 +1,13 @@
 import tkinter as tk
+from TypeSelector import TypeSelector
+
 
 
 class ObjectList(tk.Frame):
-    def __init__(self, viewer, objects, title="Rooms"):
+    def __init__(self, viewer, objects, obj_type, title):
         tk.Frame.__init__(self, viewer)
         self.objects = objects
+        self.obj_type = obj_type
         self.title = title
         self.makeWidgets()
         
@@ -44,13 +47,16 @@ class ObjectList(tk.Frame):
             idx = self.listbox.curselection()[0]
             # Some code to change object viewer to the
             # selected obj at self.objects[idx]
-            print("edit")
+        print("edit")
+        self.update()
     
     def add(self, event=None):
-        dialog = TypeSelector(kind)
+        dialog = TypeSelector(self, self.obj_type)
         self.objects.append(dialog.getResult())
+        self.update()
     
     def remove(self, event=None):
         if len(self.listbox.curselection()) > 0:
             idx = self.listbox.curselection()[0]
-            list.del(idx)
+            self.objects.pop(idx)
+        self.update()
