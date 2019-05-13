@@ -26,6 +26,8 @@ class SimpleDialog(tk.Toplevel):
         
         self.parent = parent
         body = tk.Frame(self)
+        if title != "":
+            tk.Label(body, text=title).pack()
         self.makeWidgets(body)
         body.pack()
         self.makeButtons()
@@ -71,7 +73,8 @@ class SimpleDialog(tk.Toplevel):
     # Default callback to OK button
     def ok(self, event=None):
         if not self.validate():
-            pass # do something
+            SimpleDialog(self, "Incomplete Form")
+            return
         
         self.withdraw()
         self.update_idletasks()
@@ -89,7 +92,7 @@ class SimpleDialog(tk.Toplevel):
         self.destroy()
     
     # Override if input needs validation
-    # NOTE: is not currently doing anything
+    # default is True
     def validate(self):
         return True
     

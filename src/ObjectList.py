@@ -52,8 +52,10 @@ class ObjectList(tk.Frame):
     
     def add(self, event=None):
         dialog = TypeSelector(self, self.obj_type)
-        self.objects.append(dialog.getResult())
-        self.update()
+        result = dialog.getResult()
+        if result:
+            self.objects.append(result)
+            self.update()
     
     def remove(self, event=None):
         if len(self.listbox.curselection()) > 0:
