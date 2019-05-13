@@ -119,7 +119,7 @@ if __name__=='__main__':
     root = tk.Tk()
     
     fact = GameObjectFactory()
-    obj = fact.make("interaction")
+    obj = fact.make("ordered")
     obj["name"] = "Test Entity"
     obj["description"] = "An entity that I am using for testing"
     

@@ -91,8 +91,8 @@ class GameObjectFactory:
     # Group Events #############################################
     def makeGroup(self, kind, verb=None):
         event = self.makeEvent(kind, verb)
-        event["events"] = [],
-        event["repeats"] = 0,
+        event["events"] = []
+        event["repeats"] = 0
         return event
 
     def makeInteraction(self, verb=None):
