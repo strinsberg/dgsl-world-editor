@@ -3,6 +3,7 @@ from SimpleDialog import SimpleDialog
 from GameObjectFactory import GameObjectFactory
 import game_data as gd
 
+
 class TypeSelector(SimpleDialog):
     def __init__(self, parent, kind):
         self.kind = kind

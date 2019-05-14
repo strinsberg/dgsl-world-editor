@@ -22,7 +22,6 @@ class ObjectList(tk.Frame):
         
         self.makeButtons()
         
-    
     def makeButtons(self):
         self.buttons = tk.Frame(self)
         

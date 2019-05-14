@@ -1,6 +1,7 @@
 import game_data as gd
 import uuid
 
+
 class GameObjectFactory:
 
     # Given an entity type return that type of game data object
@@ -46,6 +47,8 @@ class GameObjectFactory:
             "obtainable": 1,
             "hidden": 0
         }
+        # need to make some kind of alteration to accomadate
+        # other types of entities. Like rooms have default states
     
     # Events ###################################################
     def makeEvent(self, kind, verb=None):
