@@ -5,9 +5,9 @@ import uuid
 class GameObjectFactory:
 
     # Given an entity type return that type of game data object
-    def make(self, kind, verb=None):
+    def make(self, kind, verb=None, name=''):
         if kind in gd.entities:
-            return self.makeEntity(kind)
+            return self.makeEntity(kind, name)
         elif kind == "inform":
             return self.makeInform(kind, verb)
         elif kind == "kill":
@@ -34,11 +34,11 @@ class GameObjectFactory:
             return None
     
     # Entity ###################################################
-    def makeEntity(self, kind):
+    def makeEntity(self, kind, name):
         return {
             "id": uuid.uuid4(),
             "type": kind,
-            "name": "",
+            "name": name,
             "description": "",
             "events": [],
             "items": [],

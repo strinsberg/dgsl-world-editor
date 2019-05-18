@@ -33,3 +33,10 @@ def is_group(obj):
 def is_condition(obj):
     return obj["type"] in conditions
 
+def get_base_type(obj):
+    if is_entity(obj):
+        return "entity"
+    elif is_event(obj):
+        return "event"
+    else:
+        return "condition"

@@ -5,8 +5,9 @@ from InfoFrameFactory import InfoFrameFactory
 import game_data as gd
 
 class ObjectViewer(tk.Frame):
-    def __init__(self, viewer, obj):
-        tk.Frame.__init__(self, viewer)
+    def __init__(self, parent, obj):
+        tk.Frame.__init__(self, parent)
+        self.parent = parent
         self.obj = obj
         self.make_widgets()
         
@@ -29,7 +30,7 @@ class ObjectViewer(tk.Frame):
             kind = "room"
             title = "Rooms"
         
-        self.left_list = ObjectList(self, objs, kind, title)
+        self.left_list = ObjectList(self, self.parent, objs, kind, title)
         self.left_list.grid(row=5, column=0, sticky=tk.W)
         
         if gd.is_container(self.obj):
@@ -45,7 +46,7 @@ class ObjectViewer(tk.Frame):
             # there isn't one with other object types
             return
         
-        self.right_list = ObjectList(self, objs, kind, title)
+        self.right_list = ObjectList(self, self.parent, objs, kind, title)
         self.right_list.grid(row=5, column=1, sticky=tk.W)
 
 

@@ -2,10 +2,10 @@ import tkinter as tk
 from TypeSelector import TypeSelector
 
 
-
 class ObjectList(tk.Frame):
-    def __init__(self, viewer, objects, obj_type, title):
-        tk.Frame.__init__(self, viewer)
+    def __init__(self, parent, editor, objects, obj_type, title):
+        tk.Frame.__init__(self, parent)
+        self.editor = editor
         self.objects = objects
         self.obj_type = obj_type
         self.title = title
@@ -17,7 +17,8 @@ class ObjectList(tk.Frame):
         tk.Label(self, textvariable=self.title_text).grid(row=10)
         
         self.listbox = tk.Listbox(self)
-        self.listbox.grid(row=15)
+        tk.Grid.rowconfigure(self, 15, weight=1)
+        self.listbox.grid(row=15, sticky= tk.N + tk.S)
         self.update()
         
         self.makeButtons()
@@ -44,9 +45,10 @@ class ObjectList(tk.Frame):
     def edit(self, event=None):
         if len(self.listbox.curselection()) > 0:
             idx = self.listbox.curselection()[0]
-            # Some code to change object viewer to the
-            # selected obj at self.objects[idx]
-        print("edit")
+            try:
+                self.editor.editNew(self.objects[idx])
+            except:
+                pass
         self.update()
     
     def add(self, event=None):

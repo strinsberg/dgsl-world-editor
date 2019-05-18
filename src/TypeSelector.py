@@ -13,6 +13,7 @@ class TypeSelector(SimpleDialog):
         tk.Label(master, text = self.kind + " Type:").grid(row=0, sticky=tk.W)
         self.choice = tk.StringVar(master)
         
+        # need types for room, container etc!
         if self.kind == "entity":
             self.choice.set(gd.entities[0])
             self.menu = tk.OptionMenu(
