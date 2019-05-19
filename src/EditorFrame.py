@@ -7,29 +7,35 @@ from GameObjectFactory import GameObjectFactory
 class EditorFrame(tk.Frame):
     
     def __init__(self, parent, objects, kind, title, obj=None):
-        tk.Frame.__init__(self, parent)
+        tk.Frame.__init__(self, parent, bd=4, relief=tk.GROOVE)
         self.list = ObjectList(self, self, objects, kind, title)
         self.viewer = ObjectViewer(self, obj)
         self.history = []
         self.makeWidgets()
     
     def makeWidgets(self):
-        self.list.pack(side=tk.LEFT, fill=tk.Y, expand=1)
-        self.viewer.pack(side=tk.RIGHT)
+        self.list.grid(row=0, column=1, sticky='nsw')
+        self.viewer.grid(row=0, column=2)
+        
+        tk.Grid.rowconfigure(self, 0, weight=1)
+        tk.Grid.columnconfigure(self, 2, weight=1)
         
     def editNew(self, obj):
         self.history.append(self.viewer.obj)
         self.newViewer(obj)
     
     def editLast(self):
-        obj = self.history.pop()
-        self.newViewer(obj)
+        if len(self.history) > 0:
+            obj = self.history.pop()
+            self.newViewer(obj)
     
     def newViewer(self, obj):
+        #print(obj)
         new = ObjectViewer(self, obj)
+        #print(new)
         self.viewer.destroy()
         self.viewer = new
-        self.viewer.pack(side=tk.RIGHT)
+        self.viewer.grid(row=0, column=2)
         
 # Testing ######################################################
 

@@ -45,9 +45,10 @@ class ObjectList(tk.Frame):
     def edit(self, event=None):
         if len(self.listbox.curselection()) > 0:
             idx = self.listbox.curselection()[0]
+            
             try:
                 self.editor.editNew(self.objects[idx])
-            except:
+            except AttributeError:
                 pass
         self.update()
     

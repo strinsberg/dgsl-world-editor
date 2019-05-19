@@ -9,8 +9,11 @@ class ObjectViewer(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.parent = parent
         self.obj = obj
-        self.make_widgets()
-        
+        if obj:
+            self.make_widgets()
+        else:
+            self.null()
+        # make it possible for obj to be none and return a null
 
     def make_widgets(self):
         self.info = InfoFrameFactory().make(self, self.obj)
@@ -48,7 +51,9 @@ class ObjectViewer(tk.Frame):
         
         self.right_list = ObjectList(self, self.parent, objs, kind, title)
         self.right_list.grid(row=5, column=1, sticky=tk.W)
-
+    
+    def null(self):
+        tk.Label(self, text="Please select an object to edit").pack()
 
 # Testing ##########################################################
 
