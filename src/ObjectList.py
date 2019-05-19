@@ -45,7 +45,6 @@ class ObjectList(tk.Frame):
     def edit(self, event=None):
         if len(self.listbox.curselection()) > 0:
             idx = self.listbox.curselection()[0]
-            
             try:
                 self.editor.editNew(self.objects[idx])
             except AttributeError:
@@ -63,4 +62,18 @@ class ObjectList(tk.Frame):
         if len(self.listbox.curselection()) > 0:
             idx = self.listbox.curselection()[0]
             self.objects.pop(idx)
+        self.update()
+
+# move to its own file eventually
+from GameObjectFactory import GameObjectFactory
+from InfoEditorFactory import InfoEditorFactory
+
+class RoomList(ObjectList):
+    def __init__(self, parent, editor):
+        ObjectList.__init__(self, parent, editor, editor.world.rooms, 'room', 'Rooms')
+    
+    def add(self, event=None):
+        obj = GameObjectFactory().make('room')
+        editor = InfoEditorFactory().make(self, obj)
+        self.objects.append(obj)
         self.update()

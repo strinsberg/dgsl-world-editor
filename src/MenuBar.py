@@ -3,10 +3,10 @@ import tkinter as tk
 
 class MenuBar(tk.Frame):
 
-    def __init__(self, parent, editor, world):
+    def __init__(self, parent):
         tk.Frame.__init__(self, parent)
-        self.editor = editor
-        self.world = world
+        self.editor = parent
+        self.world = parent.world
         self.makeWidgets()
         
     def makeWidgets(self):
