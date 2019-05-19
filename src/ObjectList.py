@@ -26,14 +26,14 @@ class ObjectList(tk.Frame):
     def makeButtons(self):
         self.buttons = tk.Frame(self)
         
-        self.edit = tk.Button(self.buttons, text="Edit", command=self.edit)
-        self.edit.grid(row=1)
+        self.edit_button = tk.Button(self.buttons, text="Edit", command=self.edit)
+        self.edit_button.grid(row=1)
         
-        self.add = tk.Button(self.buttons, text="Add", command=self.add)
-        self.add.grid(row=1, column=1)
+        self.add_button = tk.Button(self.buttons, text="Add", command=self.add)
+        self.add_button.grid(row=1, column=1)
         
-        self.remove = tk.Button(self.buttons, text="Remove", command=self.remove)
-        self.remove.grid(row=1, column=2)
+        self.remove_button = tk.Button(self.buttons, text="Remove", command=self.remove)
+        self.remove_button.grid(row=1, column=2)
         
         self.buttons.grid(row=20, sticky=tk.W)
     
@@ -49,7 +49,7 @@ class ObjectList(tk.Frame):
                 self.editor.editNew(self.objects[idx])
             except AttributeError:
                 pass
-        self.update()
+        #self.update()
     
     def add(self, event=None):
         dialog = TypeSelector(self, self.obj_type)

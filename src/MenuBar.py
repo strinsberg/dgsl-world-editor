@@ -13,14 +13,8 @@ class MenuBar(tk.Frame):
         self.world = tk.Button(self, text="World", command=lambda: print("world"))
         self.world.pack(side=tk.LEFT)
         
-        self.rooms = tk.Button(self, text="Rooms", command=lambda: print("rooms"))
-        self.rooms.pack(side=tk.LEFT)
-        
-        self.entities = tk.Button(self, text="Entities", command=lambda: print("entity"))
-        self.entities.pack(side=tk.LEFT)
-        
-        self.events = tk.Button(self, text="Events", command=lambda: print("events"))
-        self.events.pack(side=tk.LEFT)
+        self.player = tk.Button(self, text="Player", command=lambda: print("player"))
+        self.player.pack(side=tk.LEFT)
         
         self.back = tk.Button(self, text="Back", command=lambda: self.editor.editLast())
         self.back.pack(side=tk.LEFT)
