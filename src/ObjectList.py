@@ -77,3 +77,11 @@ class RoomList(ObjectList):
         editor = InfoEditorFactory().make(self, obj)
         self.objects.append(obj)
         self.update()
+
+'''
+class SubjectList(ObjectList):
+    def __init__(self, parent, editor):
+        ObjectList.__init__(self, parent, editor, editor.world.rooms, 'room', 'Rooms')
+    
+    def add(self):
+   '''

@@ -34,7 +34,7 @@ class ObjectViewer(tk.Frame):
             kind = "room"
             title = "Rooms"
         
-        self.left_list = ObjectList(self, self.parent, objs, kind, title)
+        self.left_list = ObjectList(self, self.editor, objs, kind, title)
         self.left_list.grid(row=5, column=0, sticky=tk.W)
         
         if gd.is_container(self.obj):
