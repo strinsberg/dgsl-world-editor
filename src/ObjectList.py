@@ -71,6 +71,7 @@ class ObjectList(tk.Frame):
             self.objects.pop(idx)
         self.update()
 
+
 # move to its own file eventually
 from GameObjectFactory import GameObjectFactory
 from InfoEditorFactory import InfoEditorFactory
@@ -85,6 +86,8 @@ class RoomList(ObjectList):
         self.objects.append(obj)
         self.update()
 
+
+# move to its own file eventually
 from ObjectSelector import ObjectSelector
 from SimpleDialog import SimpleDialog
 

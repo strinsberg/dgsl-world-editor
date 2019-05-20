@@ -48,6 +48,9 @@ class EditorFrame(tk.Frame):
         self.viewer.destroy()
         self.viewer = new
         self.viewer.grid(row=0, column=2)
+    
+    def update(self):
+        self.list.update()
         
 # Testing ######################################################
 

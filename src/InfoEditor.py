@@ -55,3 +55,4 @@ class InfoEditor(SimpleDialog):
     def apply(self):
         for field in self.variables:
             self.obj[field] = self.variables[field].get()
+        self.result = self.obj

@@ -2,9 +2,11 @@ import game_data as gd
 import tkinter as tk
 from InfoEditorFactory import InfoEditorFactory
 
+
 class InfoFrame(tk.Frame):
     def __init__(self, parent, obj):
         tk.Frame.__init__(self, parent)
+        self.parent = parent
         self.obj = obj
         self.fields = {}
         self.next_row = 5
@@ -47,5 +49,5 @@ class InfoFrame(tk.Frame):
     
     def edit(self):
         editor = InfoEditorFactory().make(self, self.obj)
-        # if result is needed use it here editor.getResult()
         self.update()
+        self.parent.editor.update()
