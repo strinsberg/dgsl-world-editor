@@ -5,10 +5,14 @@ from TypeSelector import TypeSelector
 class ObjectList(tk.Frame):
     def __init__(self, parent, editor, objects, obj_type, title):
         tk.Frame.__init__(self, parent)
+        self.parent = parent
         self.editor = editor
         self.objects = objects
         self.obj_type = obj_type
         self.title = title
+        self.button_text = {
+            "edit": "Edit", "add": "Add", "del": "Remove"
+        }
         self.makeWidgets()
         
     def makeWidgets(self):
@@ -26,13 +30,16 @@ class ObjectList(tk.Frame):
     def makeButtons(self):
         self.buttons = tk.Frame(self)
         
-        self.edit_button = tk.Button(self.buttons, text="Edit", command=self.edit)
+        self.edit_button = tk.Button(self.buttons,
+                text=self.button_text['edit'], command=self.edit)
         self.edit_button.grid(row=1)
         
-        self.add_button = tk.Button(self.buttons, text="Add", command=self.add)
+        self.add_button = tk.Button(self.buttons,
+                text=self.button_text['add'], command=self.add)
         self.add_button.grid(row=1, column=1)
         
-        self.remove_button = tk.Button(self.buttons, text="Remove", command=self.remove)
+        self.remove_button = tk.Button(self.buttons,
+                text=self.button_text['del'], command=self.remove)
         self.remove_button.grid(row=1, column=2)
         
         self.buttons.grid(row=20, sticky=tk.W)
@@ -78,10 +85,27 @@ class RoomList(ObjectList):
         self.objects.append(obj)
         self.update()
 
-'''
+from ObjectSelector import ObjectSelector
+from SimpleDialog import SimpleDialog
+
 class SubjectList(ObjectList):
-    def __init__(self, parent, editor):
-        ObjectList.__init__(self, parent, editor, editor.world.rooms, 'room', 'Rooms')
+    def __init__(self, parent, editor, objects):
+        ObjectList.__init__(self, parent, editor, objects, 'event', 'Subjects')
     
     def add(self):
-   '''
+        events = self.editor.world.getEvents()
+        # would it be better to pass in a list to be excluded???
+        events.remove(self.parent.obj)
+        
+        if len(events) == 0:
+            SimpleDialog(self, "There are no events to subscibe to")
+            return
+        
+        for obj in self.objects:
+            events.remove(obj)
+        dialog = ObjectSelector(self, events)
+        result = dialog.getResult()
+        
+        if result:
+            self.objects.append(result)
+            self.update()

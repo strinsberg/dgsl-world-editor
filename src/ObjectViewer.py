@@ -1,5 +1,5 @@
 import tkinter as tk
-from ObjectList import ObjectList
+from ObjectList import ObjectList, SubjectList
 from GameObjectFactory import GameObjectFactory
 from InfoFrameFactory import InfoFrameFactory
 import game_data as gd
@@ -24,17 +24,13 @@ class ObjectViewer(tk.Frame):
             objs = self.obj["events"]
             kind = "event"
             title = "Events"
+            self.left_list = ObjectList(self, self.editor, objs,
+                    kind, title)
         elif "subjects" in self.obj:
             objs = self.obj["subjects"]
-            kind = "event"
-            title = "Subjects"
-        else:
-            # Object is the game object
-            objs = self.obj["rooms"]
-            kind = "room"
-            title = "Rooms"
+            self.left_list = SubjectList(self, self.editor, objs)
         
-        self.left_list = ObjectList(self, self.editor, objs, kind, title)
+       
         self.left_list.grid(row=5, column=0, sticky=tk.W)
         
         if gd.is_container(self.obj):
