@@ -43,10 +43,12 @@ class InfoFrameFactory:
     
     def makeEntity(self):
         self.frame.addLabel("Description", "description")
-        if self.obj["type"] is not "room":
+        if self.obj["type"] != "room":
             self.frame.addLabel("Active", "active")
             self.frame.addLabel("Obtainable", "obtainable")
             self.frame.addLabel("Hidden", "hidden")
+        if self.obj["type"] == 'door':
+            self.frame.addSelector("Destination", "destination", "room")
     
     
     # Event Info ###############################################

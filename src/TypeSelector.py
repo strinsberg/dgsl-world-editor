@@ -15,9 +15,9 @@ class TypeSelector(SimpleDialog):
         
         # need types for room, container etc!
         if self.kind == "entity":
-            self.choice.set(gd.entities[0])
+            self.choice.set(gd.room_entities[0])
             self.menu = tk.OptionMenu(
-                    *((master, self.choice) + tuple(gd.entities)))
+                    *((master, self.choice) + tuple(gd.room_entities)))
         elif self.kind == "event":
             self.choice.set(gd.events[0])
             self.menu = tk.OptionMenu(

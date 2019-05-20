@@ -6,6 +6,21 @@ class GameWorld:
         self.rooms = []
         self.player = None  # add a class or factory method for player
     
+    def getObjects(self, kind):
+        if kind == 'room':
+            return self.getRooms()
+        elif kind == 'entity':
+            return self.getEntities()
+        elif kind == 'event':
+            return self.getEvents()
+        else:
+            return []
+    
+    def getRooms(self):
+        rooms = []
+        rooms.extend(self.rooms)
+        return rooms
+    
     def getEntities(self):
         return []
     

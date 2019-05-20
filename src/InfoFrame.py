@@ -1,6 +1,7 @@
 import game_data as gd
 import tkinter as tk
 from InfoEditorFactory import InfoEditorFactory
+from ObjectSelector import ObjectSelector
 
 
 class InfoFrame(tk.Frame):
@@ -36,6 +37,19 @@ class InfoFrame(tk.Frame):
                 sticky=tk.W)
         self.next_row += 5
     
+    def addSelector(self, label, kind, obj_type):
+        tk.Label(self, text=label + ":").grid(row=self.next_row,
+                sticky=tk.W)
+        lab = tk.Label(self, textvariable=self.fields[kind])
+        lab.grid(row=self.next_row, column=1, columnspan=1,
+                sticky=tk.W)
+        
+        tk.Button(self, text="Edit",
+                command=lambda : self.edit_selector(kind,
+                obj_type)).grid(row=self.next_row, column=2,
+                sticky=tk.E)
+        self.next_row += 5
+    
     def addPicker(self, label, kind, select_type):
         tk.Button(self, text="Edit",
                 command=lambda:print(select_type)).grid(
@@ -45,9 +59,28 @@ class InfoFrame(tk.Frame):
     def update(self):
         for k in self.obj:
             if k in self.fields:
-                self.fields[k].set(self.obj[k])
+                try:
+                    self.fields[k].set(self.obj[k]['name'])
+                except TypeError:
+                    self.fields[k].set(self.obj[k])
     
     def edit(self):
         editor = InfoEditorFactory().make(self, self.obj)
         self.update()
         self.parent.editor.update()
+
+    def edit_selector(self, kind, obj_type):
+        if self.obj[kind]:
+            self.parent.editor.editNew(self.obj)
+        else:
+            objects = self.parent.editor.world.getObjects(obj_type)
+            try:
+                objects.remove(self.obj['owner'])
+            except ValueError:
+                pass
+            
+            dialog = ObjectSelector(self, objects)
+            result = dialog.getResult()
+            if result:
+                self.obj[kind] = result
+                self.update()

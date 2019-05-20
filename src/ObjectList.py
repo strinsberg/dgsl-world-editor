@@ -62,6 +62,7 @@ class ObjectList(tk.Frame):
         dialog = TypeSelector(self, self.obj_type)
         result = dialog.getResult()
         if result:
+            result['owner'] = self.editor.viewer.obj
             self.objects.append(result)
             self.update()
     

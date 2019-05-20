@@ -20,6 +20,6 @@ class ObjectSelector(SimpleDialog):
             self.result = self.objects[idx]
         
     def validate(self):
-        if self.result:
+        if len(self.listbox.curselection()) > 0:
             return True
         return False

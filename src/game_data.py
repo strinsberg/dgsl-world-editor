@@ -16,6 +16,11 @@ verbs = ["get", "drop", "look", "use", "talk"]
 atmospheres = ["oxygen", "radiation", "space"]
 
 
+# Types for type selectors #####################################
+
+room_entities = ["entity", "door", "suit", "container", "npc"]
+
+
 # Type checkers ################################################
 
 def is_entity(obj):

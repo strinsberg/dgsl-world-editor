@@ -6,7 +6,11 @@ class GameObjectFactory:
 
     # Given an entity type return that type of game data object
     def make(self, kind, verb=None, name=''):
-        if kind in gd.entities:
+        if kind == 'room':
+            return self.makeRoom(kind, name)
+        elif kind == 'door':
+            return self.makeDoor(kind, name)
+        elif kind in gd.entities:
             return self.makeEntity(kind, name)
         elif kind == "inform":
             return self.makeInform(kind, verb)
@@ -49,6 +53,16 @@ class GameObjectFactory:
         }
         # need to make some kind of alteration to accomadate
         # other types of entities. Like rooms have default states
+    
+    def makeRoom(self, kind, name):
+        room = self.makeEntity(kind, name)
+        room['obtainable'] = 0
+        return room
+    
+    def makeDoor(self, kind, name):
+        door = self.makeEntity(kind, name)
+        door['destination'] = None
+        return door
     
     # Events ###################################################
     def makeEvent(self, kind, verb=None):
