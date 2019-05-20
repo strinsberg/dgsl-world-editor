@@ -53,16 +53,17 @@ def getItemEvents(item):
 
 def getEventEvents(event):
     events = []
-    events.append(event)
-    
-    if 'events' in event:
-        for obj in event['events']:
-            events.extend(getEventEvents(obj))
-    elif 'options' in event:
-        for option in event['options']:
-            events.extend(getEventEvents(option[1]))
-    elif event['type'] == 'conditional':
-        events.extend(getEventEvents(event['success']))
-        events.extend(getEventEvents(event['failure']))
+    if event:
+        events.append(event)
+        
+        if 'events' in event:
+            for obj in event['events']:
+                events.extend(getEventEvents(obj))
+        elif 'options' in event:
+            for option in event['options']:
+                events.extend(getEventEvents(option[1]))
+        elif event['type'] == 'conditional':
+            events.extend(getEventEvents(event['success']))
+            events.extend(getEventEvents(event['failure']))
         
     return events

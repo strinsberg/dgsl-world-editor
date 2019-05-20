@@ -8,7 +8,7 @@ containers = ["container", "room", "npc", "player"]
 
 events = ["inform", "kill", "transfer", "toggle",
         "move", "group", "interaction", "conditional"]
-group_events = ["group", "ordered", "interaction", "conditional"]
+group_events = ["group", "ordered"]
 
 conditions = ["hasItem", "protected", "question"]
 

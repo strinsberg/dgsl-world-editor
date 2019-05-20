@@ -2,6 +2,7 @@ import game_data as gd
 import tkinter as tk
 from InfoEditorFactory import InfoEditorFactory
 from ObjectSelector import ObjectSelector
+from TypeSelector import TypeSelector
 
 
 class InfoFrame(tk.Frame):
@@ -17,7 +18,10 @@ class InfoFrame(tk.Frame):
     def makeFields(self):
         for k in self.obj:
             self.fields[k] = tk.StringVar()
-            self.fields[k].set(self.obj[k])
+            try:
+                self.fields[k].set(self.obj[k]['name'])
+            except TypeError:
+                self.fields[k].set(self.obj[k])
     
     def makeWidgets(self):
         tk.Label(self, text="Type: "+self.obj["type"].upper()).grid(     row=1, columnspan=2, sticky=tk.W)
@@ -37,17 +41,21 @@ class InfoFrame(tk.Frame):
                 sticky=tk.W)
         self.next_row += 5
     
-    def addSelector(self, label, kind, obj_type):
+    def addSelector(self, label, kind, obj_type, pick=True):
         tk.Label(self, text=label + ":").grid(row=self.next_row,
                 sticky=tk.W)
         lab = tk.Label(self, textvariable=self.fields[kind])
         lab.grid(row=self.next_row, column=1, columnspan=1,
                 sticky=tk.W)
         
-        tk.Button(self, text="Edit",
-                command=lambda : self.edit_selector(kind,
-                obj_type)).grid(row=self.next_row, column=2,
-                sticky=tk.E)
+        if pick:
+            callback = lambda : self.edit_selector(kind,
+                obj_type)
+        else:
+            callback = lambda : self.edit_object(kind, obj_type)
+            
+        tk.Button(self, text="Edit", command=callback).grid(
+                row=self.next_row, column=2, sticky=tk.E)
         self.next_row += 5
     
     def addPicker(self, label, kind, select_type):
@@ -71,7 +79,7 @@ class InfoFrame(tk.Frame):
 
     def edit_selector(self, kind, obj_type):
         if self.obj[kind]:
-            self.parent.editor.editNew(self.obj)
+            self.parent.editor.editNew(self.obj[kind])
         else:
             objects = self.parent.editor.world.getObjects(obj_type)
             try:
@@ -83,4 +91,19 @@ class InfoFrame(tk.Frame):
             result = dialog.getResult()
             if result:
                 self.obj[kind] = result
+                self.update()
+    
+    def edit_object(self, field, kind):
+        if self.obj[field]:
+            self.parent.editor.editNew(self.obj[field])
+        else:
+            selector = TypeSelector(self, kind)
+            obj = selector.getResult()
+            if not obj:
+                return
+            
+            editor = InfoEditorFactory().make(self, obj)
+            result = editor.getResult()
+            if result:
+                self.obj[field] = result
                 self.update()

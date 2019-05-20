@@ -20,15 +20,15 @@ class ObjectViewer(tk.Frame):
         self.info = InfoFrameFactory().make(self, self.obj)
         self.info.grid(row=0, columnspan=2, sticky=tk.W)
         
-        if "events" in self.obj:
+        if "subjects" in self.obj:
+            objs = self.obj["subjects"]
+            self.left_list = SubjectList(self, self.editor, objs)
+        elif "events" in self.obj:
             objs = self.obj["events"]
             kind = "event"
             title = "Events"
             self.left_list = ObjectList(self, self.editor, objs,
                     kind, title)
-        elif "subjects" in self.obj:
-            objs = self.obj["subjects"]
-            self.left_list = SubjectList(self, self.editor, objs)
         
        
         self.left_list.grid(row=5, column=0, sticky=tk.W)
@@ -41,6 +41,10 @@ class ObjectViewer(tk.Frame):
             objs = self.obj["events"]
             kind = "event"
             title = "Events"
+        elif self.obj['type'] == "interaction":
+            objs = self.obj['options']
+            kind = 'options'
+            title = 'Options'
         else:
             # exit before making the right list
             # there isn't one with other object types

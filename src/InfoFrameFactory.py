@@ -79,7 +79,7 @@ class InfoFrameFactory:
     
     def makeMove(self):
         self.makeEvent()
-        self.frame.addPicker("Destination", "destination", "room")
+        self.frame.addSelector("Destination", "destination", "room")
     
     # Group Event Info #########################################
     
@@ -94,11 +94,10 @@ class InfoFrameFactory:
     
     def makeConditional(self):
         self.makeEvent()
-        self.frame.addPicker("Condition", "condition", "condition")
-        self.frame.addPicker("Success", "success", "event")
-        self.frame.addPicker("Failure", "failure", "event")
+        self.frame.addSelector("Condition", "condition", "condition", False)
+        self.frame.addSelector("Success", "success", "event", False)
+        self.frame.addSelector("Failure", "failure", "event", False)
         
-    
     # Condition Info ###########################################
     
     def makeHasItem(self):

@@ -9,27 +9,27 @@ class InfoEditorFactory:
         kind = self.obj["type"]
         if gd.is_entity(self.obj):
             self.makeEntity()
-        elif kind is "inform":
+        elif kind == "inform":
             self.makeInform()
-        elif kind is "kill":
+        elif kind == "kill":
             self.makeKill()
-        elif kind is "toggle":
+        elif kind == "toggle":
             self.makeToggle()
-        elif kind is "transfer":
+        elif kind == "transfer":
             self.makeTransfer()
-        elif kind is "move":
+        elif kind == "move":
             self.makeMove()
         elif kind in ["group", "ordered"]:
             self.makeGroup()
-        elif kind is "interaction":
+        elif kind == "interaction":
             self.makeInteraction()
-        elif kind is "conditional":
+        elif kind == "conditional":
             self.makeConditional()
-        elif kind is "hasItem":
+        elif kind == "hasItem":
             self.makeHasItem()
-        elif kind is "protected":
+        elif kind == "protected":
             self.makeProtected()
-        elif kind is "question":
+        elif kind == "question":
             self.makeQuestion()
         else:
             return None
