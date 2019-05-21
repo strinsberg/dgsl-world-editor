@@ -54,7 +54,7 @@ class GameObjectFactory:
     # Entity ###################################################
     def makeEntity(self, kind, name):
         return {
-            "id": uuid.uuid4(),
+            "id": str(uuid.uuid4()),
             "type": kind,
             "name": name,
             "description": "",
@@ -81,7 +81,7 @@ class GameObjectFactory:
     # Events ###################################################
     def makeEvent(self, kind, verb=None):
         event = {
-            "id": uuid.uuid4(),
+            "id": str(uuid.uuid4()),
             "type": kind,
             "name": "",
             "subjects": [],

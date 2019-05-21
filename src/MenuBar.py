@@ -19,10 +19,10 @@ class MenuBar(tk.Frame):
         self.back = tk.Button(self, text="Back", command=lambda: self.editor.editLast())
         self.back.pack(side=tk.LEFT)
         
-        self.load = tk.Button(self, text="Load", command=lambda: print("load"))
+        self.load = tk.Button(self, text="Load", command=lambda : self.editor.world.load("untitled.world"))
         self.load.pack(side=tk.RIGHT)
         
-        self.save = tk.Button(self, text="Save", command=lambda: print("save"))
+        self.save = tk.Button(self, text="Save", command=self.editor.world.save)
         self.save.pack(side=tk.RIGHT)
         
        
