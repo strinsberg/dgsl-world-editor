@@ -23,15 +23,15 @@ class ObjectViewer(tk.Frame):
         if "subjects" in self.obj:
             objs = self.obj["subjects"]
             self.left_list = SubjectList(self, self.editor, objs)
+            self.left_list.grid(row=5, column=0, sticky=tk.W)
         elif "events" in self.obj:
             objs = self.obj["events"]
             kind = "event"
             title = "Events"
             self.left_list = ObjectList(self, self.editor, objs,
                     kind, title)
+            self.left_list.grid(row=5, column=0, sticky=tk.W)
         
-       
-        self.left_list.grid(row=5, column=0, sticky=tk.W)
         
         if gd.is_container(self.obj):
             objs = self.obj["items"]

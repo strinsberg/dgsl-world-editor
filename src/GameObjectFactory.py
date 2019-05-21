@@ -6,7 +6,9 @@ class GameObjectFactory:
 
     # Given an entity type return that type of game data object
     def make(self, kind, verb=None, name=''):
-        if kind == 'room':
+        if kind == 'player':
+            return self.makePlayer()
+        elif kind == 'room':
             return self.makeRoom(kind, name)
         elif kind == 'door':
             return self.makeDoor(kind, name)
@@ -36,6 +38,18 @@ class GameObjectFactory:
             return self.makeQuestion()
         else:
             return None
+    
+    # Player ###################################################
+    
+    def makePlayer(self):
+        return {
+            "id": "None",
+            "type": "player",
+            "items": [],
+            "start": None,
+            "name": "user supplied",
+            "get_name": True,
+        }
     
     # Entity ###################################################
     def makeEntity(self, kind, name):

@@ -10,7 +10,9 @@ class InfoFrameFactory:
         self.frame = InfoFrame(parent, obj)
         
         kind = obj["type"]
-        if kind in gd.entities:
+        if kind == 'player':
+            self.makePlayer()
+        elif kind in gd.entities:
             self.makeEntity()
         elif kind == "inform":
             self.makeInform()
@@ -38,6 +40,12 @@ class InfoFrameFactory:
             return None
         
         return self.frame
+    
+    # Player ###################################################
+    
+    def makePlayer(self):
+        self.frame.addLabel("Ask For Name", "get_name")
+        self.frame.addSelector("Starting Room", "start", 'room')
     
     # Entity Info ##############################################
     

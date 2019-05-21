@@ -3,15 +3,18 @@ from SimpleDialog import SimpleDialog
 
 
 class InfoEditor(SimpleDialog):
-    def __init__(self, parent, obj, widget_info):
+    def __init__(self, parent, obj, widget_info, show_name=True):
         self.obj = obj
         self.widget_info = widget_info
+        self.show_name = show_name
         self.variables = {}
         self.next_row = 5
         SimpleDialog.__init__(self, parent)
     
     def makeWidgets(self, body):
-        self.addEntry(body, "Name", "name")
+        if self.show_name:
+            self.addEntry(body, "Name", "name")
+        
         for info in self.widget_info:
             if info["type"] is "entry":
                 self.addEntry(body, info["label"], info["field"])
@@ -56,3 +59,11 @@ class InfoEditor(SimpleDialog):
         for field in self.variables:
             self.obj[field] = self.variables[field].get()
         self.result = self.obj
+    
+    def validate(self):
+        try:
+            if self.variables['name'].get() == '':
+                return False
+        except KeyError:
+            pass
+        return True

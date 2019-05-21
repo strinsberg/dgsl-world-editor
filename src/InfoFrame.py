@@ -86,6 +86,8 @@ class InfoFrame(tk.Frame):
                 objects.remove(self.obj['owner'])
             except ValueError:
                 pass
+            except KeyError:
+                pass
             
             dialog = ObjectSelector(self, objects)
             result = dialog.getResult()

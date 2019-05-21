@@ -6,8 +6,11 @@ class InfoEditorFactory:
         self.obj = obj
         self.widget_info = []
         
+        self.show_name = True
         kind = self.obj["type"]
-        if gd.is_entity(self.obj):
+        if kind == 'player':
+            self.makePlayer()
+        elif gd.is_entity(self.obj):
             self.makeEntity()
         elif kind == "inform":
             self.makeInform()
@@ -34,9 +37,18 @@ class InfoEditorFactory:
         else:
             return None
         
-        return InfoEditor(parent, self.obj, self.widget_info)
+        return InfoEditor(parent, self.obj, self.widget_info,
+                self.show_name)
     
+    # Player ###################################################
     
+    def makePlayer(self):
+        if self.obj['get_name']:
+            self.show_name = False
+        self.widget_info.append({"type": "check",
+                "label": "Ask For Name", "field": "get_name"})
+            
+        
     # Entities #################################################
     
     def makeEntity(self):

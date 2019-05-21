@@ -1,10 +1,11 @@
+from GameObjectFactory import GameObjectFactory
 
 class GameWorld:
 
     def __init__(self):
         self.name = "untitled"
         self.rooms = []
-        self.player = None  # add a class or factory method for player
+        self.player = GameObjectFactory().make('player')
     
     def getObjects(self, kind):
         if kind == 'room':
