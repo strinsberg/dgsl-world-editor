@@ -1,5 +1,6 @@
 import tkinter as tk
 from TypeSelector import TypeSelector
+import game_data as gd
 
 
 class ObjectList(tk.Frame):
@@ -59,7 +60,10 @@ class ObjectList(tk.Frame):
         #self.update()
     
     def add(self, event=None):
-        dialog = TypeSelector(self, self.obj_type)
+        verb=False
+        if self.obj_type == 'event' and gd.is_entity(self.editor.viewer.obj):
+            verb = True
+        dialog = TypeSelector(self, self.obj_type, verb)
         result = dialog.getResult()
         if result:
             result['owner'] = self.editor.viewer.obj

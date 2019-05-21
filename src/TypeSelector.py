@@ -5,8 +5,9 @@ import game_data as gd
 
 
 class TypeSelector(SimpleDialog):
-    def __init__(self, parent, kind):
+    def __init__(self, parent, kind, has_verb=False):
         self.kind = kind
+        self.has_verb = has_verb
         SimpleDialog.__init__(self, parent)
         
     def makeWidgets(self, master):
@@ -32,6 +33,11 @@ class TypeSelector(SimpleDialog):
         tk.Label(master, text="Name:").grid(row=5)
         self.name = tk.Entry(master)
         self.name.grid(row=5, column=1)
+        
+        if self.has_verb:
+            tk.Label(master, text="Verb:").grid(row=10)
+            self.verb = tk.Entry(master)
+            self.verb.grid(row=10, column=1)
     
     def validate(self):
         if self.name.get() == "":
@@ -43,4 +49,8 @@ class TypeSelector(SimpleDialog):
         fact = GameObjectFactory()
         self.result = fact.make(self.choice.get())
         self.result["name"] = self.name.get()
+        try:
+            self.result['verb'] = self.verb.get()
+        except AttributeError:
+            pass
             
