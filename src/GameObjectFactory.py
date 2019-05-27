@@ -24,7 +24,7 @@ class GameObjectFactory:
             return self.makeToggle(verb)
         elif kind == "move":
             return self.makeMove(verb)
-        elif kind in ["group", "ordered"]:
+        elif kind in ["group", "ordered", "interaction"]:
             return self.makeGroup(kind, verb)
         elif kind == "interaction":
             return self.makeInteraction(verb)
@@ -60,7 +60,6 @@ class GameObjectFactory:
             "description": "",
             "events": [],
             "items": [],
-            "owner": None,
             "active": 1,
             "obtainable": 1,
             "hidden": 0
@@ -86,7 +85,6 @@ class GameObjectFactory:
             "name": "",
             "subjects": [],
             "once": 0,
-            "owner": None,
         }
         if verb:
             event["verb"] = verb
@@ -104,7 +102,7 @@ class GameObjectFactory:
     
     def makeTransfer(self, verb=None):
         event = self.makeEvent("transfer", verb)
-        event["other"] = None
+        event["target"] = None
         event["toTarget"] = 0
         event["item"] = None
         return event
@@ -124,12 +122,6 @@ class GameObjectFactory:
         event = self.makeEvent(kind, verb)
         event["events"] = []
         event["repeats"] = 0
-        return event
-
-    def makeInteraction(self, verb=None):
-        event = self.makeEvent("interaction", verb)
-        event["options"] = {}
-        event["breakout"] = 0
         return event
     
     def makeConditional(self, verb=None):

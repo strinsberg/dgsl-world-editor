@@ -55,6 +55,9 @@ class ObjectViewer(tk.Frame):
     
     def null(self):
         tk.Label(self, text="Please select an object to edit").pack()
+    
+    def finish(self):
+        pass
 
 # Testing ##########################################################
 

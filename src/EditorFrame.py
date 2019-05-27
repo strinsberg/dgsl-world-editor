@@ -1,5 +1,5 @@
 import tkinter as tk
-from ObjectViewer import ObjectViewer
+from ObjectViewerFactory import ObjectViewer, ObjectViewerFactory
 from ObjectList import ObjectList, RoomList
 from GameObjectFactory import GameObjectFactory
 from MenuBar import MenuBar
@@ -24,13 +24,14 @@ class EditorFrame(tk.Frame):
         tk.Grid.rowconfigure(self, 1, weight=1)
         
         self.list = RoomList(self.body, self)
-        self.list.grid(row=0, column=1, sticky='nsw')
+        self.list.grid(row=0, column=0, sticky='nsw')
         
-        self.viewer = ObjectViewer(self.body, self)
-        self.viewer.grid(row=0, column=2)
+        fact = ObjectViewerFactory()
+        self.viewer = fact.make(self.body, self)
+        self.viewer.grid(row=0, column=1)
         
         tk.Grid.rowconfigure(self.body, 0, weight=1)
-        tk.Grid.columnconfigure(self.body, 2, weight=1)
+        tk.Grid.columnconfigure(self.body, 1, weight=1)
         
     def editNew(self, obj):
         self.history.append(self.viewer.obj)
@@ -43,11 +44,13 @@ class EditorFrame(tk.Frame):
     
     def newViewer(self, obj):
         #print(obj)
-        new = ObjectViewer(self.body, self, obj)
+        fact = ObjectViewerFactory()
+        new = fact.make(self.body, self, obj)
         #print(new)
+        self.viewer.finish()
         self.viewer.destroy()
         self.viewer = new
-        self.viewer.grid(row=0, column=2)
+        self.viewer.grid(row=0, column=1)
     
     def update(self):
         self.list.update()
