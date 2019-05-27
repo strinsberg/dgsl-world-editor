@@ -26,18 +26,16 @@ class GameObjectFactory:
             return self.makeMove(verb)
         elif kind in ["group", "ordered", "interaction"]:
             return self.makeGroup(kind, verb)
-        elif kind == "interaction":
-            return self.makeInteraction(verb)
         elif kind == "conditional":
             return self.makeConditional(verb)
         elif kind == "hasItem":
-            return self.makeHasItem()
+            return self.makeHasItem(name)
         elif kind == "protected":
-            return self.makeProtected()
+            return self.makeProtected(name)
         elif kind == "question":
-            return self.makeQuestion()
+            return self.makeQuestion(name)
         else:
-            return None
+            assert False, "Object factory has no type: " + kind
     
     # Player ###################################################
     
@@ -71,11 +69,7 @@ class GameObjectFactory:
         room = self.makeEntity(kind, name)
         room['obtainable'] = 0
         return room
-    
-    def makeDoor(self, kind, name):
-        door = self.makeEntity(kind, name)
-        door['destination'] = None
-        return door
+        
     
     # Events ###################################################
     def makeEvent(self, kind, verb=None):
@@ -132,22 +126,22 @@ class GameObjectFactory:
         return event
     
     # Conditions ###############################################
-    def makeCondition(self, kind):
-        return {"type": kind}
+    def makeCondition(self, kind, name):
+        return {"type": kind, 'name': name}
     
-    def makeHasItem(self):
-        cond = self.makeCondition("hasItem")
+    def makeHasItem(self, name):
+        cond = self.makeCondition("hasItem", name)
         cond["item"] = None
         cond["other"] = None
         return cond
         
-    def makeProtected(self):
-        cond = self.makeCondition("protected")
-        cond["atmosphere"] = ""
+    def makeProtected(self, name):
+        cond = self.makeCondition("protected", name)
+        cond["atmosphere"] = 'oxygen'
         return cond
     
-    def makeQuestion(self):
-        cond = self.makeCondition("question")
+    def makeQuestion(self, name):
+        cond = self.makeCondition("question", name)
         cond["question"] = ""
         cond["answer"] = ""
         return cond
