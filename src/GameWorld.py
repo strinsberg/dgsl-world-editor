@@ -6,88 +6,64 @@ class GameWorld:
 
     def __init__(self):
         self.name = "untitled"
-        self.rooms = []
-        self.player = GameObjectFactory().make('player')
+        self.welcome = "fun is waiting!"
         self.version = 0.0
+        self.player = GameObjectFactory().make('player')
+        self.objects = {}
+        self.first_save = True
+    
+    def addObject(self, obj):
+        self.objects[obj['id']] = obj
+    
+    def removeObject(self, obj_id):
+        self.objects.pop(obj_id)
+    
+    def getObject(self, obj_id):
+        return self.objects['obj_id']
     
     def getObjects(self, kind):
-        if kind == 'room':
-            return self.getRooms()
-        elif kind == 'entity':
-            return self.getEntities()
-        elif kind == 'event':
-            return self.getEvents()
+        objects = []
+        
+        if kind == 'container':
+            isType = gd.is_container(kind)
         else:
-            return []
-    
-    def getRooms(self):
-        rooms = []
-        rooms.extend(self.rooms)
-        return rooms
-    
-    def getEntities(self):
-        return []
-    
-    def getEvents(self):
-        events = []
-        for room in self.rooms:
-            events.extend(getItemEvents(room))
-        return events
+            isType = lambda x: False
+            
+        for field in self.objects:
+            obj = self.objects[field]
+            if obj['type'] == kind or isType(kind):
+                objects.append(obj)
+                
+        return objects
         
     def save(self):
-        # Problem with this is that any time an object is referenced
-        # by another object (excluding containment) we have a
-        # circular reference. So owners, destinations, items,
-        # subjects will need to be sanitized to just id's when
-        # we are working with them.
-        # this could be either by storing them as id's and looking
-        # for the object when asking to edit (or taking away edit
-        # for this type of connection). Or by having a function
-        # that goes through and turns the owners etc. into just id's
-        # the first sounds easier to me.
+        if self.first_save:
+            if filename in os.listdir():
+                # Replace with a dialog. Cancel will return.
+                print("World with that name exists")
+            self.first_save = False
+            
         data = {
-            "world_name": self.name, "all_rooms": self.rooms,
-            "world_player": self.player, "version": self.version,
+            "name": self.name,
+            "welcome": self.welcome,
+            "version": self.version,
+            "player": self.player,
+            "object": self.objects,
         }
-        with open(self.name + ".world", 'w+') as f:
-            f.write(str(data))
+        
+        with open(self.name + ".world", 'w') as f:
+            json.dump(data, f)
         
     
     def load(self, filename):
         with open(filename) as f:
-            contents = f.read()
+            data = json.load(f)
         
-        data = json.loads(contents)
         self.name = data['name']
-        self.rooms = data['rooms']
-        self.player = data['player']
+        self.welcome = data['welcome']
         self.version = data['version']
-
-# helpers
-def getItemEvents(item):
-    events = []
-    for event in item['events']:
-        events.extend(getEventEvents(event))
+        self.player = data['player']
+        self.objects = data['objects']
         
-    if 'items' in item:
-        for obj in item['items']:
-            events.extend(getItems(obj))
-            
-    return events
-
-def getEventEvents(event):
-    events = []
-    if event:
-        events.append(event)
+        self.first_save = False
         
-        if 'events' in event:
-            for obj in event['events']:
-                events.extend(getEventEvents(obj))
-        elif 'options' in event:
-            for option in event['options']:
-                events.extend(getEventEvents(option[1]))
-        elif event['type'] == 'conditional':
-            events.extend(getEventEvents(event['success']))
-            events.extend(getEventEvents(event['failure']))
-        
-    return events

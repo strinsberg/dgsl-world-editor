@@ -1,6 +1,7 @@
 import tkinter as tk
-from ObjectViewerFactory import ObjectViewer, ObjectViewerFactory
-from ObjectList import ObjectList, RoomList
+from object_lists import *
+from object_editors import *
+from ObjectEditorFactory import ObjectEditorFactory
 from GameObjectFactory import GameObjectFactory
 from MenuBar import MenuBar
 from GameWorld import GameWorld
@@ -23,11 +24,12 @@ class EditorFrame(tk.Frame):
         self.body.grid(row=1, sticky="nswe", padx=2, pady=(0, 2))
         tk.Grid.rowconfigure(self, 1, weight=1)
         
-        self.list = RoomList(self.body, self)
+        self.list = ObjectListWithEdit(self.body,
+                self.world.getObjects('room'), "Rooms",
+                AddObj(), EditObj(), RemoveObj())
         self.list.grid(row=0, column=0, sticky='nsw')
         
-        fact = ObjectViewerFactory()
-        self.viewer = fact.make(self.body, self)
+        self.viewer = ObjectEditorFactory.make(self.body)
         self.viewer.grid(row=0, column=1)
         
         tk.Grid.rowconfigure(self.body, 0, weight=1)
@@ -44,8 +46,7 @@ class EditorFrame(tk.Frame):
     
     def newViewer(self, obj):
         #print(obj)
-        fact = ObjectViewerFactory()
-        new = fact.make(self.body, self, obj)
+        new = tk.Label(self.body, text="nothing here!")
         #print(new)
         self.viewer.finish()
         self.viewer.destroy()
@@ -54,7 +55,20 @@ class EditorFrame(tk.Frame):
     
     def update(self):
         self.list.update()
-        
+
+
+class AddObj:
+    def execute(self, obj=None):
+        print('add')
+
+class EditObj:
+    def execute(self, obj):
+        print(obj)
+
+class RemoveObj:
+    def execute(self, obj):
+        print(obj)
+
 # Testing ######################################################
 
 if __name__=='__main__':
@@ -63,13 +77,10 @@ if __name__=='__main__':
     root.geometry("555x384")
     
     fact = GameObjectFactory()
-    rooms = [fact.make('room', name='captains room'),
-            fact.make('room', name='common room')]
+    room = fact.make('room', name='captains room')
     
     world = GameWorld()
-    world.rooms = rooms
-    
-    obj = rooms[0]
+    world.addObject(room)
     
     frame = EditorFrame(root, world)
     frame.pack_propagate(0)

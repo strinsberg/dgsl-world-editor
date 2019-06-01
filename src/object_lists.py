@@ -3,13 +3,13 @@ import tkinter as tk
 # Widget list of objects that allows adding and removing
 class ObjectList(tk.Frame):
     
-    def __init__(self, parent, objects, title, add, remove):
+    def __init__(self, parent, objects, title, kind, commands):
         tk.Frame.__init__(self, parent)
         self.objects = []
         self.objects.extend(objects)
         self.title = title
-        self.add_command = add
-        self.remove_command = remove
+        self.kind = kind
+        self.commands = commands
         self.makeWidgets()
         self.update()
     
@@ -39,7 +39,7 @@ class ObjectList(tk.Frame):
             self.listbox.insert(tk.END, text)
     
     def add(self):
-        obj = self.add_command.execute()
+        obj = self.commands['add'].execute()
         if obj:
             self.objects.append(obj)
             self.update()
@@ -48,7 +48,7 @@ class ObjectList(tk.Frame):
         if len(self.listbox.curselection()) > 0:
             idx = self.listbox.curselection()[0]
             obj = self.objects.pop(idx)
-            self.remove_command.execute(obj['id'])
+            self.commands['add'].execute(obj['id'])
             self.update()
     
     def get(self):
@@ -57,11 +57,7 @@ class ObjectList(tk.Frame):
 
 # Widget list of objects that allows editing
 class ObjectListWithEdit(ObjectList):
-    
-    def __init__(self, parent, objects, title, add, remove, edit):
-        self.edit_command = edit
-        ObjectList.__init__(self,parent, objects, title, add, remove)
-    
+
     def makeButtons(self, buttons):
         ObjectList.makeButtons(self, buttons)
         tk.Button(buttons, text='Edit', command=self.edit).grid(
@@ -71,7 +67,7 @@ class ObjectListWithEdit(ObjectList):
         if len(self.listbox.curselection()) > 0:
             idx = self.listbox.curselection()[0]
             obj = self.objects[idx]
-            self.edit_command.execute(obj['id'])
+            self.commands['edit'].execute(obj['id'])
 
 
 # Testing ######################################################
@@ -85,6 +81,7 @@ if __name__=='__main__':
                 return {'name': 'secrets of soup',
                         'id': '113244-sjfk', 'verb': 'read'}
     command = MockCommand()
+    commands = {'add': command, 'remove':command, 'edit':command}
     
     objects = [{'name': 'close door', 'id': '7j4y-9du'},
                 {'name': 'enter room', 'id': 'hs6-shc3'}]
@@ -95,12 +92,11 @@ if __name__=='__main__':
     # Create and run widgets
     root = tk.Tk()
     
-    obj_list = ObjectList(root, objects, 'Subjects',
-            command, command)
+    obj_list = ObjectList(root, objects, 'Subjects', 'events', commands)
     obj_list.pack()
     
     obj_edit = ObjectListWithEdit(root, edit_objects, 'Items',
-            command, command, command)
+            'entities', commands)
     obj_edit.pack()
     
     
