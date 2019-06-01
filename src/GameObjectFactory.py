@@ -131,7 +131,7 @@ class GameObjectFactory:
     def makeCondition(self, kind):
         return {"type": kind, 'name': ''}
     
-    def makeHasItem(self, name):
+    def makeHasItem(self):
         cond = self.makeCondition("hasItem")
         cond["item"] = None
         cond["other"] = None

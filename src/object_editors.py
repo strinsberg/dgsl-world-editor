@@ -72,9 +72,8 @@ class EntityEditor(ObjectEditor):
     
     def makeLeftList(self):
         self.left = ObjectListWithEdit(self.lists,
-                self.obj['events'], "Events",
-                self.commands['add'], self.commands['remove'],
-                self.commands['edit'])
+                self.obj['events'], "Events", 'event',
+                self.commands)
         self.left.pack(side=tk.LEFT, anchor='w', fill=tk.Y,
                 expand=1)
     
@@ -82,9 +81,8 @@ class EntityEditor(ObjectEditor):
         self.right = None
         if gd.is_container(self.obj):
             self.right = ObjectListWithEdit(self.lists,
-                    self.obj['items'], "Items",
-                    self.commands['add'], self.commands['remove'],
-                    self.commands['edit'])
+                    self.obj['items'], "Items", 'entity',
+                    self.commands)
             self.right.pack(side=tk.LEFT, anchor='w', fill=tk.Y,
                     expand=1)
     
@@ -112,10 +110,11 @@ class EventEditor(ObjectEditor):
         self.once.grid(row=10, sticky='we')
     
     def makeLeftList(self):
+        commands = {'add': self.commands['select_event'],
+                'remove': self.commands['remove']}
         self.left = ObjectList(self.lists,
-                self.obj['subjects'], "Subjects",
-                self.commands['select_event'],
-                self.commands['remove'])
+                self.obj['subjects'], "Subjects", 'entity',
+                commands)
         self.left.pack(side=tk.LEFT, anchor='w', fill=tk.Y,
                 expand=1)
     
@@ -123,9 +122,8 @@ class EventEditor(ObjectEditor):
         self.right = None
         if gd.is_group(self.obj):
             self.right = ObjectListWithEdit(self.lists,
-                    self.obj['events'], "Events",
-                    self.commands['add'], self.commands['remove'],
-                    self.commands['edit'])
+                    self.obj['events'], "Events", 'event',
+                    self.commands)
             self.right.pack(side=tk.LEFT, anchor='w', fill=tk.Y,
                     expand=1)
     
@@ -352,11 +350,10 @@ if __name__=='__main__':
     
     class MockCommand:
         def execute(self, obj_id=None):
-            if obj_id:
-                print(obj_id)
-            else:
-                return{'name': 'Book',
-                        'id': '113244-sjfk', 'verb': 'read'}
+            if obj_id in ['event', 'entity'] or obj_id is None:
+                return {'name': 'close door', 'id': '7j4y-9du'}
+            print(obj_id)
+            
     command = MockCommand()
     commands = {'add':command, 'remove':command, 'edit':command,
             'select_entity':command, 'select_event':command,
@@ -366,7 +363,7 @@ if __name__=='__main__':
     # Create and run widgets
     root = tk.Tk()
     
-    group = 3
+    group = 2
     
     if group == 1:
         ent_edit = EntityEditor(root, obj, commands)
