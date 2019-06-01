@@ -39,7 +39,7 @@ class ObjectList(tk.Frame):
             self.listbox.insert(tk.END, text)
     
     def add(self):
-        obj = self.commands['add'].execute()
+        obj = self.commands['add'].execute(self.kind)
         if obj:
             self.objects.append(obj)
             self.update()
@@ -48,7 +48,7 @@ class ObjectList(tk.Frame):
         if len(self.listbox.curselection()) > 0:
             idx = self.listbox.curselection()[0]
             obj = self.objects.pop(idx)
-            self.commands['add'].execute(obj['id'])
+            self.commands['remove'].execute(obj['id'])
             self.update()
     
     def get(self):
@@ -70,39 +70,67 @@ class ObjectListWithEdit(ObjectList):
             self.commands['edit'].execute(obj['id'])
 
 
+class ObjectListFactory:
+    def make(self, parent, objs, title, kind, commands, isEdit=False):
+        objects = self.makeObjects(objs)
+        if isEdit:
+            return ObjectListWithEdit(parent, objects, title, kind,
+                    commands)
+        else:
+            return ObjectList(parent, objects, title, kind, commands)
+    
+    def makeObjects(self, objs):
+        objects = []
+        for obj in objs:
+            o = {
+                "id": obj['id'],
+                "name": obj['name']
+            }
+            if 'verb' in obj:
+                o['verb'] = obj['verb']
+            objects.append(o)
+        return objects
+            
+
 # Testing ######################################################
 if __name__=='__main__':
+    from GameObjectFactory import GameObjectFactory
+    
     # Test objects
     class MockCommand:
         def execute(self, obj_id=None):
-            if obj_id:
-                print(obj_id)
-            else:
-                return {'name': 'secrets of soup',
-                        'id': '113244-sjfk', 'verb': 'read'}
+            if obj_id in ['event', 'entity']:
+                return {'name': 'close door', 'id': '7j4y-9du'}
+            print(obj_id)
+            
     command = MockCommand()
     commands = {'add': command, 'remove':command, 'edit':command}
     
-    objects = [{'name': 'close door', 'id': '7j4y-9du'},
-                {'name': 'enter room', 'id': 'hs6-shc3'}]
+    close = {'name': 'close door', 'verb': 'use'}
+    enter = {'name': 'enter room', 'verb': 'enter'}
+    pizza = {'name': 'pizza'}
+    fork = {'name': 'fork'}
+    book = {'name': 'secrets of soup'}
     
-    edit_objects = [{'name': 'pizza', 'id': '7j4y-9du'},
-                {'name': 'fork', 'id': 'hs6-shc3'}]
+    fact = GameObjectFactory()
+    events = [fact.make('inform', close), fact.make('kill', enter)]
+    edit_objs = [fact.make('entity', pizza),
+            fact.make('entity', fork), fact.make('entity', book)]
     
     # Create and run widgets
     root = tk.Tk()
     
-    obj_list = ObjectList(root, objects, 'Subjects', 'events', commands)
+    obj_list = ObjectListFactory().make(root, events, 'Subjects', 'event', commands)
     obj_list.pack()
     
-    obj_edit = ObjectListWithEdit(root, edit_objects, 'Items',
-            'entities', commands)
+    obj_edit = ObjectListFactory().make(root, edit_objs, 'Items',
+            'entity', commands, True)
     obj_edit.pack()
     
     
     root.mainloop()
     
     # Test get
-    print(obj_list.get())
     print()
+    print(obj_list.get())
     print(obj_edit.get())

@@ -5,6 +5,7 @@ from ObjectEditorFactory import ObjectEditorFactory
 from GameObjectFactory import GameObjectFactory
 from MenuBar import MenuBar
 from GameWorld import GameWorld
+import commands as com
 
 
 class EditorFrame(tk.Frame):
@@ -25,8 +26,10 @@ class EditorFrame(tk.Frame):
         tk.Grid.rowconfigure(self, 1, weight=1)
         
         self.list = ObjectListWithEdit(self.body,
-                self.world.getObjects('room'), "Rooms",
-                AddObj(), EditObj(), RemoveObj())
+                self.world.getObjects('room'), "Rooms", 'room',
+                {'add': com.AddObj(self, 'entity'),
+                'edit': com.EditObj(),
+                'remove': com.RemoveObj()})
         self.list.grid(row=0, column=0, sticky='nsw')
         
         self.viewer = ObjectEditorFactory.make(self.body)
@@ -56,18 +59,6 @@ class EditorFrame(tk.Frame):
     def update(self):
         self.list.update()
 
-
-class AddObj:
-    def execute(self, obj=None):
-        print('add')
-
-class EditObj:
-    def execute(self, obj):
-        print(obj)
-
-class RemoveObj:
-    def execute(self, obj):
-        print(obj)
 
 # Testing ######################################################
 

@@ -5,37 +5,41 @@ import uuid
 class GameObjectFactory:
 
     # Given an entity type return that type of game data object
-    def make(self, kind, verb=None, name=''):
+    def make(self, kind, obj=None):
         if kind == 'player':
-            return self.makePlayer()
+             newObj = self.makePlayer()
         elif kind == 'room':
-            return self.makeRoom(kind, name)
+            newObj = self.makeRoom(kind)
         elif kind == 'door':
-            return self.makeDoor(kind, name)
+            newObj = self.makeDoor(kind)
         elif kind in gd.entities:
-            return self.makeEntity(kind, name)
+            newObj = self.makeEntity(kind)
         elif kind == "inform":
-            return self.makeInform(kind, verb)
+            newObj = self.makeInform(kind)
         elif kind == "kill":
-            return self.makeKill(verb)
+            newObj = self.makeKill()
         elif kind == "transfer":
-            return self.makeTransfer(verb)
+            newObj = self.makeTransfer()
         elif kind == "toggle":
-            return self.makeToggle(verb)
+            newObj = self.makeToggle()
         elif kind == "move":
-            return self.makeMove(verb)
+            newObj = self.makeMove()
         elif kind in ["group", "ordered", "interaction"]:
-            return self.makeGroup(kind, verb)
+            newObj = self.makeGroup(kind)
         elif kind == "conditional":
-            return self.makeConditional(verb)
+            newObj = self.makeConditional()
         elif kind == "hasItem":
-            return self.makeHasItem(name)
+            newObj = self.makeHasItem()
         elif kind == "protected":
-            return self.makeProtected(name)
+            newObj = self.makeProtected()
         elif kind == "question":
-            return self.makeQuestion(name)
+            newObj = self.makeQuestion()
         else:
             assert False, "Object factory has no type: " + kind
+        
+        if obj:
+            newObj.update(obj)
+        return newObj
     
     # Player ###################################################
     
@@ -50,11 +54,11 @@ class GameObjectFactory:
         }
     
     # Entity ###################################################
-    def makeEntity(self, kind, name):
+    def makeEntity(self, kind):
         return {
             "id": str(uuid.uuid4()),
             "type": kind,
-            "name": name,
+            "name": '',
             "description": "",
             "events": [],
             "items": [],
@@ -65,14 +69,14 @@ class GameObjectFactory:
         # need to make some kind of alteration to accomadate
         # other types of entities. Like rooms have default states
     
-    def makeRoom(self, kind, name):
-        room = self.makeEntity(kind, name)
+    def makeRoom(self, kind):
+        room = self.makeEntity(kind)
         room['obtainable'] = 0
         return room
         
     
     # Events ###################################################
-    def makeEvent(self, kind, verb=None):
+    def makeEvent(self, kind):
         event = {
             "id": str(uuid.uuid4()),
             "type": kind,
@@ -80,68 +84,66 @@ class GameObjectFactory:
             "subjects": [],
             "once": 0,
         }
-        if verb:
-            event["verb"] = verb
         return event
 
-    def makeInform(self, kind, verb=None):
-        event = self.makeEvent(kind, verb)
+    def makeInform(self, kind):
+        event = self.makeEvent(kind)
         event["message"] = ""
         return event
     
-    def makeKill(self, verb=None):
-        event = self.makeInform("kill", verb)
+    def makeKill(self):
+        event = self.makeInform("kill")
         event["ending"] = 0
         return event
     
-    def makeTransfer(self, verb=None):
-        event = self.makeEvent("transfer", verb)
+    def makeTransfer(self):
+        event = self.makeEvent("transfer")
         event["target"] = None
         event["toTarget"] = 0
         event["item"] = None
         return event
     
-    def makeToggle(self, verb=None):
-        event = self.makeEvent("toggle", verb)
+    def makeToggle(self):
+        event = self.makeEvent("toggle")
         event["target"] = None
         return event
     
-    def makeMove(self, verb=None):
-        event = self.makeEvent("move", verb)
+    def makeMove(self):
+        event = self.makeEvent("move")
         event["destination"] = None
         return event
     
     # Group Events #############################################
-    def makeGroup(self, kind, verb=None):
-        event = self.makeEvent(kind, verb)
+    def makeGroup(self, kind):
+        event = self.makeEvent(kind)
         event["events"] = []
         event["repeats"] = 0
         return event
     
-    def makeConditional(self, verb=None):
-        event = self.makeEvent("conditional", verb)
+    def makeConditional(self):
+        event = self.makeEvent("conditional")
         event["condition"] = None
         event["success"] = None
         event["failure"] = None
         return event
     
     # Conditions ###############################################
-    def makeCondition(self, kind, name):
-        return {"type": kind, 'name': name}
+    def makeCondition(self, kind):
+        return {"type": kind, 'name': ''}
     
     def makeHasItem(self, name):
-        cond = self.makeCondition("hasItem", name)
+        cond = self.makeCondition("hasItem")
         cond["item"] = None
         cond["other"] = None
         return cond
         
-    def makeProtected(self, name):
-        cond = self.makeCondition("protected", name)
+    def makeProtected(self):
+        cond = self.makeCondition("protected")
         cond["atmosphere"] = 'oxygen'
         return cond
     
-    def makeQuestion(self, name):
-        cond = self.makeCondition("question", name)
+    def makeQuestion(self):
+        cond = self.makeCondition("question")
         cond["question"] = ""
         cond["answer"] = ""
         return cond
