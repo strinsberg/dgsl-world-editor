@@ -64,14 +64,15 @@ class PlayerEditor(ObjectEditor):
                 self.obj['description'])
         self.desc.grid(row=5, sticky='we')
         self.start = InfoSelector(self, "Starting Room",
-                self.obj['start'], 'room', self.commands.select,
+                self.obj['start'], 'room',
+                self.commands.makeSelect(),
                 self.commands.edit)
         self.start.grid(row=6, sticky='we')
     
     def makeLeftList(self):
         self.left = ObjectListWithEdit(self.lists,
                 self.obj['items'], "Items", 'entity',
-                self.commands.listCommands())
+                self.commands.addList())
         self.left.pack(side=tk.LEFT, anchor='w', fill=tk.Y,
                 expand=1)
     
@@ -112,7 +113,7 @@ class EntityEditor(ObjectEditor):
     def makeLeftList(self):
         self.left = ObjectListWithEdit(self.lists,
                 self.obj['events'], "Events", 'event',
-                self.commands.listCommands())
+                self.commands.addList())
         self.left.pack(side=tk.LEFT, anchor='w', fill=tk.Y,
                 expand=1)
     
@@ -121,7 +122,7 @@ class EntityEditor(ObjectEditor):
         if gd.is_container(self.obj):
             self.right = ObjectListWithEdit(self.lists,
                     self.obj['items'], "Items", 'entity',
-                    self.commands.listCommands())
+                    self.commands.addList())
             self.right.pack(side=tk.LEFT, anchor='w', fill=tk.Y,
                     expand=1)
     
@@ -150,17 +151,28 @@ class EventEditor(ObjectEditor):
     
     def makeLeftList(self):
         self.left = ObjectList(self.lists,
-                self.obj['subjects'], "Subjects", 'entity',
-                self.commands.listCommands(True))
+                self.obj['subjects'], "Subjects", 'event',
+                self.commands.selectList(self.obj, self.select))
         self.left.pack(side=tk.LEFT, anchor='w', fill=tk.Y,
                 expand=1)
+    
+    def select(self, obj):
+        if self.obj['id'] == obj['id']:
+            return False
+        for o in self.obj['subjects']:
+            if o['id'] == obj['id']:
+                return False
+        for o in obj['subjects']:
+            if o['id'] == self.obj['subjects']:
+                return False
+        return True
     
     def makeRightList(self):
         self.right = None
         if gd.is_group(self.obj):
             self.right = ObjectListWithEdit(self.lists,
                     self.obj['events'], "Events", 'event',
-                    self.commands.listCommands())
+                    self.commands.addList())
             self.right.pack(side=tk.LEFT, anchor='w', fill=tk.Y,
                     expand=1)
     
@@ -176,6 +188,7 @@ class EventEditor(ObjectEditor):
 if __name__=='__main__':
     from GameObjectFactory import GameObjectFactory
     
+    # Testing objects
     class MockCommand:
         def execute(self, arg):
             print(arg)
@@ -184,7 +197,6 @@ if __name__=='__main__':
         def execute(self, arg):
             return {'name': 'A new name', 'id': '3rh2ih3r2foi2'}
             
-    # Testing objects
     class MockCommands:
         def __init__(self):
             self.add = AddCommand()
@@ -192,8 +204,18 @@ if __name__=='__main__':
             self.edit = MockCommand()
             self.select = MockCommand()
         
-        def listCommands(self, isSelect=False):
+        def addList(self, isSelect=False):
             return{
+                'add': self.add,
+                'remove': self.remove,
+                'edit': self.edit,
+            }
+    
+        def makeSelect(self, obj, validate=None):
+            return self.add
+        
+        def selectList(self, obj, validate=None):
+            return {
                 'add': self.add,
                 'remove': self.remove,
                 'edit': self.edit,

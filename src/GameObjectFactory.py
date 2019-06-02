@@ -47,6 +47,7 @@ class GameObjectFactory:
         return {
             "id": "player",
             "type": "player",
+            "name": "player",
             "description": "",
             "items": [],
             "start": None,

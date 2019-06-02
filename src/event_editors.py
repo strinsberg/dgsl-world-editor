@@ -32,7 +32,8 @@ class ToggleEditor(EventEditor):
         EventEditor.makeWidgets(self)
         self.target = InfoSelector(self, "Target",
                 self.obj['target'], 'entity',
-                self.commands.select, self.commands.edit)
+                self.commands.makeSelect(self.obj, self.select),
+                self.commands.edit)
         self.target.grid(row=5, sticky='we')
     
     def update(self):
@@ -46,7 +47,8 @@ class TransferEditor(ToggleEditor):
         ToggleEditor.makeWidgets(self)
         self.target.kind = 'container'
         self.item = InfoSelector(self, "Item",
-                self.obj['item'], 'entity', self.commands.select,
+                self.obj['item'], 'entity',
+                self.commands.makeSelect(self.obj, self.select),
                 self.commands.edit)
         self.item.grid(row=6, sticky='we')
         self.to_target = InfoCheck(self, "To target",
@@ -65,7 +67,8 @@ class MoveEditor(EventEditor):
         EventEditor.makeWidgets(self)
         self.dest = InfoSelector(self, "Destination",
                 self.obj['destination'], 'room',
-                self.commands.select, self.commands.edit)
+                self.commands.makeSelect(self.obj, self.select),
+                self.commands.edit)
         self.dest.grid(row=5, sticky='we')
     
     def update(self):
@@ -96,12 +99,14 @@ class ConditionalEditor(EventEditor):
         self.cond.grid(row=5, sticky='we')
         
         self.succ = InfoSelector(self, "Success",
-                self.obj['success'], 'event', self.commands.select,
+                self.obj['success'], 'event',
+                self.commands.makeSelect(self.obj, self.select),
                 self.commands.edit)
         self.succ.grid(row=6, sticky='we')
         
         self.fail = InfoSelector(self, "Failure",
-                self.obj['failure'], 'event', self.commands.select,
+                self.obj['failure'], 'event',
+                self.commands.makeSelect(self.obj, self.select),
                 self.commands.edit)
         self.fail.grid(row=7, sticky='we')
     
@@ -132,8 +137,18 @@ if __name__=='__main__':
             self.edit = MockCommand()
             self.select = MockCommand()
         
-        def listCommands(self, isSelect=False):
+        def addList(self, isSelect=False):
             return{
+                'add': self.add,
+                'remove': self.remove,
+                'edit': self.edit,
+            }
+    
+        def makeSelect(self, obj, validate=None):
+            return self.add
+        
+        def selectList(self, obj, validate=None):
+            return {
                 'add': self.add,
                 'remove': self.remove,
                 'edit': self.edit,

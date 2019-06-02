@@ -1,4 +1,5 @@
 from TypeSelector import TypeSelector
+from ObjectSelector import ObjectSelector
 
 class Command:
     def __init__(self, editor):
@@ -14,9 +15,23 @@ class AddObj(Command):
             self.editor.world.addObject(obj)
             return obj
 
-class SelectObj(Command):
+class SelectAdd(Command):
+    def __init__(self, editor, obj=None, validate=None):
+        Command.__init__(self, editor)
+        self.obj = obj
+        self.validate = validate
+
     def execute(self, kind):
-        print(kind)
+        objects = self.editor.world.getObjects(kind)
+        if self.obj:
+            objects = [obj for obj in objects if self.validate(obj)]
+        dialog = ObjectSelector(self.editor, objects)
+        obj = dialog.getResult()
+        return obj
+
+class SelectRemove(Command):
+    def execute(self, kind):
+        pass
 
 class EditObj(Command):
     def execute(self, ID):
@@ -32,14 +47,24 @@ class RemoveObj(Command):
 
 class Commands:
     def __init__(self, editor):
+        self.editor = editor
         self.add = AddObj(editor)
         self.remove = RemoveObj(editor)
         self.edit = EditObj(editor)
-        self.select = SelectObj(editor)
     
-    def listCommands(self, isSelect=False):
-        return{
-            'add': self.add if not isSelect else self.select,
+    def addList(self):
+        return {
+            'add': self.add,
             'remove': self.remove,
+            'edit': self.edit,
+        }
+    
+    def makeSelect(self, obj, validate=None):
+        return SelectAdd(self.editor, obj, validate)
+    
+    def selectList(self, obj, validate=None):
+        return {
+            'add': self.makeSelect(obj, validate),
+            'remove': SelectRemove(self.editor),
             'edit': self.edit,
         }

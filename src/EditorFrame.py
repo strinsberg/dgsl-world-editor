@@ -31,7 +31,7 @@ class EditorFrame(tk.Frame):
         
         self.list = ObjectListWithEdit(self.body,
                 self.world.getObjects('room'), "Rooms", 'room',
-                self.commands.listCommands())
+                self.commands.addList())
         self.list.grid(row=0, column=0, sticky='nsw')
         
         self.obj_editor = ObjectEditorFactory().make(self.body)

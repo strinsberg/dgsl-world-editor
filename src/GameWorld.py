@@ -1,4 +1,5 @@
 from GameObjectFactory import GameObjectFactory
+import game_data as gd
 import json
 import os
 
@@ -38,13 +39,17 @@ class GameWorld:
         objects = []
         
         if kind == 'container':
-            isType = gd.is_container(kind)
+            isType = lambda x: x in gd.containers
+        elif kind == 'event':
+            isType = lambda x: x in gd.events
+        elif kind == 'entity':
+            isType = lambda x: x in gd.entities
         else:
             isType = lambda x: False
             
-        for field in self.objects:
-            obj = self.objects[field]
-            if obj['type'] == kind or isType(kind):
+        for ID in self.objects:
+            obj = self.objects[ID]
+            if obj['type'] == kind or isType(obj['type']):
                 objects.append(obj)
                 
         return objects
