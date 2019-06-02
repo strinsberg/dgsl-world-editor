@@ -14,6 +14,7 @@ class EditorFrame(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.world = world
         self.history = []
+        self.commands = com.Commands(self)
         self.makeWidgets()
     
     def makeWidgets(self):
@@ -27,37 +28,41 @@ class EditorFrame(tk.Frame):
         
         self.list = ObjectListWithEdit(self.body,
                 self.world.getObjects('room'), "Rooms", 'room',
-                {'add': com.AddObj(self, 'entity'),
-                'edit': com.EditObj(),
-                'remove': com.RemoveObj()})
+                self.commands.listCommands())
         self.list.grid(row=0, column=0, sticky='nsw')
         
-        self.viewer = ObjectEditorFactory.make(self.body)
-        self.viewer.grid(row=0, column=1)
+        self.obj_editor = ObjectEditorFactory().make(self.body)
+        self.obj_editor.grid(row=0, column=1)
         
         tk.Grid.rowconfigure(self.body, 0, weight=1)
         tk.Grid.columnconfigure(self.body, 1, weight=1)
         
-    def editNew(self, obj):
-        self.history.append(self.viewer.obj)
-        self.newViewer(obj)
+    def editNew(self, obj_id):
+        self.history.append(self.obj_editor.obj['id'])
+        self.newObjEditor(self.world.getObject(obj_id))
     
     def editLast(self):
-        if len(self.history) > 0:
-            obj = self.history.pop()
-            self.newViewer(obj)
+        while len(self.history) > 0:
+            obj_id = self.history.pop()
+            # could add something to skip if obj is the same
+            if self.world.hasObject(obj_id):
+                obj = self.world.getObject(obj_id) if obj_id else None
+                self.newObjEditor(obj)
+                break
+                
     
-    def newViewer(self, obj):
-        #print(obj)
-        new = tk.Label(self.body, text="nothing here!")
-        #print(new)
-        self.viewer.finish()
-        self.viewer.destroy()
-        self.viewer = new
-        self.viewer.grid(row=0, column=1)
+    def newObjEditor(self, obj):
+        self.world.updateObject(self.obj_editor.get())
+        self.update()
+        new = ObjectEditorFactory().make(self.body, obj,
+                self.commands)
+        self.obj_editor.destroy()
+        self.obj_editor = new
+        self.obj_editor.grid(row=0, column=1)
     
     def update(self):
         self.list.update()
+        self.obj_editor.update()
 
 
 # Testing ######################################################
@@ -68,7 +73,7 @@ if __name__=='__main__':
     root.geometry("555x384")
     
     fact = GameObjectFactory()
-    room = fact.make('room', name='captains room')
+    room = fact.make('room', {'name': 'captains room'})
     
     world = GameWorld()
     world.addObject(room)

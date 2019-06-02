@@ -71,13 +71,15 @@ class ObjectListWithEdit(ObjectList):
 
 
 class ObjectListFactory:
-    def make(self, parent, objs, title, kind, commands, isEdit=False):
+    def make(self, parent, objs, title, kind, commands,
+            isEdit=False):
         objects = self.makeObjects(objs)
         if isEdit:
             return ObjectListWithEdit(parent, objects, title, kind,
                     commands)
         else:
-            return ObjectList(parent, objects, title, kind, commands)
+            return ObjectList(parent, objects, title, kind,
+                    commands)
     
     def makeObjects(self, objs):
         objects = []
@@ -98,13 +100,15 @@ if __name__=='__main__':
     
     # Test objects
     class MockCommand:
-        def execute(self, obj_id=None):
-            if obj_id in ['event', 'entity']:
-                return {'name': 'close door', 'id': '7j4y-9du'}
-            print(obj_id)
+        def execute(self, arg):
+            print(arg)
+            
+    class MockAdd:
+        def execute(self, arg):
+            return {'name': 'A new name', 'id': '3rh2ih3r2foi2'}
             
     command = MockCommand()
-    commands = {'add': command, 'remove':command, 'edit':command}
+    commands = {'add': MockAdd(), 'remove':command, 'edit':command}
     
     close = {'name': 'close door', 'verb': 'use'}
     enter = {'name': 'enter room', 'verb': 'enter'}
@@ -120,7 +124,8 @@ if __name__=='__main__':
     # Create and run widgets
     root = tk.Tk()
     
-    obj_list = ObjectListFactory().make(root, events, 'Subjects', 'event', commands)
+    obj_list = ObjectListFactory().make(root, events, 'Subjects',
+            'event', commands)
     obj_list.pack()
     
     obj_edit = ObjectListFactory().make(root, edit_objs, 'Items',

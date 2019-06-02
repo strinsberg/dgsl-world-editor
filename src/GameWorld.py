@@ -19,7 +19,16 @@ class GameWorld:
         self.objects.pop(obj_id)
     
     def getObject(self, obj_id):
-        return self.objects['obj_id']
+        return self.objects[obj_id]
+    
+    def updateObject(self, obj):
+        if obj['id'] in self.objects:
+            self.objects[obj['id']].update(obj)
+        elif obj is not None:
+            self.addObject(obj)
+    
+    def hasObject(self, obj_id):
+        return obj_id in self.objects
     
     def getObjects(self, kind):
         objects = []

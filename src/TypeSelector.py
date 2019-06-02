@@ -11,10 +11,9 @@ class TypeSelector(SimpleDialog):
         SimpleDialog.__init__(self, parent)
         
     def makeWidgets(self, master):
-        tk.Label(master, text = self.kind + " Type:").grid(row=0, sticky=tk.W)
+        tk.Label(master, text ="Type:").grid(row=0, sticky=tk.W)
         self.choice = tk.StringVar(master)
         
-        # need types for room, container etc!
         if self.kind == "entity":
             self.choice.set(gd.room_entities[0])
             self.menu = tk.OptionMenu(
@@ -23,10 +22,12 @@ class TypeSelector(SimpleDialog):
             self.choice.set(gd.events[0])
             self.menu = tk.OptionMenu(
                     *((master, self.choice) + tuple(gd.events)))
-        else:
+        elif self.kind == "condition":
             self.choice.set(gd.conditions[0])
             self.menu = tk.OptionMenu(
                     *((master, self.choice) + tuple(gd.conditions)))
+        else:
+            self.menu = tk.Label(master, text=self.kind)
         
         self.menu.grid(row=0, column=1)
         
@@ -47,7 +48,9 @@ class TypeSelector(SimpleDialog):
     
     def apply(self):
         fact = GameObjectFactory()
-        self.result = fact.make(self.choice.get())
+        choice = self.choice.get()
+        kind = choice if choice else self.kind
+        self.result = fact.make(kind)
         self.result["name"] = self.name.get()
         try:
             self.result['verb'] = self.verb.get()

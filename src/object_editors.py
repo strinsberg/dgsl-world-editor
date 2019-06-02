@@ -41,6 +41,17 @@ class ObjectEditor(tk.Frame):
         return self.obj
 
 
+class NullEditor(ObjectEditor):
+    def __init__(self, parent):
+        tk.Frame.__init__(self, parent)
+        tk.Label(self, text="Please select an object to edit").grid(sticky='nwse')
+        
+        self.obj = {'id': None}
+    
+    def update(self):
+        pass
+
+
 class EntityEditor(ObjectEditor):
     
     def __init__(self, parent, obj, commands):
@@ -73,7 +84,7 @@ class EntityEditor(ObjectEditor):
     def makeLeftList(self):
         self.left = ObjectListWithEdit(self.lists,
                 self.obj['events'], "Events", 'event',
-                self.commands)
+                self.commands.listCommands())
         self.left.pack(side=tk.LEFT, anchor='w', fill=tk.Y,
                 expand=1)
     
@@ -82,7 +93,7 @@ class EntityEditor(ObjectEditor):
         if gd.is_container(self.obj):
             self.right = ObjectListWithEdit(self.lists,
                     self.obj['items'], "Items", 'entity',
-                    self.commands)
+                    self.commands.listCommands())
             self.right.pack(side=tk.LEFT, anchor='w', fill=tk.Y,
                     expand=1)
     
@@ -96,8 +107,8 @@ class EntityEditor(ObjectEditor):
         self.obj['events'] = self.left.get()
         if self.right:
             self.obj['items'] = self.right.get()
+          
             
-
 class EventEditor(ObjectEditor):
     
     def __init__(self, parent, obj, commands):
@@ -110,11 +121,9 @@ class EventEditor(ObjectEditor):
         self.once.grid(row=10, sticky='we')
     
     def makeLeftList(self):
-        commands = {'add': self.commands['select_event'],
-                'remove': self.commands['remove']}
         self.left = ObjectList(self.lists,
                 self.obj['subjects'], "Subjects", 'entity',
-                commands)
+                self.commands.listCommands(True))
         self.left.pack(side=tk.LEFT, anchor='w', fill=tk.Y,
                 expand=1)
     
@@ -123,7 +132,7 @@ class EventEditor(ObjectEditor):
         if gd.is_group(self.obj):
             self.right = ObjectListWithEdit(self.lists,
                     self.obj['events'], "Events", 'event',
-                    self.commands)
+                    self.commands.listCommands())
             self.right.pack(side=tk.LEFT, anchor='w', fill=tk.Y,
                     expand=1)
     
@@ -134,175 +143,126 @@ class EventEditor(ObjectEditor):
         if self.right:
             self.obj['events'] = self.right.get()
 
-class InformEditor(EventEditor):
-    
-    def makeWidgets(self):
-        EventEditor.makeWidgets(self)
-        self.message = InfoEntry(self, "Message",
-                self.obj['message'])
-        self.message.grid(row=5, sticky='we')
-    
-    def update(self):
-        EventEditor.update(self)
-        self.obj['message'] = self.message.get()
-    
-class KillEditor(InformEditor):
-    
-    def makeWidgets(self):
-        InformEditor.makeWidgets(self)
-        self.ending = InfoCheck(self, "Ending", self.obj['ending'])
-        self.ending.grid(row=11, sticky='we')
-    
-    def update(self):
-        InformEditor.update(self)
-        self.obj['ending'] = self.ending.get()
-
-
-class ToggleEditor(EventEditor):
-    
-    def makeWidgets(self):
-        EventEditor.makeWidgets(self)
-        self.target = InfoSelector(self, "Target",
-                self.obj['target'],
-                self.commands['select_container'])
-        self.target.grid(row=5, sticky='we')
-    
-    def update(self):
-        EventEditor.update(self)
-        self.obj['target'] = self.target.get()
-        
-        
-class TransferEditor(ToggleEditor):
-    
-    def makeWidgets(self):
-        ToggleEditor.makeWidgets(self)
-        self.item = InfoSelector(self, "Item",
-                self.obj['item'], self.commands['select_entity'])
-        self.item.grid(row=6, sticky='we')
-        self.to_target = InfoCheck(self, "To target",
-                self.obj['toTarget'])
-        self.to_target.grid(row=11, sticky='we')
-        
-    def update(self):
-        ToggleEditor.update(self)
-        self.obj['item'] = self.item.get()
-        self.obj['toTarget'] = self.to_target.get()
-
-
-class MoveEditor(EventEditor):
-    
-    def makeWidgets(self):
-        EventEditor.makeWidgets(self)
-        self.dest = InfoSelector(self, "Destination",
-                self.obj['destination'],
-                self.commands['select_room'])
-        self.dest.grid(row=5, sticky='we')
-    
-    def update(self):
-        EventEditor.update(self)
-        self.obj['destination'] = self.dest.get()
-        
-
-class GroupEditor(EventEditor):
-    
-    def makeWidgets(self):
-        EventEditor.makeWidgets(self)
-        self.repeats = InfoCheck(self, "Repeats",
-                self.obj['repeats'])
-        self.repeats.grid(row=5, sticky='we')
-
-    def update(self):
-        EventEditor.update(self)
-        self.obj['repeats'] = self.repeats.get()
-
-
-class ConditionalEditor(EventEditor):
-    
-    def makeWidgets(self):
-        EventEditor.makeWidgets(self)
-        self.cond = InfoSelector(self, "Condition",
-                self.obj['condition'], self.commands['select_cond'])
-        self.cond.grid(row=5, sticky='we')
-        
-        self.succ = InfoSelector(self, "Success",
-                self.obj['success'], self.commands['select_event'])
-        self.succ.grid(row=6, sticky='we')
-        
-        self.fail = InfoSelector(self, "Failure",
-                self.obj['failure'], self.commands['select_event'])
-        self.fail.grid(row=7, sticky='we')
-    
-    def update(self):
-        EventEditor.update(self)
-        self.obj['condition'] = self.cond.get()
-        self.obj['success'] = self.succ.get()
-        self.obj['failure'] = self.fail.get()
-    
-
-class HasItemEditor(ObjectEditor):
-    
-    def __init__(self, parent, obj, commands):
-        self.commands = commands
-        ObjectEditor.__init__(self, parent, obj)
-    
-    def makeWidgets(self):
-        ObjectEditor.makeWidgets(self)
-        self.item = InfoSelector(self, "Item",
-                self.obj['item'], self.commands['select_entity'])
-        self.item.grid(row=5, sticky='we')
-        self.other = InfoSelector(self, "Other",
-                self.obj['other'],self.commands['select_container'])
-        self.other.grid(row=6, sticky='we')
-
-    def update(self):
-        ObjectEditor.update(self)
-        self.obj['item'] = self.item.get()
-        self.obj['other'] = self.other.get()
-
-
-class QuestionEditor(ObjectEditor):
-    
-    def __init__(self, parent, obj, commands):
-        self.commands = commands
-        ObjectEditor.__init__(self, parent, obj)
-    
-    def makeWidgets(self):
-        ObjectEditor.makeWidgets(self)
-        self.question = InfoEntry(self, "Question",
-                self.obj['question'])
-        self.question.grid(row=5, sticky='we')
-        self.answer = InfoEntry(self, "Answer",
-                self.obj['answer'])
-        self.answer.grid(row=6, sticky='we')
-
-    def update(self):
-        ObjectEditor.update(self)
-        self.obj['question'] = self.question.get()
-        self.obj['answer'] = self.answer.get()
-        
-        
-class ProtectedEditor(ObjectEditor):
-    
-    def __init__(self, parent, obj, commands):
-        self.commands = commands
-        ObjectEditor.__init__(self, parent, obj)
-    
-    def makeWidgets(self):
-        ObjectEditor.makeWidgets(self)
-        self.atmos = InfoOption(self, "Atmosphere",
-                self.obj['atmosphere'], gd.atmospheres)
-        self.atmos.grid(row=5, sticky='we')
-
-    def update(self):
-        ObjectEditor.update(self)
-        self.obj['atmosphere'] = self.atmos.get()
-
 
 # Testing ######################################################
 if __name__=='__main__':
     from GameObjectFactory import GameObjectFactory
+    
+    class MockCommand:
+        def execute(self, arg):
+            print(arg)
+    
+    class AddCommand:
+        def execute(self, arg):
+            return {'name': 'A new name', 'id': '3rh2ih3r2foi2'}
+            
     # Testing objects
-    obj = {
+    class MockCommands:
+        def __init__(self):
+            self.add = AddCommand()
+            self.remove = MockCommand()
+            self.edit = MockCommand()
+            self.select = MockCommand()
+        
+        def listCommands(self, isSelect=False):
+            return{
+                'add': self.add,
+                'remove': self.remove,
+                'edit': self.edit,
+            }
+    
+    commands = MockCommands()
+    
+    pizza = {'name': 'pizza'}
+    room = {'name': 'captains room'}
+    event = {'name': 'enter', 'verb': 'enter'}
+    
+    fact = GameObjectFactory()
+    obj = fact.make('entity', pizza)
+    obj2 = fact.make('room', room)
+    obj3 = fact.make('inform', event)
+    obj4 = fact.make('group', event)
+    
+    
+    # Create and run widgets
+    root = tk.Tk()
+    
+    ent_edit = EntityEditor(root, obj, commands)
+    ent_edit.grid(row=0, sticky='w')
+    
+    room_edit = EntityEditor(root, obj2, commands)
+    room_edit.grid(row=1, sticky='w')
+    
+    event_edit = EventEditor(root, obj3, commands)
+    event_edit.grid(row=1, column=1)
+    
+    group_edit = EventEditor(root, obj4, commands)
+    group_edit.grid(row=0, column=1)
+
+    root.mainloop()
+
+    # Test widgets get methods
+    print(ent_edit.get())
+    print(room_edit.get())
+    print(event_edit.get())
+    print(group_edit.get())
+    
+    '''
+        inform_edit = InformEditor(root, inf, commands)
+        inform_edit.grid(row=0, column=1)
+        
+        kill_edit = KillEditor(root, kill, commands)
+        kill_edit.grid(row=1, column=1)
+        
+        root.mainloop()
+        
+       
+        print(inform_edit.get())
+        print(kill_edit.get())
+    
+    elif group == 2:
+        toggle_edit = ToggleEditor(root, toggle, commands)
+        toggle_edit.grid(row=0)
+        
+        transfer_edit = TransferEditor(root, transfer, commands)
+        transfer_edit.grid(row=1)
+        
+        move_edit = MoveEditor(root, move, commands)
+        move_edit.grid(row=0, column=1)
+        
+        group_edit = GroupEditor(root, ordered, commands)
+        group_edit.grid(row=1, column=1)
+        
+        
+        root.mainloop()
+        
+        print(toggle_edit.get())
+        print(transfer_edit.get())
+        print(move_edit.get())
+        print(group_edit.get())
+    
+    elif group == 3:
+        cond_edit = ConditionalEditor(root, conditional, commands)
+        cond_edit.grid(row=0)
+        
+        atmos_edit = ProtectedEditor(root, atmos, commands)
+        atmos_edit.grid(row=1)
+        
+        has_edit = HasItemEditor(root, has, commands)
+        has_edit.grid(row=0, column=1)
+        
+        question_edit = QuestionEditor(root, question, commands)
+        question_edit.grid(row=1, column=1)
+        
+        
+        root.mainloop()
+        
+        print(cond_edit.get())
+        print(atmos_edit.get())
+        print(has_edit.get())
+        print(question_edit.get())
+    
+        obj = {
         'type':'entity',
         'name': 'Secret of soup',
         'id': '1234-rhfg',
@@ -359,71 +319,4 @@ if __name__=='__main__':
             'select_entity':command, 'select_event':command,
             'select_room':command, 'select_container':command,
             'select_cond':command}
-    
-    # Create and run widgets
-    root = tk.Tk()
-    
-    group = 2
-    
-    if group == 1:
-        ent_edit = EntityEditor(root, obj, commands)
-        ent_edit.grid(row=0, sticky='w')
-        
-        room_edit = EntityEditor(root, obj2, commands)
-        room_edit.grid(row=1, sticky='w')
-        
-        inform_edit = InformEditor(root, inf, commands)
-        inform_edit.grid(row=0, column=1)
-        
-        kill_edit = KillEditor(root, kill, commands)
-        kill_edit.grid(row=1, column=1)
-        
-        root.mainloop()
-        
-        # Test widgets get methods
-        print(ent_edit.get())
-        print(room_edit.get())
-        print(inform_edit.get())
-        print(kill_edit.get())
-    
-    elif group == 2:
-        toggle_edit = ToggleEditor(root, toggle, commands)
-        toggle_edit.grid(row=0)
-        
-        transfer_edit = TransferEditor(root, transfer, commands)
-        transfer_edit.grid(row=1)
-        
-        move_edit = MoveEditor(root, move, commands)
-        move_edit.grid(row=0, column=1)
-        
-        group_edit = GroupEditor(root, ordered, commands)
-        group_edit.grid(row=1, column=1)
-        
-        
-        root.mainloop()
-        
-        print(toggle_edit.get())
-        print(transfer_edit.get())
-        print(move_edit.get())
-        print(group_edit.get())
-    
-    elif group == 3:
-        cond_edit = ConditionalEditor(root, conditional, commands)
-        cond_edit.grid(row=0)
-        
-        atmos_edit = ProtectedEditor(root, atmos, commands)
-        atmos_edit.grid(row=1)
-        
-        has_edit = HasItemEditor(root, has, commands)
-        has_edit.grid(row=0, column=1)
-        
-        question_edit = QuestionEditor(root, question, commands)
-        question_edit.grid(row=1, column=1)
-        
-        
-        root.mainloop()
-        
-        print(cond_edit.get())
-        print(atmos_edit.get())
-        print(has_edit.get())
-        print(question_edit.get())
+    '''

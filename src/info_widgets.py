@@ -88,19 +88,29 @@ class InfoLabel(InfoWidget):
 # Item selector widget with label for object field
 class InfoSelector(InfoLabel):
     
-    def __init__(self, parent, label, obj_info, command):
-        self.command = command
+    def __init__(self, parent, label, obj_info, kind, select, edit):
+        self.commands = {'edit': edit, 'select': select}
         self.obj_info = obj_info
-        InfoLabel.__init__(self, parent, label, obj_info['name'])
+        self.kind = kind
+        name = self.obj_info['name'] if obj_info else None
+        InfoLabel.__init__(self, parent, label, name)
     
     def makeWidgets(self):
         InfoLabel.makeWidgets(self)
-        tk.Button(self, text="Select", command=self.select).grid(
+        tk.Button(self, text="Edit", command=self.edit).grid(
                 row=0, column=2, sticky='e')
+        tk.Button(self, text="New", command=self.select).grid(
+                row=0, column=3, sticky='e')
     
     def select(self):
-        self.obj_info = self.command.execute()
-        self.text_var.set(self.obj_info['name'])
+        info = self.commands['select'].execute(self.kind)
+        if info:
+            self.obj_info = info
+            self.text_var.set(self.obj_info['name'])
+    
+    def edit(self):
+        if self.obj_info:
+            self.commands['edit'].execute(self.obj_info['id'])
     
     def get(self):
         return self.obj_info
@@ -109,9 +119,13 @@ class InfoSelector(InfoLabel):
 # Testing ######################################################
 if __name__=='__main__':
     # Mock command class
-    class MockCommand:
+    class MockNew:
         def execute(self):
             return {'name':'A new name', 'id': '3rh2ih3r2foi2'}
+    
+    class MockEdit:
+        def execute(self, ID):
+            print('edit', ID)
     
     # Create and run widgets
     root = tk.Tk()
@@ -130,7 +144,7 @@ if __name__=='__main__':
     
     sel = InfoSelector(root, "School",
             {'name': 'University of Lethbridge',
-            'id': 'iiie474-4858'} , MockCommand())
+            'id': 'iiie474-4858'} , 'entity', MockNew(), MockEdit())
     sel.pack(anchor='w', fill=tk.X, expand=1)
     
     root.mainloop()
