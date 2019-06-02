@@ -30,7 +30,11 @@ class ObjectList(tk.Frame):
         tk.Button(buttons, text='Remove', command=self.remove).grid(
                 row=5, column=10)
     
-    def update(self):
+    def update(self, objects=None):
+        if objects:
+            self.objects=[]
+            self.objects.extend(objects)
+            
         self.listbox.delete(0, tk.END)
         for obj in self.objects:
             text = obj['name']
@@ -41,7 +45,7 @@ class ObjectList(tk.Frame):
     def add(self):
         obj = self.commands['add'].execute(self.kind)
         if obj:
-            self.objects.append(obj)
+            self.objects.append(self.trimObj(obj))
             self.update()
     
     def remove(self):
@@ -53,6 +57,12 @@ class ObjectList(tk.Frame):
     
     def get(self):
         return self.objects
+    
+    def trimObj(self, obj):
+        o = {'name': obj['name'], 'id': obj['id']}
+        if 'verb' in obj:
+            o['verb'] = obj['verb']
+        return o
             
 
 # Widget list of objects that allows editing

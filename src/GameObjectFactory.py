@@ -45,12 +45,11 @@ class GameObjectFactory:
     
     def makePlayer(self):
         return {
-            "id": "None",
+            "id": "player",
             "type": "player",
+            "description": "",
             "items": [],
             "start": None,
-            "name": "user supplied",
-            "get_name": True,
         }
     
     # Entity ###################################################

@@ -25,6 +25,10 @@ class EditObj(Command):
 class RemoveObj(Command):
     def execute(self, ID):
         self.editor.world.removeObject(ID)
+        # Dont just check if it was the last one
+        # check if it still exists.
+        if self.editor.obj_editor.obj['id'] == ID:
+            self.editor.editLast()
 
 class Commands:
     def __init__(self, editor):

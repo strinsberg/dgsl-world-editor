@@ -51,6 +51,34 @@ class NullEditor(ObjectEditor):
     def update(self):
         pass
 
+class PlayerEditor(ObjectEditor):
+    def __init__(self, parent, obj, commands):
+        self.commands = commands
+        ObjectEditor.__init__(self, parent, obj)
+    
+    def makeWidgets(self):
+        tk.Grid.columnconfigure(self, 0, weight=1)
+        InfoLabel(self, "Type", self.obj['type']).grid(row=0,
+                sticky='w')
+        self.desc = InfoEntry(self, "Description",
+                self.obj['description'])
+        self.desc.grid(row=5, sticky='we')
+        self.start = InfoSelector(self, "Starting Room",
+                self.obj['start'], 'room', self.commands.select,
+                self.commands.edit)
+        self.start.grid(row=6, sticky='we')
+    
+    def makeLeftList(self):
+        self.left = ObjectListWithEdit(self.lists,
+                self.obj['items'], "Items", 'entity',
+                self.commands.listCommands())
+        self.left.pack(side=tk.LEFT, anchor='w', fill=tk.Y,
+                expand=1)
+    
+    def update(self):
+        self.obj['description'] = self.desc.get()
+        self.obj['start'] = self.start.get()
+        self.obj['items'] = self.left.get()
 
 class EntityEditor(ObjectEditor):
     

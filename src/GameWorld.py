@@ -1,5 +1,6 @@
 from GameObjectFactory import GameObjectFactory
 import json
+import os
 
 
 class GameWorld:
@@ -8,15 +9,18 @@ class GameWorld:
         self.name = "untitled"
         self.welcome = "fun is waiting!"
         self.version = 0.0
-        self.player = GameObjectFactory().make('player')
         self.objects = {}
+        player = GameObjectFactory().make('player')
+        self.addObject(player)
+        self.player = player['id']
         self.first_save = True
     
     def addObject(self, obj):
         self.objects[obj['id']] = obj
     
     def removeObject(self, obj_id):
-        self.objects.pop(obj_id)
+        obj = self.objects[obj_id]
+        self.removeAll(obj)
     
     def getObject(self, obj_id):
         return self.objects[obj_id]
@@ -46,21 +50,25 @@ class GameWorld:
         return objects
         
     def save(self):
+        filename = self.name + ".world"
+        '''
         if self.first_save:
             if filename in os.listdir():
                 # Replace with a dialog. Cancel will return.
                 print("World with that name exists")
             self.first_save = False
-            
+        '''
+        #hack
+        #self.objects.pop(None)
         data = {
             "name": self.name,
             "welcome": self.welcome,
             "version": self.version,
             "player": self.player,
-            "object": self.objects,
+            "objects": self.objects,
         }
         
-        with open(self.name + ".world", 'w') as f:
+        with open(filename, 'w') as f:
             json.dump(data, f)
         
     
@@ -76,3 +84,11 @@ class GameWorld:
         
         self.first_save = False
         
+    def removeAll(self, obj):
+        self.objects.pop(obj['id'])
+        if 'items' in obj:
+            for i in obj['items']:
+                self.removeAll(i)
+        if 'events' in obj:
+            for e in obj['events']:
+                self.removeAll(e)

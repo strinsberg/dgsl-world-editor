@@ -1,4 +1,4 @@
-from object_editors import EntityEditor, NullEditor
+from object_editors import *
 from event_editors import *
 from condition_editors import *
 import game_data as gd
@@ -7,12 +7,13 @@ import tkinter as tk
 class ObjectEditorFactory:
     
     def make(self, parent, obj=None, commands=None):
-        
         if obj is None:
             return NullEditor(parent)
             
         kind = obj['type']
-        if kind in gd.entities:
+        if kind == 'player':
+            w = PlayerEditor(parent, obj, commands)
+        elif kind in gd.entities:
             w = EntityEditor(parent, obj, commands)
         elif kind == "inform":
             w = InformEditor(parent, obj, commands)

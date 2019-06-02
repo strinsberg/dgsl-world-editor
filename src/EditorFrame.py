@@ -22,6 +22,9 @@ class EditorFrame(tk.Frame):
         self.menu.grid(row=0, sticky="nwe", padx=5, pady=(5,5))
         tk.Grid.columnconfigure(self, 0, weight=1)
         
+        self.makeBody()
+    
+    def makeBody(self):
         self.body = tk.Frame(self, bd=4, relief=tk.GROOVE)
         self.body.grid(row=1, sticky="nswe", padx=2, pady=(0, 2))
         tk.Grid.rowconfigure(self, 1, weight=1)
@@ -45,14 +48,13 @@ class EditorFrame(tk.Frame):
         while len(self.history) > 0:
             obj_id = self.history.pop()
             # could add something to skip if obj is the same
-            if self.world.hasObject(obj_id):
+            if self.world.hasObject(obj_id) or obj_id is None:
                 obj = self.world.getObject(obj_id) if obj_id else None
                 self.newObjEditor(obj)
                 break
                 
     
     def newObjEditor(self, obj):
-        self.world.updateObject(self.obj_editor.get())
         self.update()
         new = ObjectEditorFactory().make(self.body, obj,
                 self.commands)
@@ -63,6 +65,15 @@ class EditorFrame(tk.Frame):
     def update(self):
         self.list.update()
         self.obj_editor.update()
+        old_obj = self.obj_editor.get()
+        if old_obj['id'] is not None:
+            self.world.updateObject(old_obj)
+    
+    def loadWorld(self, world):
+        self.world = world
+        self.history = []
+        self.body.destroy()
+        self.makeBody()
 
 
 # Testing ######################################################
