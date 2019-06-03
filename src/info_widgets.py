@@ -103,10 +103,12 @@ class InfoSelector(InfoLabel):
                 row=0, column=3, sticky='e')
     
     def select(self):
-        info = self.commands['select'].execute(self.kind,
+        obj = self.commands['select'].execute(self.kind,
                 self.obj_info['id'])
-        if info:
-            self.obj_info = info
+        if obj:
+            self.obj_info = {'name': obj['name'], 'id': obj['id']}
+            if 'verb' in obj:
+                self.obj_info['verb'] = obj['verb']
             self.text_var.set(self.obj_info['name'])
     
     def edit(self):
