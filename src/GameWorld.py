@@ -63,8 +63,6 @@ class GameWorld:
                 print("World with that name exists")
             self.first_save = False
         '''
-        #hack
-        #self.objects.pop(None)
         data = {
             "name": self.name,
             "welcome": self.welcome,
@@ -74,7 +72,7 @@ class GameWorld:
         }
         
         with open(filename, 'w') as f:
-            json.dump(data, f, indent=2)
+            json.dump(data, f, indent=2, sort_keys=True)
         
     
     def load(self, filename):

@@ -21,6 +21,11 @@ class MenuBar(tk.Frame):
         self.back = tk.Button(self, text="Back", command=lambda: self.editor.editLast())
         self.back.pack(side=tk.LEFT)
         
+        self.title = tk.StringVar()
+        self.title.set(self.editor.world.name)
+        self.title_bar = tk.Label(self, textvariable=self.title)
+        self.title_bar.pack(side=tk.LEFT, expand=1, fill=tk.X)
+        
         self.load = tk.Button(self, text="Load", command=self.load)
         self.load.pack(side=tk.RIGHT)
         
@@ -33,11 +38,21 @@ class MenuBar(tk.Frame):
         world = GameWorld()
         world.load(filename)
         self.editor.loadWorld(world)
+        self.setTitle(world.name)
+        self.editor.setMessage("Loaded: " + filename)
     
     def save(self):
         # Do something to let them know it succeeded
         self.editor.update()
         self.editor.world.save()
+        self.setTitle(self.editor.world.name)
+        self.editor.setMessage("Saved")
+    
+    def setTitle(self, title):
+        self.title.set(title)
+    
+    def editing(self):
+        self.setTitle("** " + self.editor.world.name + " **")
     
        
     

@@ -23,7 +23,12 @@ class EditorFrame(tk.Frame):
         tk.Grid.columnconfigure(self, 0, weight=1)
         
         self.makeBody()
-    
+        
+        self.message = tk.StringVar()
+        self.message.set("  ")
+        self.message_bar = tk.Label(self, textvariable=self.message)
+        self.message_bar.grid(row=2, sticky='w', padx=5)
+        
     def makeBody(self):
         self.body = tk.Frame(self, bd=4, relief=tk.GROOVE)
         self.body.grid(row=1, sticky="nswe", padx=2, pady=(0, 2))
@@ -74,6 +79,12 @@ class EditorFrame(tk.Frame):
         self.history = []
         self.body.destroy()
         self.makeBody()
+    
+    def setMessage(self, message):
+        self.message.set(message)
+    
+    def clearMessage(self):
+        self.message.set("   ")
 
 
 # Testing ######################################################
@@ -81,7 +92,7 @@ class EditorFrame(tk.Frame):
 if __name__=='__main__':
     root = tk.Tk()
     root.resizable(False, False)
-    root.geometry("555x384")
+    root.geometry("555x400")
     
     fact = GameObjectFactory()
     room = fact.make('room', {'name': 'captains room'})
