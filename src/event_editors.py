@@ -32,9 +32,15 @@ class ToggleEditor(EventEditor):
         EventEditor.makeWidgets(self)
         self.target = InfoSelector(self, "Target",
                 self.obj['target'], 'entity',
-                self.commands.makeSelect(self.obj, self.select),
+                self.commands.makeSelect(self.obj, self.validate),
                 self.commands.edit)
         self.target.grid(row=5, sticky='we')
+    
+    def validate(self, obj):
+        if (not self.select(obj)
+                or obj['type'] in ['player', 'room']):
+            return False
+        return True
     
     def update(self):
         EventEditor.update(self)
@@ -48,13 +54,13 @@ class TransferEditor(ToggleEditor):
         self.target.kind = 'container'
         self.item = InfoSelector(self, "Item",
                 self.obj['item'], 'entity',
-                self.commands.makeSelect(self.obj, self.select),
+                self.commands.makeSelect(self.obj, self.validate),
                 self.commands.edit)
         self.item.grid(row=6, sticky='we')
         self.to_target = InfoCheck(self, "To target",
                 self.obj['toTarget'])
         self.to_target.grid(row=11, sticky='we')
-        
+    
     def update(self):
         ToggleEditor.update(self)
         self.obj['item'] = self.item.get()
@@ -95,18 +101,19 @@ class ConditionalEditor(EventEditor):
         EventEditor.makeWidgets(self)
         self.cond = InfoSelector(self, "Condition",
                 self.obj['condition'], 'condition',
-                self.commands.select, self.commands.edit)
+                self.commands.add,
+                self.commands.edit)
         self.cond.grid(row=5, sticky='we')
         
         self.succ = InfoSelector(self, "Success",
                 self.obj['success'], 'event',
-                self.commands.makeSelect(self.obj, self.select),
+                self.commands.add,
                 self.commands.edit)
         self.succ.grid(row=6, sticky='we')
         
         self.fail = InfoSelector(self, "Failure",
                 self.obj['failure'], 'event',
-                self.commands.makeSelect(self.obj, self.select),
+                self.commands.add,
                 self.commands.edit)
         self.fail.grid(row=7, sticky='we')
     

@@ -25,10 +25,8 @@ class ObjectEditorFactory:
             w = TransferEditor(parent, obj, commands)
         elif kind == "move":
             w = MoveEditor(parent, obj, commands)
-        elif kind in ["group", "ordered"]:
+        elif kind in ["group", "ordered", 'interaction']:
             w = GroupEditor(parent, obj, commands)
-        elif kind == "interaction":
-            w = InteractionEditor(parent, obj, commands)
         elif kind == "conditional":
             w = ConditionalEditor(parent, obj, commands)
         elif kind == "hasItem":

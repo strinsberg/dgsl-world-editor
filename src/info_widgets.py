@@ -103,7 +103,8 @@ class InfoSelector(InfoLabel):
                 row=0, column=3, sticky='e')
     
     def select(self):
-        info = self.commands['select'].execute(self.kind)
+        info = self.commands['select'].execute(self.kind,
+                self.obj_info['id'])
         if info:
             self.obj_info = info
             self.text_var.set(self.obj_info['name'])

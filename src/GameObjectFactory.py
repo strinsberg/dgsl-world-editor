@@ -129,7 +129,7 @@ class GameObjectFactory:
     
     # Conditions ###############################################
     def makeCondition(self, kind):
-        return {"type": kind, 'name': ''}
+        return {"type": kind, 'name': '', "id": str(uuid.uuid4()),}
     
     def makeHasItem(self):
         cond = self.makeCondition("hasItem")

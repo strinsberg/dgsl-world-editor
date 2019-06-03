@@ -152,13 +152,23 @@ class EventEditor(ObjectEditor):
     def makeLeftList(self):
         self.left = ObjectList(self.lists,
                 self.obj['subjects'], "Subjects", 'event',
-                self.commands.selectList(self.obj, self.select))
+                self.commands.selectList(self.obj, self.validate))
         self.left.pack(side=tk.LEFT, anchor='w', fill=tk.Y,
                 expand=1)
     
     def select(self, obj):
         if self.obj['id'] == obj['id']:
             return False
+        return True
+
+        
+    def validate(self, obj):
+        if not self.select(obj):
+            return False
+        
+         # What this really needs to do is make subjects
+        # into a graph and check for cycles. If the addition
+        # of an object will create a cycle then it is invalid
         for o in self.obj['subjects']:
             if o['id'] == obj['id']:
                 return False
