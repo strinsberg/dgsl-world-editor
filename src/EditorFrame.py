@@ -48,7 +48,7 @@ class EditorFrame(tk.Frame):
     def editNew(self, obj_id):
         try:
             self.history.append(self.obj_editor.obj['id'])
-        except AttributeError:
+        except TypeError:
             pass
         self.newObjEditor(self.world.getObject(obj_id))
     

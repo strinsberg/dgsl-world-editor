@@ -8,9 +8,11 @@ class MenuBar(tk.Frame):
         self.editor = parent
         self.makeWidgets()
         
+    # could set commands to methods so that they can update and
+    # set messages etc.
     def makeWidgets(self):
         self.world = tk.Button(self, text="World",
-                command=lambda: self.editor.editWorld())
+                command=self.editor.editWorld)
         self.world.pack(side=tk.LEFT)
         
         self.player = tk.Button(self, text="Player",
@@ -34,6 +36,8 @@ class MenuBar(tk.Frame):
     
     def load(self):
         # need to get them to select a world name
+        # maybe hash the name on saving and loading
+        # or put in some _ to make it more filesystem friendly
         filename = "untitled.world"
         world = GameWorld()
         world.load(filename)

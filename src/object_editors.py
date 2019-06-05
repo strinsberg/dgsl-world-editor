@@ -207,13 +207,22 @@ class WorldEditor(tk.Frame):
     
     def __init__(self, parent, obj, commands):
         tk.Frame.__init__(self, parent)
+        self.obj = obj
+        self.commands = commands
         self.makeWidgets()
     
     def makeWidgets(self):
-        tk.Label(self, text="test world edit").pack()
+        self.name = InfoEntry(self, "Name", self.obj.name)
+        self.name.grid(row=0)
+        self.welcome = InfoEntry(self, "Welcome", self.obj.welcome)
+        self.welcome.grid(row=2)
+        self.version = InfoEntry(self, "Version", self.obj.version)
+        self.version.grid(row=4)
     
     def update(self):
-        pass
+        self.obj.name = self.name.get()
+        self.obj.welcome = self.welcome.get()
+        self.obj.version = self.version.get()
     
     def get(self):
         return {'id':None}
@@ -291,117 +300,3 @@ if __name__=='__main__':
     print(room_edit.get())
     print(event_edit.get())
     print(group_edit.get())
-    
-    '''
-        inform_edit = InformEditor(root, inf, commands)
-        inform_edit.grid(row=0, column=1)
-        
-        kill_edit = KillEditor(root, kill, commands)
-        kill_edit.grid(row=1, column=1)
-        
-        root.mainloop()
-        
-       
-        print(inform_edit.get())
-        print(kill_edit.get())
-    
-    elif group == 2:
-        toggle_edit = ToggleEditor(root, toggle, commands)
-        toggle_edit.grid(row=0)
-        
-        transfer_edit = TransferEditor(root, transfer, commands)
-        transfer_edit.grid(row=1)
-        
-        move_edit = MoveEditor(root, move, commands)
-        move_edit.grid(row=0, column=1)
-        
-        group_edit = GroupEditor(root, ordered, commands)
-        group_edit.grid(row=1, column=1)
-        
-        
-        root.mainloop()
-        
-        print(toggle_edit.get())
-        print(transfer_edit.get())
-        print(move_edit.get())
-        print(group_edit.get())
-    
-    elif group == 3:
-        cond_edit = ConditionalEditor(root, conditional, commands)
-        cond_edit.grid(row=0)
-        
-        atmos_edit = ProtectedEditor(root, atmos, commands)
-        atmos_edit.grid(row=1)
-        
-        has_edit = HasItemEditor(root, has, commands)
-        has_edit.grid(row=0, column=1)
-        
-        question_edit = QuestionEditor(root, question, commands)
-        question_edit.grid(row=1, column=1)
-        
-        
-        root.mainloop()
-        
-        print(cond_edit.get())
-        print(atmos_edit.get())
-        print(has_edit.get())
-        print(question_edit.get())
-    
-        obj = {
-        'type':'entity',
-        'name': 'Secret of soup',
-        'id': '1234-rhfg',
-        'description': 'Everything you ever wanted to know',
-        'active': 1, 'obtainable': 1, 'hidden': 0,
-        'events': [{'name': 'close', 'verb': 'use', 'id': '8d-r'}],
-    }
-    
-    box = {'name': 'box', 'id': 'w-40'}
-    cake = {'name': 'cake', 'id': 'r-7u'}
-    room = {'name': 'hall', 'id': 'er-89'}
-    cond = {'name': 'hasItem', 'id': 'jsdf8'}
-    event = {'name': 'event', 'id': '9af0'}
-    
-    obj2 = {
-        'type':'room',
-        'name': 'captains room',
-        'id': 'he562-osp',
-        'description': 'Best room on the ship',
-        'active': 1, 'obtainable': 1, 'hidden': 0,
-        'events': [{'name': 'enter', 'verb':'enter', 'id': 'r-7u'}],
-        'items': [{'name': 'cake', 'id': 'r-7u'}]
-    }
-    
-    fact = GameObjectFactory()
-    inf = fact.make('inform')
-    kill = fact.make('kill')
-    toggle = fact.make('toggle')
-    toggle['target'] = box
-    transfer = fact.make('transfer')
-    transfer['target'] = box
-    transfer['item'] = cake
-    move = fact.make('move')
-    move['destination'] = room
-    ordered = fact.make('ordered')
-    conditional = fact.make('conditional')
-    conditional['condition'] = cond
-    conditional['success'] = event
-    conditional['failure'] = event
-    has = fact.make('hasItem')
-    has['item'] = box
-    has['other'] = room
-    question = fact.make('question')
-    atmos = fact.make('protected')
-    
-    class MockCommand:
-        def execute(self, obj_id=None):
-            if obj_id in ['event', 'entity'] or obj_id is None:
-                return {'name': 'close door', 'id': '7j4y-9du'}
-            print(obj_id)
-            
-    command = MockCommand()
-    commands = {'add':command, 'remove':command, 'edit':command,
-            'select_entity':command, 'select_event':command,
-            'select_room':command, 'select_container':command,
-            'select_cond':command}
-    '''
