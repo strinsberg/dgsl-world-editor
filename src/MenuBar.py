@@ -10,7 +10,7 @@ class MenuBar(tk.Frame):
         
     def makeWidgets(self):
         self.world = tk.Button(self, text="World",
-                command=lambda: print('world'))
+                command=lambda: self.editor.editWorld())
         self.world.pack(side=tk.LEFT)
         
         self.player = tk.Button(self, text="Player",

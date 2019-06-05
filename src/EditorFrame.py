@@ -46,7 +46,10 @@ class EditorFrame(tk.Frame):
         tk.Grid.columnconfigure(self.body, 1, weight=1)
         
     def editNew(self, obj_id):
-        self.history.append(self.obj_editor.obj['id'])
+        try:
+            self.history.append(self.obj_editor.obj['id'])
+        except AttributeError:
+            pass
         self.newObjEditor(self.world.getObject(obj_id))
     
     def editLast(self):
@@ -63,6 +66,14 @@ class EditorFrame(tk.Frame):
         self.update()
         new = ObjectEditorFactory().make(self.body, obj,
                 self.commands)
+        self.obj_editor.destroy()
+        self.obj_editor = new
+        self.obj_editor.grid(row=0, column=1)
+    
+    def editWorld(self):
+        self.history.append(self.obj_editor.obj['id'])
+        self.update()
+        new = WorldEditor(self.body, self.world, self.commands)
         self.obj_editor.destroy()
         self.obj_editor = new
         self.obj_editor.grid(row=0, column=1)

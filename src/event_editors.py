@@ -54,7 +54,7 @@ class TransferEditor(ToggleEditor):
         self.target.kind = 'container'
         self.item = InfoSelector(self, "Item",
                 self.obj['item'], 'entity',
-                self.commands.makeSelect(self.obj, self.validate),
+                self.commands.makeSelect(self.validate),
                 self.commands.edit)
         self.item.grid(row=6, sticky='we')
         self.to_target = InfoCheck(self, "To target",
@@ -73,7 +73,7 @@ class MoveEditor(EventEditor):
         EventEditor.makeWidgets(self)
         self.dest = InfoSelector(self, "Destination",
                 self.obj['destination'], 'room',
-                self.commands.makeSelect(self.obj, self.select),
+                self.commands.makeSelect(self.select),
                 self.commands.edit)
         self.dest.grid(row=5, sticky='we')
     

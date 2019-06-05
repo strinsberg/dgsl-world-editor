@@ -65,7 +65,7 @@ class PlayerEditor(ObjectEditor):
         self.desc.grid(row=5, sticky='we')
         self.start = InfoSelector(self, "Starting Room",
                 self.obj['start'], 'room',
-                self.commands.makeSelect(),
+                self.commands.makeSelect(self.select),
                 self.commands.edit)
         self.start.grid(row=6, sticky='we')
     
@@ -80,6 +80,13 @@ class PlayerEditor(ObjectEditor):
         self.obj['description'] = self.desc.get()
         self.obj['start'] = self.start.get()
         self.obj['items'] = self.left.get()
+    
+    def select(self, obj):
+        self.update()
+        if (self.obj['start']
+                and self.obj['start']['id'] == obj['id']):
+            return False
+        return True
 
 class EntityEditor(ObjectEditor):
     
@@ -152,11 +159,12 @@ class EventEditor(ObjectEditor):
     def makeLeftList(self):
         self.left = ObjectList(self.lists,
                 self.obj['subjects'], "Subjects", 'event',
-                self.commands.selectList(self.obj, self.validate))
+                self.commands.selectList(self.validate))
         self.left.pack(side=tk.LEFT, anchor='w', fill=tk.Y,
                 expand=1)
     
     def select(self, obj):
+        self.update()
         if self.obj['id'] == obj['id']:
             return False
         return True
@@ -169,6 +177,8 @@ class EventEditor(ObjectEditor):
          # What this really needs to do is make subjects
         # into a graph and check for cycles. If the addition
         # of an object will create a cycle then it is invalid
+        # unfortunately it would also have to check conditional
+        # success and failure. Will turn into a real affair
         for o in self.obj['subjects']:
             if o['id'] == obj['id']:
                 return False
@@ -193,6 +203,21 @@ class EventEditor(ObjectEditor):
         if self.right:
             self.obj['events'] = self.right.get()
 
+class WorldEditor(tk.Frame):
+    
+    def __init__(self, parent, obj, commands):
+        tk.Frame.__init__(self, parent)
+        self.makeWidgets()
+    
+    def makeWidgets(self):
+        tk.Label(self, text="test world edit").pack()
+    
+    def update(self):
+        pass
+    
+    def get(self):
+        return {'id':None}
+    
 
 # Testing ######################################################
 if __name__=='__main__':

@@ -18,14 +18,13 @@ class AddObj(Command):
             return obj
 
 class SelectAdd(Command):
-    def __init__(self, editor, obj=None, validate=None):
+    def __init__(self, editor, validate=None):
         Command.__init__(self, editor)
-        self.obj = obj
         self.validate = validate
 
-    def execute(self, kind, old_id=None):
+    def execute(self, kind):
         objects = self.editor.world.getObjects(kind)
-        if self.obj:
+        if self.validate:
             objects = [obj for obj in objects if self.validate(obj)]
         dialog = ObjectSelector(self.editor, objects)
         obj = dialog.getResult()
@@ -61,12 +60,12 @@ class Commands:
             'edit': self.edit,
         }
     
-    def makeSelect(self, obj, validate=None):
-        return SelectAdd(self.editor, obj, validate)
+    def makeSelect(self, validate=None):
+        return SelectAdd(self.editor, validate)
     
-    def selectList(self, obj, validate=None):
+    def selectList(self, validate=None):
         return {
-            'add': self.makeSelect(obj, validate),
+            'add': self.makeSelect(validate),
             'remove': SelectRemove(self.editor),
             'edit': self.edit,
         }
