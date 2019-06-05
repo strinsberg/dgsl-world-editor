@@ -10,8 +10,6 @@ class GameObjectFactory:
              newObj = self.makePlayer()
         elif kind == 'room':
             newObj = self.makeRoom(kind)
-        elif kind == 'door':
-            newObj = self.makeDoor(kind)
         elif kind in gd.entities:
             newObj = self.makeEntity(kind)
         elif kind == "inform":
@@ -73,7 +71,7 @@ class GameObjectFactory:
         room = self.makeEntity(kind)
         room['obtainable'] = 0
         return room
-        
+    
     
     # Events ###################################################
     def makeEvent(self, kind):
@@ -111,6 +109,7 @@ class GameObjectFactory:
     def makeMove(self):
         event = self.makeEvent("move")
         event["destination"] = None
+        event['name'] = 'unamed move'
         return event
     
     # Group Events #############################################

@@ -2,7 +2,7 @@ import uuid
 
 # Types ########################################################
 
-entities = ["entity", "door", "suit", "container", "room",
+entities = ["entity", "suit", "container", "room",
         "npc", "player"]
 containers = ["container", "room", "npc", "player"]
 
@@ -18,7 +18,7 @@ atmospheres = ["oxygen", "radiation", "space"]
 
 # Types for type selectors #####################################
 
-room_entities = ["entity", "door", "suit", "container", "npc"]
+room_entities = ["entity", "suit", "container", "npc"]
 
 
 # Type checkers ################################################
