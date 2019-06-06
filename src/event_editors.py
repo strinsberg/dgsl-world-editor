@@ -32,7 +32,7 @@ class ToggleEditor(EventEditor):
         EventEditor.makeWidgets(self)
         self.target = InfoSelector(self, "Target",
                 self.obj['target'], 'entity',
-                self.commands.makeSelect(self.obj, self.validate),
+                self.commands.makeSelect(self.validate),
                 self.commands.edit)
         self.target.grid(row=5, sticky='we')
     

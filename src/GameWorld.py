@@ -70,6 +70,8 @@ class GameWorld:
         with open(self.filepath(), 'w') as f:
             json.dump(data, f, indent=2, sort_keys=True)
         
+        self.first_save = False
+        
     
     def load(self, world_name):
         self.name = world_name

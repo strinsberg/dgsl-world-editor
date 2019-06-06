@@ -64,6 +64,7 @@ class EditorFrame(tk.Frame):
     
     def newObjEditor(self, obj):
         self.update()
+        self.objectUpdate(obj)
         new = ObjectEditorFactory().make(self.body, obj,
                 self.commands)
         self.obj_editor.destroy()
@@ -96,6 +97,26 @@ class EditorFrame(tk.Frame):
     
     def clearMessage(self):
         self.message.set("   ")
+    
+    def objectUpdate(self, obj):
+        for field in obj:
+            try:
+                o = obj[field]
+                actual = self.world.getObject(o['id'])
+                o['name'] = actual['name']
+                if 'verb' in o:
+                    o['verb'] = actual['verb']
+
+            except TypeError:
+                try:
+                    for e in obj[field]:
+                        actual = self.world.getObject(e['id'])
+                        e['name'] = actual['name']
+                        if 'verb' in e:
+                            e['verb'] = actual['verb']
+                except TypeError:
+                    pass
+                    
 
 
 # Testing ######################################################

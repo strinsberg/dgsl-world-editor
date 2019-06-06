@@ -1,5 +1,6 @@
 from TypeSelector import TypeSelector
 from ObjectSelector import ObjectSelector
+import game_data as gd
 
 class Command:
     def __init__(self, editor):
@@ -9,7 +10,8 @@ class Command:
 
 class AddObj(Command):
     def execute(self, kind, old_id=None):
-        dialog = TypeSelector(self.editor, kind)
+        hasVerb = True if kind in gd.events or kind == 'event' else False
+        dialog = TypeSelector(self.editor, kind, hasVerb)
         obj = dialog.getResult()
         if obj:
             self.editor.world.addObject(obj)
