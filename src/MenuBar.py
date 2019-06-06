@@ -1,5 +1,7 @@
 import tkinter as tk
 from GameWorld import GameWorld
+from SimpleDialog import *
+import os
 
 class MenuBar(tk.Frame):
 
@@ -35,18 +37,34 @@ class MenuBar(tk.Frame):
         self.save.pack(side=tk.RIGHT)
     
     def load(self):
-        # need to get them to select a world name
-        # maybe hash the name on saving and loading
-        # or put in some _ to make it more filesystem friendly
-        filename = "untitled.world"
+        dialog = EntryDialog(self, "Enter world name")
+        result = dialog.getResult()
+        if result:
+            world_name = result
+        else:
+            return
         world = GameWorld()
-        world.load(filename)
+        world.load(world_name)
         self.editor.loadWorld(world)
         self.setTitle(world.name)
-        self.editor.setMessage("Loaded: " + filename)
+        self.editor.setMessage("Loaded: " + world.name)
     
     def save(self):
-        # Do something to let them know it succeeded
+        if self.editor.world.name == 'untitled':
+            dialog = EntryDialog(self, "Please choose a world name")
+            result = dialog.getResult()
+            if result:
+                self.editor.world.name = result
+                self.setTitle(result)
+            else:
+                return
+            
+        if (self.editor.world.first_save and
+                self.editor.world.filename() in os.listdir()):
+            dialog = SimpleDialog(self, "Do you really want to save? \nWorld already exists! Saving will overwrite it. \nThere will be no more Reminders\nCancel and rename world if you don't want this to happen")
+            if not dialog.getResult():
+                return
+                
         self.editor.update()
         self.editor.world.save()
         self.setTitle(self.editor.world.name)

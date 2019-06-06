@@ -55,14 +55,6 @@ class GameWorld:
         return objects
         
     def save(self):
-        filename = self.name + ".world"
-        '''
-        if self.first_save:
-            if filename in os.listdir():
-                # Replace with a dialog. Cancel will return.
-                print("World with that name exists")
-            self.first_save = False
-        '''
         data = {
             "name": self.name,
             "welcome": self.welcome,
@@ -71,12 +63,13 @@ class GameWorld:
             "objects": self.objects,
         }
         
-        with open(filename, 'w') as f:
+        with open(self.filename(), 'w') as f:
             json.dump(data, f, indent=2, sort_keys=True)
         
     
-    def load(self, filename):
-        with open(filename) as f:
+    def load(self, world_name):
+        self.name = world_name
+        with open(self.filename()) as f:
             data = json.load(f)
         
         self.name = data['name']
@@ -95,3 +88,6 @@ class GameWorld:
         if 'events' in obj:
             for e in obj['events']:
                 self.removeAll(e)
+    
+    def filename(self):
+        return "saves/" + self.name.replace(' ', '_') + '.world'

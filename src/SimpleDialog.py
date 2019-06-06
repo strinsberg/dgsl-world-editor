@@ -1,4 +1,5 @@
 import tkinter as tk
+from info_widgets import InfoEntry
 
 class SimpleDialog(tk.Toplevel):
     """
@@ -99,8 +100,22 @@ class SimpleDialog(tk.Toplevel):
     # Override to determine what happens
     # If you want data passed out store it in self.result
     def apply(self):
-        pass
+        self.result = True
+
+class EntryDialog(SimpleDialog):
     
+    def makeWidgets(self, master):
+        SimpleDialog.makeWidgets(self, master)
+        self.name = InfoEntry(master, '', '')
+        self.name.pack()
+    
+    def validate(self):
+        if self.name.get() == '':
+            return False
+        return True
+        
+    def apply(self):
+        self.result = self.name.get()
 
 # Main for Testing ################################################
 
