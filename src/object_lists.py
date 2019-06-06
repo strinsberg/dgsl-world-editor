@@ -7,6 +7,7 @@ class ObjectList(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.objects = []
         self.objects.extend(objects)
+        self.objects.sort(key=lambda obj: obj['name'])
         self.title = title
         self.kind = kind
         self.commands = commands

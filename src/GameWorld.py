@@ -54,6 +54,10 @@ class GameWorld:
                 
         return objects
         
+    def changeName(self, name):
+        self.name = name
+        self.first_save = True
+        
     def save(self):
         data = {
             "name": self.name,
@@ -63,13 +67,13 @@ class GameWorld:
             "objects": self.objects,
         }
         
-        with open(self.filename(), 'w') as f:
+        with open(self.filepath(), 'w') as f:
             json.dump(data, f, indent=2, sort_keys=True)
         
     
     def load(self, world_name):
         self.name = world_name
-        with open(self.filename()) as f:
+        with open(self.filepath()) as f:
             data = json.load(f)
         
         self.name = data['name']
@@ -78,7 +82,7 @@ class GameWorld:
         self.player = data['player']
         self.objects = data['objects']
         
-        self.first_save = False
+        self.first_save = True
         
     def removeAll(self, obj):
         self.objects.pop(obj['id'])
@@ -89,5 +93,8 @@ class GameWorld:
             for e in obj['events']:
                 self.removeAll(e)
     
-    def filename(self):
+    def filepath(self):
         return "saves/" + self.name.replace(' ', '_') + '.world'
+    
+    def filename(self):
+        return self.name.replace(' ', '_') + '.world'

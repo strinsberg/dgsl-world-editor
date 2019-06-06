@@ -22,7 +22,7 @@ class MenuBar(tk.Frame):
                 self.editor.editNew(self.editor.world.player))
         self.player.pack(side=tk.LEFT)
         
-        self.back = tk.Button(self, text="Back", command=lambda: self.editor.editLast())
+        self.back = tk.Button(self, text="Back", command=self.editor.editLast)
         self.back.pack(side=tk.LEFT)
         
         self.title = tk.StringVar()
@@ -54,13 +54,13 @@ class MenuBar(tk.Frame):
             dialog = EntryDialog(self, "Please choose a world name")
             result = dialog.getResult()
             if result:
-                self.editor.world.name = result
+                self.editor.world.changeName(result)
                 self.setTitle(result)
             else:
                 return
-            
+
         if (self.editor.world.first_save and
-                self.editor.world.filename() in os.listdir()):
+                self.editor.world.filename() in os.listdir('saves')):
             dialog = SimpleDialog(self, "Do you really want to save? \nWorld already exists! Saving will overwrite it. \nThere will be no more Reminders\nCancel and rename world if you don't want this to happen")
             if not dialog.getResult():
                 return
