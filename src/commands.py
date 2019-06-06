@@ -9,8 +9,12 @@ class Command:
         assert False, "Command execute must be overridden"
 
 class AddObj(Command):
-    def execute(self, kind, old_id=None):
-        hasVerb = True if kind in gd.events or kind == 'event' else False
+    def execute(self, kind, old_id=None, is_selector=False):
+        if (kind in gd.events or kind == 'event') and not is_selector:
+            hasVerb = True
+        else:
+            hasVerb = False
+            
         dialog = TypeSelector(self.editor, kind, hasVerb)
         obj = dialog.getResult()
         if obj:
@@ -24,7 +28,7 @@ class SelectAdd(Command):
         Command.__init__(self, editor)
         self.validate = validate
 
-    def execute(self, kind):
+    def execute(self, kind, is_selector=False):
         objects = self.editor.world.getObjects(kind)
         if self.validate:
             objects = [obj for obj in objects if self.validate(obj)]

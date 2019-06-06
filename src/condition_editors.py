@@ -13,11 +13,13 @@ class HasItemEditor(ObjectEditor):
         ObjectEditor.makeWidgets(self)
         self.item = InfoSelector(self, "Item",
                 self.obj['item'], 'entity',
-                self.commands.select, self.commands.edit)
+                self.commands.makeSelect(self.validate),
+                self.commands.edit)
         self.item.grid(row=5, sticky='we')
         self.other = InfoSelector(self, "Other",
                 self.obj['other'], 'container',
-                self.commands.select, self.commands.edit)
+                self.commands.makeSelect(self.validate),
+                self.commands.edit)
         self.other.grid(row=6, sticky='we')
 
     def update(self):

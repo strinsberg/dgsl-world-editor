@@ -39,6 +39,12 @@ class ObjectEditor(tk.Frame):
     def get(self):
         self.update()
         return self.obj
+    
+    def validate(self, obj):
+        self.update()
+        if self.obj['id'] == obj['id']:
+            return False
+        return True
 
 
 class NullEditor(ObjectEditor):
@@ -65,7 +71,7 @@ class PlayerEditor(ObjectEditor):
         self.desc.grid(row=5, sticky='we')
         self.start = InfoSelector(self, "Starting Room",
                 self.obj['start'], 'room',
-                self.commands.makeSelect(self.select),
+                self.commands.makeSelect(self.validate),
                 self.commands.edit)
         self.start.grid(row=6, sticky='we')
     
@@ -81,12 +87,6 @@ class PlayerEditor(ObjectEditor):
         self.obj['start'] = self.start.get()
         self.obj['items'] = self.left.get()
     
-    def select(self, obj):
-        self.update()
-        if (self.obj['start']
-                and self.obj['start']['id'] == obj['id']):
-            return False
-        return True
 
 class EntityEditor(ObjectEditor):
     
