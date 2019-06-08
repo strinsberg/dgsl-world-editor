@@ -124,7 +124,7 @@ class EditorFrame(tk.Frame):
 if __name__=='__main__':
     root = tk.Tk()
     root.resizable(False, False)
-    root.geometry("555x400")
+    root.geometry("555x420")
     
     fact = GameObjectFactory()
     room = fact.make('room', {'name': 'captains room'})

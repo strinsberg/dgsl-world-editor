@@ -153,6 +153,10 @@ class EventEditor(ObjectEditor):
     
     def makeWidgets(self):
         ObjectEditor.makeWidgets(self)
+        if self.obj['verb'] is not None:
+            self.verb = InfoEntry(self, "Verb",
+                    self.obj['verb'])
+            self.verb.grid(row=2, sticky='we')
         self.once = InfoCheck(self, "One time", self.obj['once'])
         self.once.grid(row=10, sticky='we')
     

@@ -79,6 +79,7 @@ class GameObjectFactory:
             "id": str(uuid.uuid4()),
             "type": kind,
             "name": "",
+            "verb": None,
             "subjects": [],
             "once": 0,
         }
