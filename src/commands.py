@@ -9,12 +9,14 @@ class Command:
         assert False, "Command execute must be overridden"
 
 class AddObj(Command):
+    # add a has verb attribute that can be set
+    # so that add does not always have to have a verb
     def execute(self, kind, old_id=None, is_selector=False):
         if (kind in gd.events or kind == 'event') and not is_selector:
             hasVerb = True
         else:
             hasVerb = False
-            
+
         dialog = TypeSelector(self.editor, kind, hasVerb)
         obj = dialog.getResult()
         if obj:
@@ -58,17 +60,17 @@ class Commands:
         self.add = AddObj(editor)
         self.remove = RemoveObj(editor)
         self.edit = EditObj(editor)
-    
+
     def addList(self):
         return {
             'add': self.add,
             'remove': self.remove,
             'edit': self.edit,
         }
-    
+
     def makeSelect(self, validate=None):
         return SelectAdd(self.editor, validate)
-    
+
     def selectList(self, validate=None):
         return {
             'add': self.makeSelect(validate),
