@@ -71,7 +71,7 @@ class MenuBar(tk.Frame):
                 return
 
         if (self.editor.world.first_save
-                and self.editor.world.filename() in os.listdir('saves')):
+                and os.path.exists(self.editor.world.filepath())):
             dialog = simple_dialog.SimpleDialog(
                 self, ("Do you really want to save? \nWorld already exists! "
                        "Saving will overwrite it. \nThere will be no more "
@@ -94,6 +94,7 @@ class MenuBar(tk.Frame):
         self.set_title("** " + self.editor.world.name + " **")
 
 
+'''
 # Testing ######################################################
 
 if __name__ == '__main__':
@@ -103,3 +104,4 @@ if __name__ == '__main__':
     FRAME.pack()
 
     ROOT.mainloop()
+'''

@@ -227,6 +227,7 @@ class WorldEditor(tk.Frame):
         return {'id': None}
 
 
+'''
 # Testing ######################################################
 if __name__ == '__main__':
     from . import game_object_factory
@@ -298,3 +299,5 @@ if __name__ == '__main__':
     print(room_edit.get())
     print(event_edit.get())
     print(group_edit.get())
+
+'''

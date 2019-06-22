@@ -113,26 +113,3 @@ class EditorFrame(tk.Frame):
                             e['verb'] = actual['verb']
                 except TypeError:
                     pass
-
-
-# Testing ######################################################
-
-if __name__ == '__main__':
-    from . import game_object_factory
-    from . import game_world
-
-    root = tk.Tk()
-    root.resizable(False, False)
-    root.geometry("555x420")
-
-    fact = game_object_factory.GameObjectFactory()
-    room = fact.make('room', {'name': 'captains room'})
-
-    world = game_world.GameWorld()
-    world.addObject(room)
-
-    frame = EditorFrame(root, world)
-    frame.pack_propagate(0)
-    frame.pack(fill=tk.BOTH, expand=1)
-
-    root.mainloop()

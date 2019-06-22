@@ -116,6 +116,7 @@ class ConditionalEditor(object_editors.EventEditor):
         self.obj['failure'] = self.fail.get()
 
 
+'''
 # Testing ######################################################
 if __name__ == '__main__':
     from . import game_object_factory
@@ -209,3 +210,4 @@ if __name__ == '__main__':
         print(move_edit.get())
         print(group_edit.get())
         print(cond_edit.get())
+'''

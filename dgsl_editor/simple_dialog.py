@@ -126,6 +126,7 @@ class EntryDialog(SimpleDialog):
         self.result = self.name.get()
 
 
+'''
 # Main for Testing ################################################
 
 
@@ -148,3 +149,4 @@ if __name__ == "__main__":
     # Test won't run until root window is closed.
     assert result == "Return the result", "Failed: get_result.\nExpected: {}\nActual: {}".format(
         "Return the result", result)
+'''

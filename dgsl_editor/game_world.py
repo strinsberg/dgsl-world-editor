@@ -94,7 +94,8 @@ class GameWorld:
                 self.removeAll(e)
 
     def filepath(self):
-        return "saves/" + self.name.replace(' ', '_') + '.world'
+        home = os.path.expanduser('~')
+        return os.path.join(home, ".dgsl", "worlds", self.filename())
 
     def filename(self):
         return self.name.replace(' ', '_') + '.world'

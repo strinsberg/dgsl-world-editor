@@ -96,6 +96,7 @@ class ObjectListFactory:
         return objects
 
 
+'''
 # Testing ######################################################
 if __name__ == '__main__':
     from . import game_object_factory as gof
@@ -143,3 +144,5 @@ if __name__ == '__main__':
     print()
     print(obj_list.get())
     print(obj_edit.get())
+
+'''
