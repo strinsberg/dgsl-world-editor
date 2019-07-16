@@ -72,6 +72,13 @@ class GameObjectFactory:
         room['obtainable'] = 0
         return room
 
+    def makeEquipment(self, kind):
+        equip = self.makeEntity(kind)
+        equip['protects'] = []
+        equip['slot'] = 'generic',
+        equip['must_equip'] = 1
+        return equip
+
     # Events ###################################################
     def makeEvent(self, kind):
         event = {
@@ -106,6 +113,21 @@ class GameObjectFactory:
         event["target"] = None
         return event
 
+    def makeToggleActive(self):
+        event = self.makeEvent("toggle_active")
+        event["target"] = None
+        return event
+
+    def makeToggleObtainable(self):
+        event = self.makeEvent("toggle_obtainable")
+        event["target"] = None
+        return event
+
+    def makeToggleHidden(self):
+        event = self.makeEvent("toggle_hidden")
+        event["target"] = None
+        return event
+
     def makeMove(self):
         event = self.makeEvent("move")
         event["destination"] = None
@@ -116,7 +138,7 @@ class GameObjectFactory:
     def makeGroup(self, kind):
         event = self.makeEvent(kind)
         event["events"] = []
-        event["repeats"] = 0
+        event["repeats"] = 0  # dont need
         return event
 
     def makeConditional(self):
@@ -125,6 +147,28 @@ class GameObjectFactory:
         event["success"] = None
         event["failure"] = None
         return event
+
+    def makeInteraction(self):
+        event = self.makeEvent("interaction")
+        event["options"] = []
+        event['breakout'] = 0
+        return event
+
+    # Options ##################################################
+    def makeOption(self, kind):
+        return {
+            'text': 'Forgot the option text',
+            'event': None,
+            'type': kind
+        }
+
+    def makeStandardOption(self):
+        return self.makeOption("standard")
+
+    def makeConditionalOption(self):
+        opt = self.makeOption('conditional')
+        opt['condition'] = None
+        return opt
 
     # Conditions ###############################################
     def makeCondition(self, kind):
@@ -142,7 +186,8 @@ class GameObjectFactory:
 
     def makeProtected(self):
         cond = self.makeCondition("protected")
-        cond["atmosphere"] = 'oxygen'
+        cond["atmosphere"] = 'oxygen'  # dont need
+        cond['effects'] = []
         return cond
 
     def makeQuestion(self):

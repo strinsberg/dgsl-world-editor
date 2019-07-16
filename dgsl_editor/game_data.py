@@ -2,12 +2,14 @@ import uuid
 
 # Types ########################################################
 
-entities = ["entity", "suit", "container", "room", "npc", "player"]
+entities = [
+    "entity", "suit", "container", "room", "npc", "player", "equipment"
+]
 containers = ["container", "room", "npc", "player"]
 
 events = [
     "inform", "kill", "transfer", "toggle", "move", "group", "ordered",
-    "interaction", "conditional"
+    "interaction", "conditional",
 ]
 group_events = ["group", "ordered", "interaction"]
 
