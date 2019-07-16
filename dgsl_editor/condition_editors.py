@@ -53,65 +53,13 @@ class ProtectedEditor(object_editors.ObjectEditor):
 
     def makeWidgets(self):
         object_editors.ObjectEditor.makeWidgets(self)
-        self.atmos = info_widgets.InfoOption(self, "Atmosphere",
-                                             self.obj['atmosphere'],
-                                             gd.atmospheres)
-        self.atmos.grid(row=5, sticky='we')
+
+        eff = 'enter effects as space separated list'
+        if self.obj['effects']:
+            eff = " ".join(self.obj['effects'])
+        self.effects = info_widgets.InfoEntry(self, "Effects", eff)
+        self.effects.grid(row=10, sticky='we')
 
     def update(self):
         object_editors.ObjectEditor.update(self)
-        self.obj['atmosphere'] = self.atmos.get()
-
-
-# Testing ######################################################
-if __name__ == '__main__':
-    from . import game_object_factory
-
-    # Testing objects
-    class MockCommand:
-        def execute(self, arg):
-            print(arg)
-
-    class AddCommand:
-        def execute(self, arg):
-            return {'name': 'A new name', 'id': '3rh2ih3r2foi2'}
-
-    class MockCommands:
-        def __init__(self):
-            self.add = AddCommand()
-            self.remove = MockCommand()
-            self.edit = MockCommand()
-            self.select = MockCommand()
-
-        def listCommands(self, isSelect=False):
-            return {
-                'add': self.add,
-                'remove': self.remove,
-                'edit': self.edit,
-            }
-
-    commands = MockCommands()
-
-    fact = game_object_factory.GameObjectFactory()
-    atmos = fact.make('protected', {'name': 'atmos', 'verb': 'use'})
-    has = fact.make('hasItem', {'name': 'has', 'verb': 'use'})
-    question = fact.make('question', {'name': 'question', 'verb': 'use'})
-
-    # Create and run
-    root = tk.Tk()
-
-    atmos_edit = ProtectedEditor(root, atmos, commands)
-    atmos_edit.grid(row=0)
-
-    has_edit = HasItemEditor(root, has, commands)
-    has_edit.grid(row=1)
-
-    question_edit = QuestionEditor(root, question, commands)
-    question_edit.grid(row=2)
-
-    root.mainloop()
-
-    # Test get
-    print(atmos_edit.get())
-    print(has_edit.get())
-    print(question_edit.get())
+        self.obj['effects'] = self.effects.get().split()
