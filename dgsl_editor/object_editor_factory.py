@@ -21,7 +21,7 @@ class ObjectEditorFactory:
             w = event_editors.InformEditor(parent, obj, commands)
         elif kind == "kill":
             w = event_editors.KillEditor(parent, obj, commands)
-        elif kind == "toggle":
+        elif kind in ["toggle_active", "toggle_obtainable", "toggle_hidden"]:
             w = event_editors.ToggleEditor(parent, obj, commands)
         elif kind == "transfer":
             w = event_editors.TransferEditor(parent, obj, commands)

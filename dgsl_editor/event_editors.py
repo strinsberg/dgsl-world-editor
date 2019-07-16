@@ -3,33 +3,12 @@ from . import object_editors
 from . import info_widgets
 
 
-class InformEditor(object_editors.EventEditor):
-    def makeWidgets(self):
-        object_editors.EventEditor.makeWidgets(self)
-        self.message = info_widgets.InfoEntry(self, "Message",
-                                              self.obj['message'])
-        self.message.grid(row=5, sticky='we')
-
-    def update(self):
-        object_editors.EventEditor.update(self)
-        self.obj['message'] = self.message.get()
-
-
-class KillEditor(InformEditor):
-    def makeWidgets(self):
-        InformEditor.makeWidgets(self)
-        self.ending = info_widgets.InfoCheck(self, "Ending",
-                                             self.obj['ending'])
-        self.ending.grid(row=11, sticky='we')
-
-    def update(self):
-        InformEditor.update(self)
-        self.obj['ending'] = self.ending.get()
-
-
 class ToggleEditor(object_editors.EventEditor):
     def makeWidgets(self):
         object_editors.EventEditor.makeWidgets(self)
+        self.type = info_widgets.InfoLabel(
+            self, "Toggle State", self.obj['state'])
+        self.type.grid(row=0, sticky='we')
         self.target = info_widgets.InfoSelector(
             self, "Target", self.obj['target'], 'entity',
             self.commands.makeSelect(self.validate), self.commands.edit)

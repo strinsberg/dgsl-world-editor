@@ -8,8 +8,8 @@ entities = [
 containers = ["container", "room", "npc", "player"]
 
 events = [
-    "inform", "kill", "transfer", "toggle", "move", "group", "ordered",
-    "interaction", "conditional",
+    "transfer", "toggle active", "toggle obtainable",
+    "toggle hidden", "move", "group", "ordered", "interaction", "conditional",
 ]
 group_events = ["group", "ordered", "interaction"]
 

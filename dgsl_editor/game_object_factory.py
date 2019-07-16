@@ -14,14 +14,14 @@ class GameObjectFactory:
             newObj = self.makeEquipment(kind)
         elif kind in gd.entities:
             newObj = self.makeEntity(kind)
-        elif kind == "inform":
-            newObj = self.makeInform(kind)
-        elif kind == "kill":
-            newObj = self.makeKill()
+        elif kind == "toggle active":
+            newObj = self.makeToggleActive()
+        elif kind == "toggle obtainable":
+            newObj = self.makeToggleObtainable()
+        elif kind == "toggle hidden":
+            newObj = self.makeToggleHidden()
         elif kind == "transfer":
             newObj = self.makeTransfer()
-        elif kind == "toggle":
-            newObj = self.makeToggle()
         elif kind == "move":
             newObj = self.makeMove()
         elif kind in ["group", "ordered", "interaction"]:
@@ -94,16 +94,6 @@ class GameObjectFactory:
         }
         return event
 
-    def makeInform(self, kind):
-        event = self.makeEvent(kind)
-        event["message"] = ""
-        return event
-
-    def makeKill(self):
-        event = self.makeInform("kill")
-        event["ending"] = 0
-        return event
-
     def makeTransfer(self):
         event = self.makeEvent("transfer")
         event["target"] = None
@@ -119,16 +109,19 @@ class GameObjectFactory:
     def makeToggleActive(self):
         event = self.makeEvent("toggle_active")
         event["target"] = None
+        event['state'] = 'Active'
         return event
 
     def makeToggleObtainable(self):
         event = self.makeEvent("toggle_obtainable")
         event["target"] = None
+        event['state'] = 'Obtainable'
         return event
 
     def makeToggleHidden(self):
         event = self.makeEvent("toggle_hidden")
         event["target"] = None
+        event['state'] = 'Hidden'
         return event
 
     def makeMove(self):
