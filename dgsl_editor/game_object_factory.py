@@ -26,8 +26,10 @@ class GameObjectFactory:
             newObj = self.makeTake()
         elif kind == "move":
             newObj = self.makeMove()
-        elif kind in ["group", "ordered", "interaction"]:
+        elif kind in ["group", "ordered"]:
             newObj = self.makeGroup(kind)
+        elif kind == "interaction":
+            newObj = self.makeInteraction()
         elif kind == "conditional":
             newObj = self.makeConditional()
         elif kind == "hasItem":
@@ -36,6 +38,10 @@ class GameObjectFactory:
             newObj = self.makeProtected()
         elif kind == "question":
             newObj = self.makeQuestion()
+        elif kind == 'option':
+            newObj = self.makeStandardOption()
+        elif kind == 'conditional option':
+            newObj = self.makeConditionalOption()
         else:
             assert False, "Object factory has no type: " + kind
 
@@ -163,16 +169,18 @@ class GameObjectFactory:
     # Options ##################################################
     def makeOption(self, kind):
         return {
-            'text': 'Forgot the option text',
+            'name': '',
+            'text': '',
             'event': None,
-            'type': kind
+            'type': kind,
+            'id': str(uuid.uuid4()),
         }
 
     def makeStandardOption(self):
-        return self.makeOption("standard")
+        return self.makeOption("option")
 
     def makeConditionalOption(self):
-        opt = self.makeOption('conditional')
+        opt = self.makeOption('conditional_option')
         opt['condition'] = None
         return opt
 

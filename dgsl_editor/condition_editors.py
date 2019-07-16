@@ -63,3 +63,34 @@ class ProtectedEditor(object_editors.ObjectEditor):
     def update(self):
         object_editors.ObjectEditor.update(self)
         self.obj['effects'] = self.effects.get().split()
+
+
+class OptionEditor(object_editors.ObjectEditor):
+    def __init__(self, parent, obj, commands):
+        self.commands = commands
+        self.condition = False
+        if obj['type'] == 'conditional_option':
+            self.condition = True
+        object_editors.ObjectEditor.__init__(self, parent, obj)
+
+    def makeWidgets(self):
+        super(OptionEditor, self).makeWidgets()
+        self.text = info_widgets.InfoEntry(self, "Menu Text", self.obj['text'])
+        self.text.grid(row=10, sticky='we')
+        self.event = info_widgets.InfoSelector(
+            self, 'Event', self.obj['event'], 'event',
+            self.commands.add, self.commands.edit)
+
+        if self.condition:
+            self.cond = info_widgets.InfoSelector(
+                self, "Condition", self.obj['condition'], 'condition',
+                self.commands.add, self.commands.edit)
+            self.cond.grid(row=15, sticky='we')
+
+    def update(self):
+        super(OptionEditor, self).update()
+        self.obj['text'] = self.text.get()
+        self.obj['event'] = self.event.get()
+
+        if self.condition:
+            self.obj['condition'] = self.event.get()

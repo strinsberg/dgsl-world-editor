@@ -23,8 +23,10 @@ class ObjectEditorFactory:
             w = event_editors.TransferEditor(parent, obj, commands)
         elif kind == "move":
             w = event_editors.MoveEditor(parent, obj, commands)
-        elif kind in ["group", "ordered", 'interaction']:
-            w = event_editors.GroupEditor(parent, obj, commands)
+        elif kind in ["group", "ordered"]:
+            w = object_editors.EventEditor(parent, obj, commands)
+        elif kind == 'interaction':
+            w = event_editors.InteractionEditor(parent, obj, commands)
         elif kind == "conditional":
             w = event_editors.ConditionalEditor(parent, obj, commands)
         elif kind == "hasItem":
@@ -33,5 +35,9 @@ class ObjectEditorFactory:
             w = condition_editors.ProtectedEditor(parent, obj, commands)
         elif kind == "question":
             w = condition_editors.QuestionEditor(parent, obj, commands)
+        elif kind in ['option', 'conditional_option']:
+            w = condition_editors.OptionEditor(parent, obj, commands)
+        else:
+            raise AttributeError("No editor type: " + kind)
 
         return w

@@ -1,6 +1,7 @@
 import tkinter as tk
 from . import object_editors
 from . import info_widgets
+from . import object_lists
 
 
 class ToggleEditor(object_editors.EventEditor):
@@ -69,16 +70,24 @@ class MoveEditor(object_editors.EventEditor):
         self.obj['destination'] = self.dest.get()
 
 
-class GroupEditor(object_editors.EventEditor):
+class InteractionEditor(object_editors.EventEditor):
     def makeWidgets(self):
         object_editors.EventEditor.makeWidgets(self)
-        self.repeats = info_widgets.InfoCheck(self, "Repeats",
-                                              self.obj['repeats'])
+        self.repeats = info_widgets.InfoCheck(self, "Breakout",
+                                              self.obj['breakout'])
         self.repeats.grid(row=5, sticky='we')
+
+    def makeRightList(self):
+        self.right = None
+        self.right = object_lists.ObjectListWithEdit(
+            self.lists, self.obj['options'], "Options", 'option',
+            self.commands.addList())
+        self.right.pack(side=tk.LEFT, anchor='w', fill=tk.Y, expand=1)
 
     def update(self):
         object_editors.EventEditor.update(self)
-        self.obj['repeats'] = self.repeats.get()
+        self.obj['options'] = self.right.get()
+        self.obj['breakout'] = self.repeats.get()
 
 
 class ConditionalEditor(object_editors.EventEditor):

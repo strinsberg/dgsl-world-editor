@@ -26,6 +26,10 @@ class TypeSelector(simple_dialog.SimpleDialog):
             self.choice.set(gd.conditions[0])
             self.menu = tk.OptionMenu(*(
                 (master, self.choice) + tuple(gd.conditions)))
+        elif self.kind == 'option':
+            self.choice.set('option')
+            self.menu = tk.OptionMenu(
+                *((master, self.choice) + ('option', 'conditional option')))
         else:
             self.menu = tk.Label(master, text=self.kind)
 
