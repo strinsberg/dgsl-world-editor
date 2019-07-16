@@ -176,6 +176,9 @@ class EventEditor(ObjectEditor):
         if self.obj['verb'] is not None:
             self.verb = info_widgets.InfoEntry(self, "Verb", self.obj['verb'])
             self.verb.grid(row=2, sticky='we')
+        self.message = info_widgets.InfoEntry(
+            self, "Message", self.obj['message'])
+        self.message.grid(row=3, sticky='we')
         self.once = info_widgets.InfoCheck(self, "One time", self.obj['once'])
         self.once.grid(row=10, sticky='we')
 
@@ -218,6 +221,7 @@ class EventEditor(ObjectEditor):
 
     def update(self):
         ObjectEditor.update(self)
+        self.obj['message'] = self.message.get()
         self.obj['once'] = self.once.get()
         self.obj['subjects'] = self.left.get()
         if self.right:

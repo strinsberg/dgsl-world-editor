@@ -90,6 +90,7 @@ class GameObjectFactory:
             "verb": None,
             "subjects": [],
             "once": 0,
+            "message": ''
         }
         return event
 
