@@ -20,7 +20,7 @@ atmospheres = ["oxygen", "radiation", "space"]
 
 # Types for type selectors #####################################
 
-room_entities = ["entity", "suit", "container", "npc"]
+room_entities = ["entity", "equipment", "container", "npc"]
 
 # Type checkers ################################################
 

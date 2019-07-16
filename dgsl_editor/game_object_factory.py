@@ -10,6 +10,8 @@ class GameObjectFactory:
             newObj = self.makePlayer()
         elif kind == 'room':
             newObj = self.makeRoom(kind)
+        elif kind == 'equipment':
+            newObj = self.makeEquipment(kind)
         elif kind in gd.entities:
             newObj = self.makeEntity(kind)
         elif kind == "inform":

@@ -143,6 +143,29 @@ class EntityEditor(ObjectEditor):
             self.obj['items'] = self.right.get()
 
 
+class EquipmentEditor(EntityEditor):
+    def makeWidgets(self):
+        super(EquipmentEditor, self).makeWidgets()
+
+        eff = 'enter effects as space separated list'
+        if self.obj['protects']:
+            eff = " ".join(self.obj['protects'])
+        self.protects = info_widgets.InfoEntry(self, "Protects", eff)
+        self.protects.grid(row=20, sticky='we')
+
+        self.slot = info_widgets.InfoEntry(self, "Slot", self.obj['slot'])
+        self.slot.grid(row=21, sticky='we')
+
+        self.must_equip = info_widgets.InfoCheck(
+            self, 'Must Be Equipped', self.obj['must_equip'])
+
+    def update(self):
+        super(EquipmentEditor, self).update()
+        self.obj['protects'] = self.protects.get().split()
+        self.obj['slot'] = self.slot.get()
+        self.obj['must_equip'] = self.must_equip.get()
+
+
 class EventEditor(ObjectEditor):
     def __init__(self, parent, obj, commands):
         self.commands = commands
@@ -225,79 +248,3 @@ class WorldEditor(tk.Frame):
 
     def get(self):
         return {'id': None}
-
-
-'''
-# Testing ######################################################
-if __name__ == '__main__':
-    from . import game_object_factory
-
-    # Testing objects
-    class MockCommand:
-        def execute(self, arg):
-            print(arg)
-
-    class AddCommand:
-        def execute(self, arg):
-            return {'name': 'A new name', 'id': '3rh2ih3r2foi2'}
-
-    class MockCommands:
-        def __init__(self):
-            self.add = AddCommand()
-            self.remove = MockCommand()
-            self.edit = MockCommand()
-            self.select = MockCommand()
-
-        def addList(self, isSelect=False):
-            return {
-                'add': self.add,
-                'remove': self.remove,
-                'edit': self.edit,
-            }
-
-        def makeSelect(self, obj, validate=None):
-            return self.add
-
-        def selectList(self, obj, validate=None):
-            return {
-                'add': self.add,
-                'remove': self.remove,
-                'edit': self.edit,
-            }
-
-    commands = MockCommands()
-
-    pizza = {'name': 'pizza'}
-    room = {'name': 'captains room'}
-    event = {'name': 'enter', 'verb': 'enter'}
-
-    fact = game_object_factory.GameObjectFactory()
-    obj = fact.make('entity', pizza)
-    obj2 = fact.make('room', room)
-    obj3 = fact.make('inform', event)
-    obj4 = fact.make('group', event)
-
-    # Create and run widgets
-    root = tk.Tk()
-
-    ent_edit = EntityEditor(root, obj, commands)
-    ent_edit.grid(row=0, sticky='w')
-
-    room_edit = EntityEditor(root, obj2, commands)
-    room_edit.grid(row=1, sticky='w')
-
-    event_edit = EventEditor(root, obj3, commands)
-    event_edit.grid(row=1, column=1)
-
-    group_edit = EventEditor(root, obj4, commands)
-    group_edit.grid(row=0, column=1)
-
-    root.mainloop()
-
-    # Test widgets get methods
-    print(ent_edit.get())
-    print(room_edit.get())
-    print(event_edit.get())
-    print(group_edit.get())
-
-'''

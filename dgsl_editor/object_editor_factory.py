@@ -13,6 +13,8 @@ class ObjectEditorFactory:
         kind = obj['type']
         if kind == 'player':
             w = object_editors.PlayerEditor(parent, obj, commands)
+        elif kind == 'equipment':
+            w = object_editors.EquipmentEditor(parent, obj, commands)
         elif kind in gd.entities:
             w = object_editors.EntityEditor(parent, obj, commands)
         elif kind == "inform":
