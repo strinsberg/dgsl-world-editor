@@ -1,12 +1,15 @@
-from TypeSelector import TypeSelector
-from ObjectSelector import ObjectSelector
-import game_data as gd
+from . import type_selector
+from . import object_selector
+from . import game_data as gd
+
 
 class Command:
     def __init__(self, editor):
         self.editor = editor
+
     def execute(self, arg=None):
         assert False, "Command execute must be overridden"
+
 
 class AddObj(Command):
     # add a has verb attribute that can be set
@@ -17,13 +20,14 @@ class AddObj(Command):
         else:
             hasVerb = False
 
-        dialog = TypeSelector(self.editor, kind, hasVerb)
+        dialog = type_selector.TypeSelector(self.editor, kind, hasVerb)
         obj = dialog.getResult()
         if obj:
             self.editor.world.addObject(obj)
             if old_id is not None:
                 self.editor.world.removeObject(old_id)
             return obj
+
 
 class SelectAdd(Command):
     def __init__(self, editor, validate=None):
@@ -34,17 +38,20 @@ class SelectAdd(Command):
         objects = self.editor.world.getObjects(kind)
         if self.validate:
             objects = [obj for obj in objects if self.validate(obj)]
-        dialog = ObjectSelector(self.editor, objects)
+        dialog = object_selector.ObjectSelector(self.editor, objects)
         obj = dialog.getResult()
         return obj
+
 
 class SelectRemove(Command):
     def execute(self, kind):
         pass
 
+
 class EditObj(Command):
     def execute(self, ID):
         self.editor.editNew(ID)
+
 
 class RemoveObj(Command):
     def execute(self, ID):
@@ -53,6 +60,7 @@ class RemoveObj(Command):
         # check if it still exists.
         if self.editor.obj_editor.obj['id'] == ID:
             self.editor.editLast()
+
 
 class Commands:
     def __init__(self, editor):

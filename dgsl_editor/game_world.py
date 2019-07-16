@@ -1,17 +1,16 @@
-from GameObjectFactory import GameObjectFactory
-import game_data as gd
+from . import game_object_factory
+from . import game_data as gd
 import json
 import os
 
 
 class GameWorld:
-
     def __init__(self):
         self.name = "untitled"
         self.welcome = "fun is waiting!"
         self.version = "0.0"
         self.objects = {}
-        player = GameObjectFactory().make('player')
+        player = game_object_factory.GameObjectFactory().make('player')
         self.addObject(player)
         self.player = player['id']
         self.first_save = True
@@ -72,7 +71,6 @@ class GameWorld:
 
         self.first_save = False
 
-
     def load(self, world_name):
         self.name = world_name
         with open(self.filepath()) as f:
@@ -96,7 +94,8 @@ class GameWorld:
                 self.removeAll(e)
 
     def filepath(self):
-        return "saves/" + self.name.replace(' ', '_') + '.world'
+        home = os.path.expanduser('~')
+        return os.path.join(home, ".dgsl", "worlds", self.filename())
 
     def filename(self):
         return self.name.replace(' ', '_') + '.world'
