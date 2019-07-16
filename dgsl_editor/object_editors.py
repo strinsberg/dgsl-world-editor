@@ -14,8 +14,8 @@ class ObjectEditor(tk.Frame):
 
     def makeWidgets(self):
         tk.Grid.columnconfigure(self, 0, weight=1)
-        info_widgets.InfoLabel(self, "Type", self.obj['type']).grid(row=0,
-                                                                    sticky='w')
+        info_widgets.InfoLabel(
+            self, "Type", self.obj['type'].upper()).grid(row=0, sticky='w')
         self.name = info_widgets.InfoEntry(self, "Name", self.obj['name'])
         self.name.grid(row=1, sticky='we')
 
@@ -65,8 +65,8 @@ class PlayerEditor(ObjectEditor):
 
     def makeWidgets(self):
         tk.Grid.columnconfigure(self, 0, weight=1)
-        info_widgets.InfoLabel(self, "Type", self.obj['type']).grid(row=0,
-                                                                    sticky='w')
+        info_widgets.InfoLabel(
+            self, "Type", self.obj['type'].upper()).grid(row=0, sticky='w')
         self.desc = info_widgets.InfoEntry(self, "Description",
                                            self.obj['description'])
         self.desc.grid(row=5, sticky='we')
@@ -203,12 +203,13 @@ class EventEditor(ObjectEditor):
         # of an object will create a cycle then it is invalid
         # unfortunately it would also have to check conditional
         # success and failure. Will turn into a real affair
+        '''
         for o in self.obj['subjects']:
             if o['id'] == obj['id']:
                 return False
         for o in obj['subjects']:
             if o['id'] == self.obj['subjects']:
-                return False
+                return False'''
         return True
 
     def makeRightList(self):

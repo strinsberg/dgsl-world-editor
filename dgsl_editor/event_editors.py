@@ -24,22 +24,36 @@ class ToggleEditor(object_editors.EventEditor):
         self.obj['target'] = self.target.get()
 
 
-class TransferEditor(ToggleEditor):
+class TransferEditor(object_editors.EventEditor):
     def makeWidgets(self):
-        ToggleEditor.makeWidgets(self)
-        self.target.kind = 'container'
+        super(TransferEditor, self).makeWidgets()
         self.item = info_widgets.InfoSelector(
             self, "Item", self.obj['item'], 'entity',
             self.commands.makeSelect(self.validate), self.commands.edit)
-        self.item.grid(row=6, sticky='we')
-        self.to_target = info_widgets.InfoCheck(self, "To target",
-                                                self.obj['toTarget'])
-        self.to_target.grid(row=11, sticky='we')
+        self.item.grid(row=10, sticky='we')
+
+        if self.obj['type'] == 'take':
+            owner_label = 'New Owner'
+            owner = self.obj['new_owner']
+        else:
+            owner_label = 'Item Owner'
+            owner = self.obj['item_owner']
+
+        self.owner = info_widgets.InfoSelector(
+            self, owner_label, owner, 'entity', self.commands.makeSelect(self.validate), self.commands.edit)
+        self.owner.grid(row=15, sticky='we')
+
+    def validate(self, obj):
+        if (not super(TransferEditor, self).validate(obj)
+                or obj['type'] in ['player', 'room']):
+            return False
+        return True
 
     def update(self):
-        ToggleEditor.update(self)
+        super(TransferEditor, self).update()
         self.obj['item'] = self.item.get()
-        self.obj['toTarget'] = self.to_target.get()
+        owner_type = 'item_owner' if self.obj['type'] == 'give' else 'new_owner'
+        self.obj[owner_type] = self.owner.get()
 
 
 class MoveEditor(object_editors.EventEditor):

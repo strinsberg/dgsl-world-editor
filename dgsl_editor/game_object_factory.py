@@ -20,8 +20,10 @@ class GameObjectFactory:
             newObj = self.makeToggleObtainable()
         elif kind == "toggle hidden":
             newObj = self.makeToggleHidden()
-        elif kind == "transfer":
-            newObj = self.makeTransfer()
+        elif kind == 'give':
+            newObj = self.makeGive()
+        elif kind == 'take':
+            newObj = self.makeTake()
         elif kind == "move":
             newObj = self.makeMove()
         elif kind in ["group", "ordered", "interaction"]:
@@ -94,11 +96,19 @@ class GameObjectFactory:
         }
         return event
 
-    def makeTransfer(self):
-        event = self.makeEvent("transfer")
-        event["target"] = None
-        event["toTarget"] = 0
-        event["item"] = None
+    def makeTransfer(self, kind):
+        event = self.makeEvent(kind)
+        event['item'] = None
+        return event
+
+    def makeGive(self):
+        event = self.makeTransfer('give')
+        event['item_owner'] = None
+        return event
+
+    def makeTake(self):
+        event = self.makeTransfer('take')
+        event['new_owner'] = None
         return event
 
     def makeToggle(self):

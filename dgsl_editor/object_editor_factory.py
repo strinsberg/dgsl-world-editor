@@ -17,13 +17,9 @@ class ObjectEditorFactory:
             w = object_editors.EquipmentEditor(parent, obj, commands)
         elif kind in gd.entities:
             w = object_editors.EntityEditor(parent, obj, commands)
-        elif kind == "inform":
-            w = event_editors.InformEditor(parent, obj, commands)
-        elif kind == "kill":
-            w = event_editors.KillEditor(parent, obj, commands)
         elif kind in ["toggle_active", "toggle_obtainable", "toggle_hidden"]:
             w = event_editors.ToggleEditor(parent, obj, commands)
-        elif kind == "transfer":
+        elif kind in ['give', 'take']:
             w = event_editors.TransferEditor(parent, obj, commands)
         elif kind == "move":
             w = event_editors.MoveEditor(parent, obj, commands)
