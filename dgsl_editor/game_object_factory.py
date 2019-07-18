@@ -61,6 +61,7 @@ class GameObjectFactory:
             "description": "",
             "items": [],
             "start": None,
+            "events": [],
         }
 
     # Entity ###################################################

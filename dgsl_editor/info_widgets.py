@@ -82,12 +82,10 @@ class InfoLabel(InfoWidget):
 
 # Item selector widget with label for object field
 class InfoSelector(InfoLabel):
-    def __init__(self, parent, label, obj_info, kind, select, edit,
-                 full_obj_info=False):
+    def __init__(self, parent, label, obj_info, kind, select, edit):
         self.commands = {'edit': edit, 'select': select}
         self.obj_info = obj_info
         self.kind = kind
-        self.full_obj_info = full_obj_info
         name = self.obj_info['name'] if obj_info else None
         InfoLabel.__init__(self, parent, label, name)
 
@@ -103,13 +101,10 @@ class InfoSelector(InfoLabel):
     def select(self):
         obj = self.commands['select'].execute(self.kind, is_selector=True)
         if obj:
-            if self.full_obj_info:
-                self.obj_info = obj
-            else:
-                self.obj_info = {'name': obj['name'], 'id': obj['id']}
-                if 'verb' in obj:
-                    self.obj_info['verb'] = obj['verb']
-                self.text_var.set(self.obj_info['name'])
+            self.obj_info = {'name': obj['name'], 'id': obj['id']}
+            if 'verb' in obj:
+                self.obj_info['verb'] = obj['verb']
+            self.text_var.set(self.obj_info['name'])
 
     def edit(self):
         if self.obj_info:

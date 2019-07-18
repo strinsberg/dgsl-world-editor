@@ -108,8 +108,7 @@ class ConditionalEditor(object_editors.EventEditor):
         self.fail = info_widgets.InfoSelector(self, "Failure",
                                               self.obj['failure'], 'event',
                                               self.commands.add,
-                                              self.commands.edit,
-                                              full_obj_info=True)
+                                              self.commands.edit)
         self.fail.grid(row=7, sticky='we')
 
     def update(self):
