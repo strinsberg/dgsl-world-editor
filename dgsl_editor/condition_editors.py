@@ -80,6 +80,7 @@ class OptionEditor(object_editors.ObjectEditor):
         self.event = info_widgets.InfoSelector(
             self, 'Event', self.obj['event'], 'event',
             self.commands.add, self.commands.edit)
+        self.event.grid(row=11, sticky='we')
 
         if self.condition:
             self.cond = info_widgets.InfoSelector(
@@ -93,4 +94,4 @@ class OptionEditor(object_editors.ObjectEditor):
         self.obj['event'] = self.event.get()
 
         if self.condition:
-            self.obj['condition'] = self.event.get()
+            self.obj['condition'] = self.cond.get()
