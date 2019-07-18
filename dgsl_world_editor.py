@@ -8,13 +8,9 @@ root = tk.Tk()
 
 # start app
 root.resizable(False, False)
-root.geometry("600x420")
-
-fact = gof.GameObjectFactory()
-room = fact.make('room', {'name': 'captains room'})
+root.geometry("650x500")
 
 world = gw.GameWorld()
-world.addObject(room)
 
 frame = ef.EditorFrame(root, world)
 frame.pack_propagate(0)

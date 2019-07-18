@@ -113,6 +113,7 @@ class InfoSelector(InfoLabel):
     def get(self):
         return self.obj_info
 
+
 '''
 # Testing ######################################################
 if __name__ == '__main__':

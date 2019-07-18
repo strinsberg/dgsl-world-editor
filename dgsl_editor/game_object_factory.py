@@ -20,6 +20,8 @@ class GameObjectFactory:
             newObj = self.makeToggleObtainable()
         elif kind == "toggle hidden":
             newObj = self.makeToggleHidden()
+        elif kind == 'event':
+            newObj = self.makeEvent()
         elif kind == 'give':
             newObj = self.makeGive()
         elif kind == 'take':
@@ -59,6 +61,7 @@ class GameObjectFactory:
             "description": "",
             "items": [],
             "start": None,
+            "events": [],
         }
 
     # Entity ###################################################
@@ -90,7 +93,7 @@ class GameObjectFactory:
         return equip
 
     # Events ###################################################
-    def makeEvent(self, kind):
+    def makeEvent(self, kind='event'):
         event = {
             "id": str(uuid.uuid4()),
             "type": kind,
