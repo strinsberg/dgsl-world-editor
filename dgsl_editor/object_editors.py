@@ -158,6 +158,7 @@ class EquipmentEditor(EntityEditor):
 
         self.must_equip = info_widgets.InfoCheck(
             self, 'Must Be Equipped', self.obj['must_equip'])
+        self.must_equip.grid(row=22, sticky='we')
 
     def update(self):
         super(EquipmentEditor, self).update()
@@ -227,6 +228,8 @@ class EventEditor(ObjectEditor):
         self.obj['subjects'] = self.left.get()
         if self.right:
             self.obj['events'] = self.right.get()
+        if self.obj['verb'] is not None:
+            self.obj['verb'] = self.verb.get()
 
 
 class WorldEditor(tk.Frame):

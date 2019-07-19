@@ -7,7 +7,7 @@ class ObjectList(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.objects = []
         self.objects.extend(objects)
-        self.objects.sort(key=lambda obj: obj['name'])
+        #self.objects.sort(key=lambda obj: obj['name'])
         self.title = title
         self.kind = kind
         self.commands = commands
@@ -94,55 +94,3 @@ class ObjectListFactory:
                 o['verb'] = obj['verb']
             objects.append(o)
         return objects
-
-
-'''
-# Testing ######################################################
-if __name__ == '__main__':
-    from . import game_object_factory as gof
-
-    # Test objects
-    class MockCommand:
-        def execute(self, arg):
-            print(arg)
-
-    class MockAdd:
-        def execute(self, arg):
-            return {'name': 'A new name', 'id': '3rh2ih3r2foi2'}
-
-    command = MockCommand()
-    commands = {'add': MockAdd(), 'remove': command, 'edit': command}
-
-    close = {'name': 'close door', 'verb': 'use'}
-    enter = {'name': 'enter room', 'verb': 'enter'}
-    pizza = {'name': 'pizza'}
-    fork = {'name': 'fork'}
-    book = {'name': 'secrets of soup'}
-
-    fact = gof.GameObjectFactory()
-    events = [fact.make('inform', close), fact.make('kill', enter)]
-    edit_objs = [
-        fact.make('entity', pizza),
-        fact.make('entity', fork),
-        fact.make('entity', book)
-    ]
-
-    # Create and run widgets
-    root = tk.Tk()
-
-    obj_list = ObjectListFactory().make(root, events, 'Subjects', 'event',
-                                        commands)
-    obj_list.pack()
-
-    obj_edit = ObjectListFactory().make(root, edit_objs, 'Items', 'entity',
-                                        commands, True)
-    obj_edit.pack()
-
-    root.mainloop()
-
-    # Test get
-    print()
-    print(obj_list.get())
-    print(obj_edit.get())
-
-'''

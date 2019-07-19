@@ -1,7 +1,7 @@
 TODO
 =====
 
-* Write a test world that uses every structure in everyway it can be used (that you know of right now)
+* add all todos and ideas from testing session.
 * Write the setup script to allow installing the game so that it is easier to use.
 * once the test world has been built and confirmed to work and the setup script is done then start the changelog and the version set to 0.1
 * after this like the engine the main areas of work are in testing, documentation, and the like. Because this was written at the beginning of the summer and you are more familiar with python consider fixing up some of the messy code and redesigning bits as you go. May want to do this after some testing is done, or before if it makes things more testable.

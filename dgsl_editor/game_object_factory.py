@@ -20,7 +20,7 @@ class GameObjectFactory:
             newObj = self.makeToggleObtainable()
         elif kind == "toggle hidden":
             newObj = self.makeToggleHidden()
-        elif kind == 'event':
+        elif kind in ['event']:
             newObj = self.makeEvent()
         elif kind == 'give':
             newObj = self.makeGive()
@@ -28,6 +28,8 @@ class GameObjectFactory:
             newObj = self.makeTake()
         elif kind == "move":
             newObj = self.makeMove()
+        elif kind == 'end game':
+            newObj = self.makeEndGame()
         elif kind in ["group", "ordered"]:
             newObj = self.makeGroup(kind)
         elif kind == "interaction":
@@ -119,6 +121,9 @@ class GameObjectFactory:
         event = self.makeTransfer('take')
         event['new_owner'] = None
         return event
+
+    def makeEndGame(self):
+        return self.makeEvent('end_game')
 
     def makeToggle(self):
         event = self.makeEvent("toggle")

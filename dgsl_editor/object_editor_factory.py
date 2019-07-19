@@ -17,7 +17,7 @@ class ObjectEditorFactory:
             w = object_editors.EquipmentEditor(parent, obj, commands)
         elif kind in gd.entities:
             w = object_editors.EntityEditor(parent, obj, commands)
-        elif kind == 'event':
+        elif kind in ['event', 'end_game']:
             w = object_editors.EventEditor(parent, obj, commands)
         elif kind in ["toggle_active", "toggle_obtainable", "toggle_hidden"]:
             w = event_editors.ToggleEditor(parent, obj, commands)

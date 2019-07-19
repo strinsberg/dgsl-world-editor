@@ -8,14 +8,14 @@ entities = [
 containers = ["container", "room", "npc", "player"]
 
 events = [
-    "event", "give", "take", "toggle active", "toggle obtainable",
+    "event", "give", "take", "end game", "toggle active", "toggle obtainable",
     "toggle hidden", "move", "group", "ordered", "interaction", "conditional",
 ]
 group_events = ["group", "ordered", "interaction"]
 
 conditions = ["hasItem", "protected", "question"]
 
-verbs = ["get", "drop", "look", "use", "talk"]
+verbs = ["get", "drop", "look", "use", "talk", "equip", "remove", "go"]
 atmospheres = ["oxygen", "radiation", "space"]
 
 # Types for type selectors #####################################
