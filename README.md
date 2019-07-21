@@ -1,4 +1,12 @@
-DGSL Editor
+DGSL World Editor
 =================
 
-An world editor for use with the dgsl text adventure game engine.
+The DGSL World Editor is a program for building text based adventure games. Worlds built with the editor can be run with the DGSL Text Adventure engine (link).
+
+## Goal
+To allow people to build and share their own text based adventure games without needing to know how to program.
+
+## Status
+This program is still in early development. It lacks the appropriate documentation to make using it to build custom worlds feasible. It also needs some kind of validation script to discover errors that will prevent worlds from being loaded by the engine. Once these things have been implemented properly instructions for installation and use will be given.
+
+See the DGSL Text Adventure Engine for more information.
