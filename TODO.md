@@ -1,18 +1,26 @@
 TODO
 =====
 
-* add all todos and ideas from testing session.
-* Write the setup script to allow installing the game so that it is easier to use.
-* once the test world has been built and confirmed to work and the setup script is done then start the changelog and the version set to 0.1
-* after this like the engine the main areas of work are in testing, documentation, and the like. Because this was written at the beginning of the summer and you are more familiar with python consider fixing up some of the messy code and redesigning bits as you go. May want to do this after some testing is done, or before if it makes things more testable.
+Priority
+--------
 
-* Player needs events and to have its starting position set for sure. Maybe the start could be part of a validation script.
-* Try to move as much of the data part of the program out of the gui part so that it can be properly tested. I know lots of the gui will not be automatically testable. But it may be possible to put as much of the logic for doing data operations in places that it can be tested. I will have to look into what I can find about testing gui functions and such. There is certainly no need to create a frame in a window to test some of the supporting functions of a gui, but I am not sure it will be easy. Plus I want to work on the actual game for a while and if the editor is a little rough I am ok with that.
+1. Make sure all structures from the base game are properly represented by their editors. It should be possible to set all fields.
+2. Use the program to create a sample world to identify that everything is working and to find bugs and feature improvements.
+3. Clean up the code one last time and try to make sure that the design and the way modules is reasonable.
+4. Setup some unit tests. This is not as hard as it seems. Most of the methods for the gui's can be tested without actually making them visible. It is also a good opportunity to try and pull all the logic that can be out of the gui elements. Probably this means making classes of some kind to represent the data that the gui is working with and then making sure all gui elements just call that objects methods or work with it's attributes.
+5. Add code documentation.
+6. Add a user manual that describes what each game structure is and does and how to go about creating and setting them up using the editor. This is a must for people to use the tool, but I am putting it later in the priority for now because I don't want to write this and then have to change it a whole bunch once I start working on code and tests and discover I have to change something major.
+7. Write a validation script to make sure that worlds that are created will actually run with the engine. This is important for public use of the tool as people will not have the knowledge that I do about what might be wrong if a world fails. This way it can be more certain that it is a world design and not an engine bug. It does not have to be too complicated at first, but check for the most common types of errors.
+
+General
+-------
+
+* Write the setup script to allow installing the game so that it is easier to use.
+* Once things are in a working order consider it an initial version 0.1 and start changelog and branching.
 
 Validation
 ==========
 
-* validation might just be a script that can be installed along with the programs. Probably it would be best if there were 3 tools packaged together, the engine, editor, and world validator. Though I am not yet sure how to achieve this. Perhaps it would just be best to upload all 3 and make them dependencies?
-* There needs to be some validation of the worlds. Ie making sure that every object has at least the required variables for it's type, there are no subject cycles and the like, and that things like player start are not null.
-* It might be easier to remember to set all the required variables for an object if its editor was opened automatically on adding a new one.
-* might just be better to offer a validation report of somekind that can tell you weather your world is ok. But is not going to stop you from saving it and quitting. Now that the game is in python too the validation script could easily be added to run before a world is loade and make sure it is compatible with the game version and has what it needs.
+* A script to check worlds for common errors.
+* Should be automatically run before the engine starts a world, but attached and useable with ease for the editor so that people can confirm the working order of a world before trying to play it.
+* Should generate very specific and easy to understand error reports so that people know what they need to fix without too much trouble.
