@@ -38,13 +38,13 @@ class GameWorld:
         objects = []
 
         if kind == 'container':
-            isType = lambda x: x in gd.containers
+            def isType(x): return x in gd.containers
         elif kind == 'event':
-            isType = lambda x: x in gd.events
+            def isType(x): return x in gd.events
         elif kind == 'entity':
-            isType = lambda x: x in gd.entities
+            def isType(x): return x in gd.entities
         else:
-            isType = lambda x: False
+            def isType(x): return False
 
         for ID in self.objects:
             obj = self.objects[ID]
@@ -98,4 +98,5 @@ class GameWorld:
         return os.path.join(home, ".dgsl", "worlds", self.filename())
 
     def filename(self):
-        return self.name.replace(' ', '_') + '.world'
+        name = self.name.replace(' ', '_') + '.world'
+        return name.lower()

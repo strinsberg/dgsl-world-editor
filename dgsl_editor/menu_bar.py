@@ -49,7 +49,7 @@ class MenuBar(tk.Frame):
         dialog = simple_dialog.EntryDialog(self, "Enter world name")
         result = dialog.getResult()
         if result:
-            world_name = result
+            world_name = result.lower()
         else:
             return
         world = game_world.GameWorld()
