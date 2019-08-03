@@ -1,7 +1,7 @@
 import tkinter as tk
-import dgsl_editor.editor_frame as ef
-import dgsl_editor.game_object_factory as gof
-import dgsl_editor.game_world as gw
+from . import editor_frame as ef
+from . import game_object_factory as gof
+from . import game_world as gw
 
 # create root window
 root = tk.Tk()

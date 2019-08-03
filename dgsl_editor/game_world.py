@@ -2,6 +2,7 @@ from . import game_object_factory
 from . import game_data as gd
 import json
 import os
+import site
 
 
 class GameWorld:
@@ -94,8 +95,7 @@ class GameWorld:
                 self.removeAll(e)
 
     def filepath(self):
-        home = os.path.expanduser('~')
-        return os.path.join(home, ".dgsl", "worlds", self.filename())
+        return os.path.join(site.USER_BASE, "dgsl", "worlds", self.filename())
 
     def filename(self):
         name = self.name.replace(' ', '_') + '.world'
