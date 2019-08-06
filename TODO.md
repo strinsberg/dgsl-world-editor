@@ -15,6 +15,8 @@ Priority
 General
 -------
 
+* Items in list should have more identifying information than just their name. Otherwise objects with the same name are hard to find in the list.
+* The message and description input boxes should be text boxes instead of just one liners.
 * Write the setup script to allow installing the game so that it is easier to use.
 * Once things are in a working order consider it an initial version 0.1 and start changelog and branching.
 

@@ -203,7 +203,7 @@ class GameObjectFactory:
     def makeHasItem(self):
         cond = self.makeCondition("hasItem")
         cond["item"] = None
-        cond["other"] = None  # dont need
+        cond["other"] = None
         return cond
 
     def makeProtected(self):

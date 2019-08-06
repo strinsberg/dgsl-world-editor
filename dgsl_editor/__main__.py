@@ -3,19 +3,20 @@ from . import editor_frame as ef
 from . import game_object_factory as gof
 from . import game_world as gw
 
-# create root window
-root = tk.Tk()
 
-# start app
-root.resizable(False, False)
-root.geometry("650x500")
+def main():
+    # create root window
+    root = tk.Tk()
 
-world = gw.GameWorld()
+    # start app
+    root.resizable(False, False)
+    root.geometry("650x530")
 
-frame = ef.EditorFrame(root, world)
-frame.pack_propagate(0)
-frame.pack(fill=tk.BOTH, expand=1)
+    world = gw.GameWorld()
 
+    frame = ef.EditorFrame(root, world)
+    frame.pack_propagate(0)
+    frame.pack(fill=tk.BOTH, expand=1)
 
-# run loop
-root.mainloop()
+    # run loop
+    root.mainloop()
