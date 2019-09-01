@@ -37,6 +37,8 @@ class ObjectEditorFactory:
             w = condition_editors.ProtectedEditor(parent, obj, commands)
         elif kind == "question":
             w = condition_editors.QuestionEditor(parent, obj, commands)
+        elif kind == "is_active":
+            w = condition_editors.IsActiveEditor(parent, obj, commands)
         elif kind in ['option', 'conditional_option']:
             w = condition_editors.OptionEditor(parent, obj, commands)
         else:

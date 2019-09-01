@@ -13,7 +13,7 @@ events = [
 ]
 group_events = ["group", "ordered", "interaction"]
 
-conditions = ["hasItem", "protected", "question"]
+conditions = ["hasItem", "protected", "question", "is_active"]
 
 verbs = ["get", "drop", "look", "use", "talk", "equip", "remove", "go"]
 atmospheres = ["oxygen", "radiation", "space"]

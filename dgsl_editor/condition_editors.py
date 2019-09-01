@@ -25,6 +25,12 @@ class HasItemEditor(object_editors.ObjectEditor):
         self.obj['item'] = self.item.get()
         self.obj['other'] = self.other.get()
 
+    def validate(self, obj):
+        valid = super(HasItemEditor, self).validate(obj)
+        if valid and obj['type'] != 'room':
+            return True
+        return False
+
 
 class QuestionEditor(object_editors.ObjectEditor):
     def __init__(self, parent, obj, commands):
@@ -63,6 +69,29 @@ class ProtectedEditor(object_editors.ObjectEditor):
     def update(self):
         object_editors.ObjectEditor.update(self)
         self.obj['effects'] = self.effects.get().split()
+
+
+class IsActiveEditor(object_editors.ObjectEditor):
+    def __init__(self, parent, obj, commands):
+        self.commands = commands
+        object_editors.ObjectEditor.__init__(self, parent, obj)
+
+    def makeWidgets(self):
+        object_editors.ObjectEditor.makeWidgets(self)
+        self.item = info_widgets.InfoSelector(
+            self, "Item", self.obj['item'], 'entity',
+            self.commands.makeSelect(self.validate), self.commands.edit)
+        self.item.grid(row=5, sticky='we')
+
+    def update(self):
+        object_editors.ObjectEditor.update(self)
+        self.obj['item'] = self.item.get()
+
+    def validate(self, obj):
+        valid = super(IsActiveEditor, self).validate(obj)
+        if valid and obj['type'] != 'room':
+            return True
+        return False
 
 
 class OptionEditor(object_editors.ObjectEditor):

@@ -42,6 +42,8 @@ class GameObjectFactory:
             newObj = self.makeProtected()
         elif kind == "question":
             newObj = self.makeQuestion()
+        elif kind == "is_active":
+            newObj = self.makeIsActive()
         elif kind == 'option':
             newObj = self.makeStandardOption()
         elif kind == 'conditional option':
@@ -216,4 +218,9 @@ class GameObjectFactory:
         cond = self.makeCondition("question")
         cond["question"] = ""
         cond["answer"] = ""
+        return cond
+
+    def makeIsActive(self):
+        cond = self.makeCondition("is_active")
+        cond["item"] = None
         return cond
