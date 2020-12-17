@@ -7,8 +7,6 @@ The DGSL World Editor is a program for building text based adventure games. Worl
 To allow people to build and share their own text based adventure games without needing to know how to program.
 
 ## Status
-Development is on hold (Dec 2019) while I continue University, possibley indefinately.
-
-This program is still in early development. It lacks the appropriate documentation to make using it to build custom worlds feasible. It also needs some kind of validation script to discover errors that will prevent worlds from being loaded by the engine.
+Along, with the dgsl engine this project is no longer being worked on as of Dec 2020. It was a good experiment with building a world editor, but would require substantial work and documentation to be of use to anyone who didn't contribute to its development, which makes it mostly useless for anything other than a learning experience.
 
 See the DGSL Text Adventure Engine for more information.
